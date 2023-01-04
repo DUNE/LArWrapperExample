@@ -1,0 +1,148 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>What this package does &#8212; LArWrapper 0.1 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="LArWrapper Documentation" href="index.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="LArWrapper Documentation"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">LArWrapper 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">What this package does</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="what-this-package-does">
+<h1>What this package does<a class="headerlink" href="#what-this-package-does" title="Permalink to this heading">¶</a></h1>
+<blockquote>
+<div><ul class="simple">
+<li><p>Example scripts ( <a class="reference internal" href="tests.html"><span class="doc">Tests</span></a> ) for running LArSoft using either <a class="reference external" href="https://cdcvs.fnal.gov/redmine/projects/sam-web-client/wiki">samweb</a> or the new <a class="reference external" href="https://data-dispatcher.readthedocs.io/en/latest/">Data Dispatcher (dd)</a> data delivery systems.</p></li>
+<li><p>A log parser <a class="reference internal" href="generated/LArWrapper.html"><span class="doc">LArWrapper</span></a> that gathers information about the processing of an input file for monitoring purposes.</p></li>
+</ul>
+</div></blockquote>
+<p>Instead of running <a class="reference external" href="https://larsoft.org/important-concepts-in-larsoft/">lar</a> directly,
+you run <a class="reference internal" href="generated/LArWrapper.html"><span class="doc">LArWrapper</span></a> with similar arguments.  It produces a summary dictionary that include information about CPU and memory use.
+This is useful both for profiling jobs before large processing campaigns and for monitoring overall resource use.</p>
+<p>The package has subdirectoris:</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 15%" />
+<col style="width: 85%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p>python</p></td>
+<td><p>the code itself</p></td>
+</tr>
+<tr class="row-even"><td><p>batch</p></td>
+<td><p>scripts needed for batch submission</p></td>
+</tr>
+<tr class="row-odd"><td><p>tests</p></td>
+<td><p>sample scripts to exercise the code</p></td>
+</tr>
+<tr class="row-even"><td><p>fcl</p></td>
+<td><p>example fcl files</p></td>
+</tr>
+<tr class="row-odd"><td><p>docs</p></td>
+<td><p>documentation</p></td>
+</tr>
+</tbody>
+</table>
+<p>and some utility scripts to setup, tar up your code and make maintenance easier</p>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="index.html"
+                          title="previous chapter">LArWrapper Documentation</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="usage.html"
+                          title="next chapter">Usage</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/Intro.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="usage.html" title="Usage"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="index.html" title="LArWrapper Documentation"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">LArWrapper 0.1 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">What this package does</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2022, Oregon State University.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
