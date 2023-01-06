@@ -239,8 +239,8 @@
     <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;ask for next file&quot;</span><span class="p">)</span>
     <span class="k">if</span> <span class="s2">&quot;GLIDEIN_DUNESite&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
         <span class="n">site</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;GLIDEIN_DUNESite&quot;</span><span class="p">)</span>
-    <span class="k">elif</span> <span class="s2">&quot;HOSTNAME&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">:</span>
-        <span class="n">site</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;HOSTNAME&quot;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="s2">&quot;HOSTNAME&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">and</span> <span class="s2">&quot;dunegpvm&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;HOSTNAME&quot;</span><span class="p">):</span>
+        <span class="n">site</span> <span class="o">=</span> <span class="s2">&quot;US_FNAL&quot;</span>
     <span class="k">else</span><span class="p">:</span>
         <span class="n">site</span> <span class="o">=</span> <span class="kc">None</span>
 
@@ -433,17 +433,32 @@
   <span class="k">def</span> <span class="nf">BuildFileListString</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="k">for</span> <span class="n">j</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">loaded_files</span><span class="p">:</span>
       <span class="n">replicas</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">j</span><span class="p">[</span><span class="s1">&#39;replicas&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">())</span>
-      <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;possible replicas&quot;</span><span class="p">,</span><span class="n">replicas</span><span class="p">)</span>
+      <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span><span class="p">:</span>
+          <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;possible replicas&quot;</span><span class="p">)</span>
+          <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">replicas</span><span class="p">:</span>
+              <span class="nb">print</span> <span class="p">(</span><span class="n">r</span><span class="p">)</span>
       <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">replicas</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
         <span class="c1">#Get the last replica</span>
         <span class="c1">#replica = replicas[len(replicas)-1]</span>
-        <span class="n">replica</span> <span class="o">=</span> <span class="n">replicas</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="c1"># go with first.</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">input_replicas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">replica</span><span class="p">)</span>
-        <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Replica:&#39;</span><span class="p">,</span> <span class="n">replica</span><span class="p">)</span>
-        <span class="n">uri</span> <span class="o">=</span> <span class="n">replica</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span>
-        <span class="k">if</span> <span class="s1">&#39;https://eospublic.cern.ch/e&#39;</span> <span class="ow">in</span> <span class="n">uri</span><span class="p">:</span> <span class="n">uri</span> <span class="o">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;https://eospublic.cern.ch/e&#39;</span><span class="p">,</span> <span class="s1">&#39;xroot://eospublic.cern.ch//e&#39;</span><span class="p">)</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lar_file_list</span> <span class="o">+=</span> <span class="n">uri</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">lar_file_list</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span>
+        <span class="n">replica</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">replicas</span><span class="p">:</span>
+            <span class="k">if</span> <span class="s2">&quot;url&quot;</span> <span class="ow">in</span> <span class="n">r</span> <span class="ow">and</span> <span class="s2">&quot;root:&quot;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]:</span>
+                <span class="c1"># if self.debug and r[&quot;rse&quot;] == &quot;FNAL_DCACHE&quot;:</span>
+                <span class="c1">#     print  (&quot;skipping FNAL for test&quot;)</span>
+                <span class="c1">#     continue</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;found a valid replica at&quot;</span><span class="p">,</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">])</span>
+                <span class="n">replica</span> <span class="o">=</span> <span class="n">r</span>
+                <span class="k">break</span>
+        <span class="k">if</span> <span class="n">replica</span> <span class="o">==</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot; there is no root replica available&quot;</span><span class="p">,</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">input_replicas</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">replica</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Replica:&#39;</span><span class="p">,</span> <span class="n">replica</span><span class="p">)</span>
+            <span class="n">uri</span> <span class="o">=</span> <span class="n">replica</span><span class="p">[</span><span class="s1">&#39;url&#39;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s1">&#39;https://eospublic.cern.ch/e&#39;</span> <span class="ow">in</span> <span class="n">uri</span><span class="p">:</span> <span class="n">uri</span> <span class="o">=</span> <span class="n">uri</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;https://eospublic.cern.ch/e&#39;</span><span class="p">,</span> <span class="s1">&#39;xroot://eospublic.cern.ch//e&#39;</span><span class="p">)</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> found uri&quot;</span><span class="p">,</span><span class="n">uri</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lar_file_list</span> <span class="o">+=</span> <span class="n">uri</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">lar_file_list</span> <span class="o">+=</span> <span class="s1">&#39; &#39;</span>
       <span class="k">else</span><span class="p">:</span>
         <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Empty replicas -- marking as failed&#39;</span><span class="p">)</span>
 
