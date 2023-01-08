@@ -443,9 +443,9 @@
         <span class="n">replica</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">replicas</span><span class="p">:</span>
             <span class="k">if</span> <span class="s2">&quot;url&quot;</span> <span class="ow">in</span> <span class="n">r</span> <span class="ow">and</span> <span class="s2">&quot;root:&quot;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]:</span>
-                <span class="c1"># if self.debug and r[&quot;rse&quot;] == &quot;FNAL_DCACHE&quot;:</span>
-                <span class="c1">#     print  (&quot;skipping FNAL for test&quot;)</span>
-                <span class="c1">#     continue</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="ow">and</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;rse&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;UK_QMUL&quot;</span><span class="p">]:</span>
+                    <span class="nb">print</span>  <span class="p">(</span><span class="s2">&quot;skipping&quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;rse&quot;</span><span class="p">],</span> <span class="s2">&quot;for test&quot;</span><span class="p">)</span>
+                    <span class="k">continue</span>
                 <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;found a valid replica at&quot;</span><span class="p">,</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">])</span>
                 <span class="n">replica</span> <span class="o">=</span> <span class="n">r</span>
                 <span class="k">break</span>

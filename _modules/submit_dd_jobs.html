@@ -97,7 +97,10 @@
   <span class="n">proj_dict</span> <span class="o">=</span> <span class="n">dd_client</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="n">query_files</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">thequery</span><span class="p">,</span> <span class="n">idle_timeout</span><span class="o">=</span><span class="mi">259201</span><span class="p">)</span>
   <span class="k">if</span> <span class="n">debug</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project dictionary&quot;</span><span class="p">,</span><span class="n">proj_dict</span><span class="p">)</span>
   <span class="n">dd_proj_id</span> <span class="o">=</span> <span class="n">proj_dict</span><span class="p">[</span><span class="s1">&#39;project_id&#39;</span><span class="p">]</span>
+  <span class="c1">#outdir = os.path.join(&quot;/pnfs/dune/scratch/users/&quot;,os.environ[&quot;USER&quot;],&quot;/%d&quot;%dd_proj_id)</span>
   <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project ID:&#39;</span><span class="p">,</span> <span class="n">dd_proj_id</span><span class="p">)</span>
+  <span class="c1">#print(&quot;output directory&quot;,outdir)</span>
+  <span class="c1">#os.mkdir(outdir)</span>
 
   <span class="k">return</span> <span class="n">dd_proj_id</span></div>
 
