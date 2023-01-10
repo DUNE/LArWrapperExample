@@ -194,6 +194,7 @@
     <span class="k">except</span><span class="p">:</span>
         <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;project creation failed, give up&quot;</span><span class="p">)</span>
         <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;The project dictionary&quot;</span><span class="p">,</span><span class="n">proj_dict</span><span class="p">)</span>
     <span class="n">dd_proj_id</span> <span class="o">=</span> <span class="n">proj_dict</span><span class="p">[</span><span class="s1">&#39;project_id&#39;</span><span class="p">]</span>
     <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Project ID:&#39;</span><span class="p">,</span> <span class="n">dd_proj_id</span><span class="p">)</span>
 
@@ -228,7 +229,7 @@
           <span class="sa">f</span><span class="s1">&#39;-Oglobal.appName=</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">appName</span><span class="si">}</span><span class="s1"> &#39;</span>\
           <span class="sa">f</span><span class="s1">&#39;-Oglobal.appVersion=</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">appVersion</span><span class="si">}</span><span class="s1"> &#39;</span>\
           <span class="sa">f</span><span class="s1">&#39;-Oglobal.fcl=</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">c</span><span class="si">}</span><span class="s1"> &#39;</span>\
-          <span class="sa">f</span><span class="s1">&#39;-Oglobal.debug=</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">debug</span><span class="si">}</span><span class="s1">&#39;</span>
+          <span class="sa">f</span><span class="s1">&#39;-Oglobal.debug=</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">debug</span><span class="si">}</span><span class="s1"> &#39;</span>
 
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">blacklist</span><span class="p">:</span>
       <span class="n">cs_blacklist</span> <span class="o">=</span> <span class="s1">&#39;,&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">blacklist</span><span class="p">)</span>
