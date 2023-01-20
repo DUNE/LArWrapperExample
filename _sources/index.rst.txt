@@ -25,11 +25,12 @@ Contents
 .. toctree::
 
     Intro
+    sam2metacat
+    metadatameaning
     usage
     tests
     Modules
     api
     related
-    sam2metacat
-    metadatameaning
+    template
     Notes

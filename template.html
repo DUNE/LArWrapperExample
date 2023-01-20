@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>What this package does &#8212; LArWrapperExample 0.2 documentation</title>
+    <title>Template for minimal metacat for a file &#8212; LArWrapperExample 0.2 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -17,8 +17,8 @@
     <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Sam to Metacat Conversion guide" href="sam2metacat.html" />
-    <link rel="prev" title="LArWrapper Documentation" href="index.html" /> 
+    <link rel="next" title="Notes on sphinx" href="Notes.html" />
+    <link rel="prev" title="Related documentation" href="related.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="sam2metacat.html" title="Sam to Metacat Conversion guide"
+          <a href="Notes.html" title="Notes on sphinx"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="LArWrapper Documentation"
+          <a href="related.html" title="Related documentation"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">What this package does</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Template for minimal metacat for a file</a></li> 
       </ul>
     </div>  
 
@@ -45,42 +45,55 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="what-this-package-does">
-<h1>What this package does<a class="headerlink" href="#what-this-package-does" title="Permalink to this heading">¶</a></h1>
-<blockquote>
-<div><ul class="simple">
-<li><p>Example scripts ( <a class="reference internal" href="tests.html"><span class="doc">Tests</span></a> ) for running LArSoft using either <a class="reference external" href="https://cdcvs.fnal.gov/redmine/projects/sam-web-client/wiki">samweb</a> or the new <a class="reference external" href="https://data-dispatcher.readthedocs.io/en/latest/">Data Dispatcher (dd)</a> data delivery systems.</p></li>
-<li><p>A log parser <a class="reference internal" href="generated/LArWrapper.html"><span class="doc">LArWrapper</span></a> that gathers information about the processing of an input file for monitoring purposes.</p></li>
-</ul>
-</div></blockquote>
-<p>Instead of running <a class="reference external" href="https://larsoft.org/important-concepts-in-larsoft/">lar</a> directly,
-you run <a class="reference internal" href="generated/LArWrapper.html"><span class="doc">LArWrapper</span></a> with similar arguments.  It produces a summary dictionary that include information about CPU and memory use.
-This is useful both for profiling jobs before large processing campaigns and for monitoring overall resource use.</p>
-<p>The package has subdirectoris:</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 15%" />
-<col style="width: 85%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p>python</p></td>
-<td><p>the code itself</p></td>
-</tr>
-<tr class="row-even"><td><p>batch</p></td>
-<td><p>scripts needed for batch submission</p></td>
-</tr>
-<tr class="row-odd"><td><p>tests</p></td>
-<td><p>sample scripts to exercise the code</p></td>
-</tr>
-<tr class="row-even"><td><p>fcl</p></td>
-<td><p>example fcl files</p></td>
-</tr>
-<tr class="row-odd"><td><p>docs</p></td>
-<td><p>documentation</p></td>
-</tr>
-</tbody>
-</table>
-<p>and some utility scripts to setup, tar up your code and make maintenance easier</p>
+  <div class="section" id="template-for-minimal-metacat-for-a-file">
+<h1>Template for minimal metacat for a file<a class="headerlink" href="#template-for-minimal-metacat-for-a-file" title="Permalink to this heading">¶</a></h1>
+<p>Here is an example of minimal metadata for a raw data file.</p>
+<p>You can add additional information to the metadata object.</p>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>{
+# these are autofilled
+    &quot;checksums&quot;: {
+        &quot;adler32&quot;: &quot;0e94618d&quot;
+    },
+    &quot;created_timestamp&quot;: 2018-10-10 17:38:27.681780+00:00,
+    &quot;creator&quot;: &quot;dunepro&quot;,
+    &quot;fid&quot;: &quot;6607416&quot;,
+#
+    &quot;metadata&quot;: {
+        &quot;core.application&quot;: &quot;art.dune-artdaq&quot;,
+        &quot;core.application.family&quot;: &quot;art&quot;,
+        &quot;core.application.name&quot;: &quot;dune-artdaq&quot;,
+        &quot;core.application.version&quot;: &quot;v1_16_00b&quot;,
+        &quot;core.data_stream&quot;: &quot;physics&quot;,
+        &quot;core.data_tier&quot;: &quot;raw&quot;,
+        &quot;core.end_time&quot;: &quot;2018-10-10 17:38:27.681780+00:00&quot;,
+        &quot;core.event_count&quot;: 108,
+        &quot;core.events&quot;: [1,2,3,4],
+        &quot;core.file_content_status&quot;: &quot;good&quot;,
+        &quot;core.file_format&quot;: &quot;hdf5&quot;,
+        &quot;core.file_type&quot;: &quot;detector&quot;,
+        &quot;core.first_event_number&quot;: 20921,
+        &quot;core.last_event_number&quot;: 22349,
+        &quot;core.run_type&quot;: &quot;protodune-sp&quot;,
+        &quot;core.runs&quot;: [
+            5141
+        ],
+        &quot;core.runs_subruns&quot;: [
+            514100001
+        ],
+        &quot;core.start_time&quot;: &quot;2018-10-10 17:38:27.681780+00:00&quot;,
+        &quot;core.raw_timestamp&quot;: &quot;2018-10-10 17:38:27.681780+00:00&quot;,
+    },
+    &quot;name&quot;: &quot;np04_raw_run005141_0015_dl3.root&quot;,
+    &quot;namespace&quot;: &quot;protodune-sp&quot;,
+    &quot;retired&quot;: false,
+    &quot;retired_by&quot;: null,
+    &quot;retired_timestamp&quot;: null,
+    &quot;size&quot;: 8289321123,
+    &quot;updated_by&quot;: null,
+    &quot;updated_timestamp&quot;: null
+}
+</pre></div>
+</div>
 </div>
 
 
@@ -92,18 +105,18 @@ This is useful both for profiling jobs before large processing campaigns and for
         <div class="sphinxsidebarwrapper">
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="index.html"
-                          title="previous chapter">LArWrapper Documentation</a></p>
+    <p class="topless"><a href="related.html"
+                          title="previous chapter">Related documentation</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="sam2metacat.html"
-                          title="next chapter">Sam to Metacat Conversion guide</a></p>
+    <p class="topless"><a href="Notes.html"
+                          title="next chapter">Notes on sphinx</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/Intro.rst.txt"
+      <li><a href="_sources/template.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -131,13 +144,13 @@ This is useful both for profiling jobs before large processing campaigns and for
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="sam2metacat.html" title="Sam to Metacat Conversion guide"
+          <a href="Notes.html" title="Notes on sphinx"
              >next</a> |</li>
         <li class="right" >
-          <a href="index.html" title="LArWrapper Documentation"
+          <a href="related.html" title="Related documentation"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">What this package does</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Template for minimal metacat for a file</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

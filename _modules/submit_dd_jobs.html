@@ -212,9 +212,7 @@
     <span class="n">njobs</span> <span class="o">=</span> <span class="p">[</span><span class="mi">10000</span><span class="p">]</span><span class="o">*</span><span class="nb">int</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">njobs</span><span class="o">/</span><span class="mi">10000</span><span class="p">)</span> <span class="o">+</span> <span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">njobs</span><span class="o">%</span><span class="mi">10000</span><span class="p">]</span>
   <span class="k">else</span><span class="p">:</span>
     <span class="n">njobs</span> <span class="o">=</span> <span class="p">[</span><span class="n">args</span><span class="o">.</span><span class="n">njobs</span><span class="p">]</span>
-  <span class="n">config</span> <span class="o">=</span> <span class="s2">&quot;ddconfig2.cfg&quot;</span>
-  <span class="k">if</span> <span class="s2">&quot;HOSTNAME&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;HOSTNAME&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;dunegpvm14.fnal.gov&quot;</span><span class="p">,</span><span class="s2">&quot;dunegpvm15.fnal.gov&quot;</span><span class="p">]:</span>
-      <span class="n">config</span> <span class="o">=</span> <span class="s2">&quot;ddconfig.cfg&quot;</span>
+  
 
   <span class="nb">print</span><span class="p">(</span><span class="n">njobs</span><span class="p">)</span>
   <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
