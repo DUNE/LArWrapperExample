@@ -13,7 +13,7 @@ You can add additional information to the metadata object.
       },
       "created_timestamp": 2018-10-10 17:38:27.681780+00:00,
       "creator": "dunepro",
-      "fid": "6607416",  
+      "size": 8289321123,
       "metadata": {
           "core.application.family": "art",
           "core.application.name": "dune-artdaq",
@@ -41,3 +41,20 @@ You can add additional information to the metadata object.
       "name": "np04_raw_run005141_0015_dl3.root",
       "namespace": "protodune-sp",
   }
+
+Additional information
+======================
+
+This information allows files to be modified and retired
+
+.. code-block:: javascript
+
+    {"retired": false,
+    "retired_by": null,
+    "retired_timestamp": null,
+    "size": 8289321123,
+    "updated_by": null,
+    "updated_timestamp": null
+    }
+
+There is also parentage information available. 
