@@ -49,49 +49,40 @@
 <h1>Template for minimal metacat for a file<a class="headerlink" href="#template-for-minimal-metacat-for-a-file" title="Permalink to this heading">¶</a></h1>
 <p>Here is an example of minimal metadata for a raw data file.</p>
 <p>You can add additional information to the metadata object.</p>
-<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span>{
-# these are autofilled
-    &quot;checksums&quot;: {
-        &quot;adler32&quot;: &quot;0e94618d&quot;
-    },
-    &quot;created_timestamp&quot;: 2018-10-10 17:38:27.681780+00:00,
-    &quot;creator&quot;: &quot;dunepro&quot;,
-    &quot;fid&quot;: &quot;6607416&quot;,
-#
-    &quot;metadata&quot;: {
-        &quot;core.application&quot;: &quot;art.dune-artdaq&quot;,
-        &quot;core.application.family&quot;: &quot;art&quot;,
-        &quot;core.application.name&quot;: &quot;dune-artdaq&quot;,
-        &quot;core.application.version&quot;: &quot;v1_16_00b&quot;,
-        &quot;core.data_stream&quot;: &quot;physics&quot;,
-        &quot;core.data_tier&quot;: &quot;raw&quot;,
-        &quot;core.end_time&quot;: &quot;2018-10-10 17:38:27.681780+00:00&quot;,
-        &quot;core.event_count&quot;: 108,
-        &quot;core.events&quot;: [1,2,3,4],
-        &quot;core.file_content_status&quot;: &quot;good&quot;,
-        &quot;core.file_format&quot;: &quot;hdf5&quot;,
-        &quot;core.file_type&quot;: &quot;detector&quot;,
-        &quot;core.first_event_number&quot;: 20921,
-        &quot;core.last_event_number&quot;: 22349,
-        &quot;core.run_type&quot;: &quot;protodune-sp&quot;,
-        &quot;core.runs&quot;: [
-            5141
-        ],
-        &quot;core.runs_subruns&quot;: [
-            514100001
-        ],
-        &quot;core.start_time&quot;: &quot;2018-10-10 17:38:27.681780+00:00&quot;,
-        &quot;core.raw_timestamp&quot;: &quot;2018-10-10 17:38:27.681780+00:00&quot;,
-    },
-    &quot;name&quot;: &quot;np04_raw_run005141_0015_dl3.root&quot;,
-    &quot;namespace&quot;: &quot;protodune-sp&quot;,
-    &quot;retired&quot;: false,
-    &quot;retired_by&quot;: null,
-    &quot;retired_timestamp&quot;: null,
-    &quot;size&quot;: 8289321123,
-    &quot;updated_by&quot;: null,
-    &quot;updated_timestamp&quot;: null
-}
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;checksums&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;adler32&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0e94618d&quot;</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="s2">&quot;created_timestamp&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">2018</span><span class="o">-</span><span class="mf">10</span><span class="o">-</span><span class="mf">10</span><span class="w"> </span><span class="mf">17</span><span class="o">:</span><span class="mf">38</span><span class="o">:</span><span class="mf">27.681780</span><span class="o">+</span><span class="mo">00</span><span class="o">:</span><span class="mo">00</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;creator&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;dunepro&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;fid&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;6607416&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;metadata&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">        </span><span class="s2">&quot;core.application.family&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;art&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.application.name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;dune-artdaq&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.application.version&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;v1_16_00b&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.data_stream&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;physics&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.data_tier&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;raw&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.end_time&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2018-10-10 17:38:27.681780+00:00&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.event_count&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">108</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.events&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="mf">1</span><span class="p">,</span><span class="mf">2</span><span class="p">,</span><span class="mf">3</span><span class="p">,</span><span class="mf">4</span><span class="p">],</span>
+<span class="w">        </span><span class="s2">&quot;core.file_content_status&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;good&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.file_format&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;hdf5&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.file_type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;detector&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.first_event_number&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">20921</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.last_event_number&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">22349</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.run_type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;protodune-sp&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.runs&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mf">5141</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="s2">&quot;core.runs_subruns&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">            </span><span class="mf">514100001</span>
+<span class="w">        </span><span class="p">],</span>
+<span class="w">        </span><span class="s2">&quot;core.start_time&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2018-10-10 17:38:27.681780+00:00&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="s2">&quot;core.raw_timestamp&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2018-10-10 17:38:27.681780+00:00&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="p">},</span>
+<span class="w">    </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;np04_raw_run005141_0015_dl3.root&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;namespace&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;protodune-sp&quot;</span><span class="p">,</span>
+<span class="p">}</span>
 </pre></div>
 </div>
 </div>

@@ -8,16 +8,13 @@ You can add additional information to the metadata object.
 .. code-block:: javascript
 
   {
-  # these are autofilled
       "checksums": {
           "adler32": "0e94618d"
       },
       "created_timestamp": 2018-10-10 17:38:27.681780+00:00,
       "creator": "dunepro",
-      "fid": "6607416",
-  #
+      "fid": "6607416",  
       "metadata": {
-          "core.application": "art.dune-artdaq",
           "core.application.family": "art",
           "core.application.name": "dune-artdaq",
           "core.application.version": "v1_16_00b",
@@ -43,10 +40,4 @@ You can add additional information to the metadata object.
       },
       "name": "np04_raw_run005141_0015_dl3.root",
       "namespace": "protodune-sp",
-      "retired": false,
-      "retired_by": null,
-      "retired_timestamp": null,
-      "size": 8289321123,
-      "updated_by": null,
-      "updated_timestamp": null
   }
