@@ -441,7 +441,16 @@
         <span class="c1">#Get the last replica</span>
         <span class="c1">#replica = replicas[len(replicas)-1]</span>
         <span class="n">replica</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="n">pref</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span> <span class="mi">1000</span><span class="p">,</span><span class="mi">0</span>
+        <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
         <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="n">replicas</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;preference&quot;</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">pref</span><span class="p">:</span>
+                <span class="n">pref</span><span class="p">,</span><span class="n">index</span> <span class="o">=</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;preference&quot;</span><span class="p">],</span><span class="n">count</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;found a better rse&quot;</span><span class="p">,</span><span class="n">r</span><span class="p">[</span><span class="s2">&quot;rse&quot;</span><span class="p">],</span><span class="n">pref</span><span class="p">,</span><span class="n">index</span><span class="p">,</span><span class="n">count</span><span class="p">)</span>
+            <span class="n">count</span> <span class="o">+=</span><span class="mi">1</span>
+        <span class="k">for</span> <span class="n">r</span> <span class="ow">in</span> <span class="p">[</span><span class="n">replicas</span><span class="p">[</span><span class="n">index</span><span class="p">]]:</span>
+
             <span class="k">if</span> <span class="s2">&quot;url&quot;</span> <span class="ow">in</span> <span class="n">r</span> <span class="ow">and</span> <span class="s2">&quot;root:&quot;</span> <span class="ow">in</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;url&quot;</span><span class="p">]:</span>
                 <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">debug</span> <span class="ow">and</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;rse&quot;</span><span class="p">]</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;UK_QMUL&quot;</span><span class="p">]:</span>
                     <span class="nb">print</span>  <span class="p">(</span><span class="s2">&quot;skipping&quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">[</span><span class="s2">&quot;rse&quot;</span><span class="p">],</span> <span class="s2">&quot;for test&quot;</span><span class="p">)</span>

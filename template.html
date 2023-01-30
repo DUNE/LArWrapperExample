@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Template for minimal metacat for a file &#8212; LArWrapperExample 0.2 documentation</title>
+    <title>Template for minimal metadata for a file &#8212; LArWrapperExample 0.2 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -17,8 +17,8 @@
     <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Notes on sphinx" href="Notes.html" />
-    <link rel="prev" title="Related documentation" href="related.html" /> 
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="Metadata categories and samweb-&gt;metacat conversion" href="metadatameaning.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="Notes.html" title="Notes on sphinx"
+          <a href="usage.html" title="Usage"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="related.html" title="Related documentation"
+          <a href="metadatameaning.html" title="Metadata categories and samweb-&gt;metacat conversion"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Template for minimal metacat for a file</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Template for minimal metadata for a file</a></li> 
       </ul>
     </div>  
 
@@ -45,11 +45,15 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="template-for-minimal-metacat-for-a-file">
-<h1>Template for minimal metacat for a file<a class="headerlink" href="#template-for-minimal-metacat-for-a-file" title="Permalink to this heading">¶</a></h1>
+  <div class="section" id="template-for-minimal-metadata-for-a-file">
+<h1>Template for minimal metadata for a file<a class="headerlink" href="#template-for-minimal-metadata-for-a-file" title="Permalink to this heading">¶</a></h1>
 <p>Here is an example of minimal metadata for a raw data file.</p>
 <p>You can add additional information to the metadata object.</p>
+<div class="section" id="metacat-version">
+<h2>Metacat version<a class="headerlink" href="#metacat-version" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;np04_raw_run005141_0015_dl3.root&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;namespace&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;protodune-sp&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="s2">&quot;checksums&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
 <span class="w">        </span><span class="s2">&quot;adler32&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0e94618d&quot;</span>
 <span class="w">    </span><span class="p">},</span>
@@ -80,10 +84,39 @@
 <span class="w">        </span><span class="s2">&quot;core.start_time&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2018-10-10 17:38:27.681780+00:00&quot;</span><span class="p">,</span>
 <span class="w">        </span><span class="s2">&quot;core.raw_timestamp&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2018-10-10 17:38:27.681780+00:00&quot;</span><span class="p">,</span>
 <span class="w">    </span><span class="p">},</span>
-<span class="w">    </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;np04_raw_run005141_0015_dl3.root&quot;</span><span class="p">,</span>
-<span class="w">    </span><span class="s2">&quot;namespace&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;protodune-sp&quot;</span><span class="p">,</span>
+
 <span class="p">}</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="samweb-version">
+<h2>Samweb version<a class="headerlink" href="#samweb-version" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-javascript notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w"> </span><span class="s2">&quot;file_name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;filename&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;file_id&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">6607416</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;create_date&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2018-10-10T17:38:27+00:00&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;user&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;dunepro&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;file_size&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">8289321123</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;checksum&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="s2">&quot;adler32:0e94618d&quot;</span><span class="p">],</span>
+<span class="w"> </span><span class="s2">&quot;content_status&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;good&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;file_type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;detector&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;file_format&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;root&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;data_tier&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;raw&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;data_stream&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;physics&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;application&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="s2">&quot;family&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;art&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;dune-artdaq&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="s2">&quot;version&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;v1_16_00b&quot;</span>
+<span class="w"> </span><span class="p">},</span>
+<span class="w"> </span><span class="s2">&quot;event_count&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">108</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;first_event&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">20921</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;last_event&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">22349</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;start_time&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2018-10-10T17:25:01+00:00&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;end_time&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;2018-10-10T17:32:16+00:00&quot;</span><span class="p">,</span>
+<span class="w"> </span><span class="s2">&quot;runs&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="p">[</span><span class="w"> </span><span class="mf">5141</span><span class="p">,</span><span class="w"> </span><span class="mf">1</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;protodune-sp&quot;</span><span class="w"> </span><span class="p">]</span><span class="w"> </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
 </div>
 </div>
 <div class="section" id="additional-information">
@@ -111,20 +144,24 @@
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">Template for minimal metacat for a file</a></li>
+<li><a class="reference internal" href="#">Template for minimal metadata for a file</a><ul>
+<li><a class="reference internal" href="#metacat-version">Metacat version</a></li>
+<li><a class="reference internal" href="#samweb-version">Samweb version</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#additional-information">Additional information</a></li>
 </ul>
 
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="related.html"
-                          title="previous chapter">Related documentation</a></p>
+    <p class="topless"><a href="metadatameaning.html"
+                          title="previous chapter">Metadata categories and samweb-&gt;metacat conversion</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="Notes.html"
-                          title="next chapter">Notes on sphinx</a></p>
+    <p class="topless"><a href="usage.html"
+                          title="next chapter">Usage</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
@@ -157,13 +194,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="Notes.html" title="Notes on sphinx"
+          <a href="usage.html" title="Usage"
              >next</a> |</li>
         <li class="right" >
-          <a href="related.html" title="Related documentation"
+          <a href="metadatameaning.html" title="Metadata categories and samweb-&gt;metacat conversion"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">Template for minimal metacat for a file</a></li> 
+        <li class="nav-item nav-item-this"><a href="">Template for minimal metadata for a file</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

@@ -11,7 +11,7 @@ There is
 
 * additional information that may be specific to a given physics group or extra details on reconstruction/simulation parameters.
 
-:doc:`template` shows an example for a raw data file
+:doc:`template` shows a metacat and samweb example for a raw data file
 
 Both sam and metacat put the more detailed information in objects with <type>.<subtype> format.  Metacat extends this to <category>.<sub>.<sub ...>.<name>
 

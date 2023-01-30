@@ -27,10 +27,10 @@ Contents
     Intro
     sam2metacat
     metadatameaning
+    template
     usage
     tests
     Modules
     api
     related
-    template
     Notes

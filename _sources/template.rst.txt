@@ -1,13 +1,18 @@
-Template for minimal metacat for a file
-=======================================
+Template for minimal metadata for a file
+========================================
 
 Here is an example of minimal metadata for a raw data file.
 
 You can add additional information to the metadata object.
 
+Metacat version
+---------------
+
 .. code-block:: javascript
 
   {
+      "name": "np04_raw_run005141_0015_dl3.root",
+      "namespace": "protodune-sp",
       "checksums": {
           "adler32": "0e94618d"
       },
@@ -38,9 +43,39 @@ You can add additional information to the metadata object.
           "core.start_time": "2018-10-10 17:38:27.681780+00:00",
           "core.raw_timestamp": "2018-10-10 17:38:27.681780+00:00",
       },
-      "name": "np04_raw_run005141_0015_dl3.root",
-      "namespace": "protodune-sp",
+
   }
+
+Samweb version
+--------------
+
+.. code-block:: javascript
+
+  {
+   "file_name": "filename",
+   "file_id": 6607416,
+   "create_date": "2018-10-10T17:38:27+00:00",
+   "user": "dunepro",
+   "file_size": 8289321123,
+   "checksum": [ "adler32:0e94618d"],
+   "content_status": "good",
+   "file_type": "detector",
+   "file_format": "root",
+   "data_tier": "raw",
+   "data_stream": "physics",
+   "application": {
+      "family": "art",
+      "name": "dune-artdaq",
+      "version": "v1_16_00b"
+   },
+   "event_count": 108,
+   "first_event": 20921,
+   "last_event": 22349,
+   "start_time": "2018-10-10T17:25:01+00:00",
+   "end_time": "2018-10-10T17:32:16+00:00",
+   "runs": [ [ 5141, 1, "protodune-sp" ] ]
+  }
+
 
 Additional information
 ======================
@@ -57,4 +92,4 @@ This information allows files to be modified and retired
     "updated_timestamp": null
     }
 
-There is also parentage information available. 
+There is also parentage information available.
