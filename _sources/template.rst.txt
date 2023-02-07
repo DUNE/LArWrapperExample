@@ -1,12 +1,12 @@
 Template for minimal metadata for a file
-========================================
+----------------------------------------
 
 Here is an example of minimal metadata for a raw data file.
 
 You can add additional information to the metadata object.
 
 Metacat version
----------------
+^^^^^^^^^^^^^^^
 
 .. code-block:: javascript
 
@@ -46,8 +46,26 @@ Metacat version
 
   }
 
+Additional information
+----------------------
+
+  This information allows files to be modified and retired
+
+  .. code-block:: javascript
+
+      {"retired": false,
+      "retired_by": null,
+      "retired_timestamp": null,
+      "size": 8289321123,
+      "updated_by": null,
+      "updated_timestamp": null
+      }
+
+  There is also parentage information available.
+
+
 Samweb version
---------------
+^^^^^^^^^^^^^^
 
 .. code-block:: javascript
 
@@ -75,21 +93,3 @@ Samweb version
    "end_time": "2018-10-10T17:32:16+00:00",
    "runs": [ [ 5141, 1, "protodune-sp" ] ]
   }
-
-
-Additional information
-======================
-
-This information allows files to be modified and retired
-
-.. code-block:: javascript
-
-    {"retired": false,
-    "retired_by": null,
-    "retired_timestamp": null,
-    "size": 8289321123,
-    "updated_by": null,
-    "updated_timestamp": null
-    }
-
-There is also parentage information available.

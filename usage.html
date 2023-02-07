@@ -59,10 +59,11 @@
 <span class="linenos"> 6</span><span class="nb">export</span><span class="w"> </span><span class="nv">PATH</span><span class="o">=</span><span class="nv">$HOME</span>/.local/bin/:<span class="nv">$PATH</span>
 <span class="linenos"> 7</span><span class="nb">export</span><span class="w"> </span><span class="nv">HERE</span><span class="o">=</span><span class="nv">$PWD</span>
 <span class="linenos"> 8</span><span class="nb">export</span><span class="w"> </span><span class="nv">PYTHONPATH</span><span class="o">=</span><span class="nv">$HERE</span>/python:<span class="si">${</span><span class="nv">PYTHONPATH</span><span class="si">}</span>
-<span class="linenos"> 9</span>kx509
-<span class="linenos">10</span>voms-proxy-init<span class="w"> </span>-rfc<span class="w"> </span>-noregen<span class="w"> </span>-voms<span class="o">=</span>dune:/dune/Role<span class="o">=</span>Analysis<span class="w"> </span>-valid<span class="w"> </span><span class="m">120</span>:00
-<span class="linenos">11</span>voms-proxy-info
-<span class="linenos">12</span><span class="nb">export</span><span class="w"> </span><span class="nv">X509_USER_PROXY</span><span class="o">=</span>/tmp/x509up_u1327<span class="w">  </span><span class="c1"># this is specific to me</span>
+<span class="linenos"> 9</span>
+<span class="linenos">10</span>kx509
+<span class="linenos">11</span>voms-proxy-init<span class="w"> </span>-rfc<span class="w"> </span>-noregen<span class="w"> </span>-voms<span class="o">=</span>dune:/dune/Role<span class="o">=</span>Analysis<span class="w"> </span>-valid<span class="w"> </span><span class="m">120</span>:00
+<span class="linenos">12</span>voms-proxy-info
+<span class="linenos">13</span><span class="nb">export</span><span class="w"> </span><span class="nv">X509_USER_PROXY</span><span class="o">=</span>/tmp/x509up_u<span class="k">$(</span>id<span class="w"> </span>-u<span class="k">)</span><span class="w">  </span><span class="c1">#</span>
 </pre></div>
 </div>
 </div>
