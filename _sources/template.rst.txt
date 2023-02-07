@@ -42,6 +42,8 @@ Metacat version
           ],
           "core.start_time": "2018-10-10 17:38:27.681780+00:00",
           "core.raw_timestamp": "2018-10-10 17:38:27.681780+00:00",
+          "retention.status": "active",
+          "retention.class": "physics"
       },
 
   }
