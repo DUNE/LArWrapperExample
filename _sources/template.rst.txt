@@ -49,7 +49,7 @@ Metacat version
   }
 
 Additional information
-----------------------
+^^^^^^^^^^^^^^^^^^^^^^
 
   This information allows files to be modified and retired
 
