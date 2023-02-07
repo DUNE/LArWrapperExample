@@ -1,6 +1,6 @@
 
 Sam to Metacat Conversion guide
-===============================
+
 
   This document includes examples of `sam` queries gathered from DUNE Dataset definitions and their `metacat` translations
 
