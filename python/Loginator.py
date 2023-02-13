@@ -49,6 +49,7 @@ class Loginator:
         self.debug = debug
         print ("Loginator debug:",self.debug)
         self.logfile = open(logname,'r')
+        self.errfile = open(logname.replace('.out','.err'),'r')
         self.outobject ={}
         self.info = self.getsysinfo()
         self.tags = ["%MSG-i MF_INIT_OK:  Early ","Opened input file", "Closed input file","MemReport  VmPeak","CPU","Events total","Initiating request to open input file"]
@@ -96,7 +97,9 @@ class Loginator:
             "file_format":None,
             "file_campaign":None,  # (DUNE campaign)
             "namespace":None,
-            "event_count":None
+            "event_count":None,
+            "mips"=None,
+            "vendor"=None
         }
 
 
@@ -140,6 +143,15 @@ class Loginator:
             info["user"]=os.getenv("GRID_USER")
         else:
             info["user"]=os.getenv("USER")
+        
+        if os.getenv("poms_data") != None:
+            poms_data = os.getenv("poms_data")
+            if poms_data != None:
+                poms_dict=json.loads(poms_data)
+                if "bogomips" in poms_dict:
+                    info["mips"] = poms_dict["bogomips"]
+                if "vendor_id" in poms_dict:
+                    info["vendor"] = poms_dict["vendor_id"]
         info["job_id"] = self.getSafe(os.environ,"JOBSUBJOBID")
         info["job_node"] = self.getSafe(os.environ,"NODE_NAME")
         #info["job_node"] = os.getenv("HOST")
@@ -149,7 +161,6 @@ class Loginator:
             info["job_site"]=os.getenv("GLIDEIN_Entry_Name")
         else:
             info["job_site"]=self.getSafe(os.environ,"NODE_NAME")
-        #info["POMSINFO"] = os.getenv("poms_data")  # need to parse this further
         return info
 
     def addsysinfo(self):
@@ -165,10 +176,10 @@ class Loginator:
         cpudata = None
         walldata = None
         totalevents = None
-
-        for line in self.logfile:
+        larstart = None
+        for line in *self.logfile,*self.errfile:
             tag = self.findme(line)
-            #if self.debug: print (tag,line)
+            if self.debug: print (tag,line)
 
             # not relevant, skip
             if tag == None:
@@ -217,6 +228,8 @@ class Loginator:
                     localobject["path"]=filepath
                     localobject["file_name"] = filename
                     localobject["url"] = filefull
+                    if larstart == None:  # somehow we didn't start quite right
+                    	larstart = timestamp
                     if "BEGIN_TIME" in os.environ:
                         localobject["timestamp_for_job_start"]=os.getenv("BEGIN_TIME")
                     else:
