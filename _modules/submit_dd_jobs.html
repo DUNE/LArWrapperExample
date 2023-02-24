@@ -217,7 +217,7 @@
   <span class="nb">print</span><span class="p">(</span><span class="n">njobs</span><span class="p">)</span>
   <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
   <span class="k">for</span> <span class="n">nj</span> <span class="ow">in</span> <span class="n">njobs</span><span class="p">:</span>
-    <span class="k">if</span> <span class="s2">&quot;HOSTNAME&quot;</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;HOSTNAME&quot;</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">&quot;dunegpvm14.fnal.gov&quot;</span><span class="p">,</span><span class="s2">&quot;dunegpvm15.fnal.gov&quot;</span><span class="p">]:</span>
+    <span class="k">if</span> <span class="kc">False</span><span class="p">:</span> <span class="c1"># remove version that ran on old jobsub_client</span>
 
         <span class="n">cmd</span> <span class="o">=</span>  <span class="s1">&#39;fife_launch -c $TESTME/batch/ddconfig.cfg &#39;</span> \
               <span class="sa">f</span><span class="s1">&#39;-Oglobal.load_limit=</span><span class="si">{</span><span class="n">args</span><span class="o">.</span><span class="n">load_limit</span><span class="si">}</span><span class="s1"> &#39;</span> \
