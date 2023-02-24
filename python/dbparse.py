@@ -6,9 +6,16 @@ def getme(dbname,sql):
 
     cur = con.cursor()
     #print ("cursor",cur)
-    qdir = os.getenv("SQL_QUERY_DIR")
-    fname = os.path.join(qdir,sql)
+    if "SQL_QUERY_PATH" in os.environ:
+        qdir = os.getenv("SQL_QUERY_PATH")
 
+        fname = os.path.join(qdir,sql)
+        if not os.path.exists(fname):
+             print ("dbparse cannot find sql file",fname)
+             return {}
+    else:
+        print ("dbparse cannot find sql file")
+        return {}
     qf = open(fname,'r')
     qd = qf.readlines()
     clean = ""

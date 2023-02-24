@@ -6,7 +6,7 @@ export METACAT_AUTH_SERVER_URL=https://metacat.fnal.gov:8143/auth/dune
 export PATH=$HOME/.local/bin/:$PATH
 export HERE=$PWD
 export PYTHONPATH=$HERE/python:${PYTHONPATH}
-
+export SQL_QUERY_PATH=$HERE/sql
 kx509
 voms-proxy-init -rfc -noregen -voms=dune:/dune/Role=Analysis -valid 120:00
 voms-proxy-info

@@ -14,6 +14,8 @@ H. Schellman - 2022
 
 import string,time,datetime,json,os,sys
 
+import dbparse
+
 ## try to set up samweb if available
 if "SAM_EXPERIMENT" in os.environ:
     import samweb_client
@@ -22,6 +24,7 @@ if "SAM_EXPERIMENT" in os.environ:
 from metacat.webapi import MetaCatClient
 import string,datetime
 from datetime import date,timezone,datetime
+
 
 
 
@@ -98,8 +101,8 @@ class Loginator:
             "file_campaign":None,  # (DUNE campaign)
             "namespace":None,
             "event_count":None,
-            "mips"=None,
-            "vendor"=None
+            "mips":None,
+            "vendor":None
         }
 
 
@@ -179,7 +182,7 @@ class Loginator:
         larstart = None
         for line in *self.logfile,*self.errfile:
             tag = self.findme(line)
-            if self.debug: print (tag,line)
+            if self.debug and tag != None: print (tag,line)
 
             # not relevant, skip
             if tag == None:
@@ -243,7 +246,7 @@ class Loginator:
                         localobject["access_method"] = "xroot"
                     for thing in self.info:
                         localobject[thing] = self.info[thing]
-                    print ("localobject",localobject)
+                    if self.debug: print ("localobject",localobject)
                 # open the file
                 if "Opened" in tag:
 
@@ -274,9 +277,14 @@ class Loginator:
 
 
         # add the job info to all file records if available
+        localinfo = self.dbread()
         for thing in object:
+            
             if memdata != None: object[thing]["art_real_memory"]=memdata
+            if "memory" in localinfo: object[thing]["db_real_memory"]=localinfo["memory"]
+            if "n_events" in localinfo: object[thing]["db_total_events"]=localinfo["n_events"]
             if walldata != None: object[thing]["art_wall_time"]=walldata
+            if "wall_time" in localinfo: object[thing]["db_wall_time"]=localinfo["wall_time"]
             if cpudata != None: object[thing]["art_cpu_time"]=cpudata
             if totalevents != None:
                 object[thing]["art_total_events"]=totalevents
@@ -440,6 +448,20 @@ class Loginator:
         t1 = self.human2number(end)
         if self.debug: print("duration", start, end, t0, t1, t1-t0)
         return t1-t0
+        
+    def dbread(self):
+        if self.debug: print("try to access the time and memory databases")
+        localinfo = {}
+        try:
+            mem = dbparse.getme("mem.db", "peak-summary.sql")
+            time = dbparse.getme("time.db", "event-summary.sql")
+            localinfo["memory"]=int(mem['Peak resident set size (MB)'])
+            localinfo["wall_time"] = int(time['Full Event'][1]*time['Full Event'][3])
+            localinfo["n_events"] = time['Full Event'][3]
+            if self.debug: print ("db info",localinfo)
+        except:
+            print ("Can't get mem/time info from db")
+        return localinfo
 
 
 
