@@ -7,7 +7,7 @@
 ##
 # @file queryCreator.py
 
-DEBUG = False
+DEBUG = True
 
 from argparse import ArgumentParser as ap
 import sys
@@ -36,9 +36,15 @@ def makemetafields():
 
     for core in ["family","name","version"]:
             metafield[core] = "core.application."+core
+
+    for core in ["other"]:
+         metafield[core] =  "other"
+
+    if DEBUG: print(metafield)
+
     return metafield
 
-def makequery(meta,dataset=None,ordered=None,skip=None,limit=None,min_time=None,max_time=None,timevar="file"):
+def makequery(meta,dataset=None,ordered=None,skip=None,limit=None,min_time=None,max_time=None,timevar="created"):
     query = "files from " + dataset + " where"
     i  = 0
      
@@ -46,11 +52,11 @@ def makequery(meta,dataset=None,ordered=None,skip=None,limit=None,min_time=None,
         if "_time" in item: 
              i+=1
              continue
-        operator = "="
         val = meta[item]
-         
-        
-        query += " "+item+operator+val
+        if item == "other":
+            query += " "+val[1:-1]
+        else:
+            query += " "+item+"="+val
         i += 1
         if i < len(meta): 
             query += " and"    
@@ -112,6 +118,7 @@ def main():
         parser.add_argument('--ordered',default=False,type=bool, help='return list ordered for reproducibility')
         parser.add_argument('--limit',type=int, help='limit on # to return')
         parser.add_argument('--skip',type=int, help='skip N files')
+        parser.add_argument('--other',type=str,help='other selections, for example, --other=\"detector.hv_value=180 and beam.momentum=1\" ')
         
         
         args = parser.parse_args()
@@ -155,5 +162,7 @@ if __name__ == "__main__":
     thequery = main()
     print ("metacat query","\""+thequery+"\"")
     query_files = list(mc_client.query(thequery))
+     
     for l in query_files:
-         print(l["name"])
+         
+         print("%s:%s"%(l["namespace"],l["name"]))
