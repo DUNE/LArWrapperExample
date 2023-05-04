@@ -129,6 +129,8 @@ def main():
         meta = {}
         check = 0
 
+
+        # make a map of args and values for valid metacat fields
         for arg in metafield:
                 val = getattr(args,arg)
                 if val == None: 
@@ -151,7 +153,7 @@ def main():
 if __name__ == "__main__":
     mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_demo/app')
     thequery = main()
-    print ("metacat query",thequery)
+    print ("metacat query","\""+thequery+"\"")
     query_files = list(mc_client.query(thequery))
     for l in query_files:
          print(l["name"])
