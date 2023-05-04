@@ -7,21 +7,22 @@
 ##
 # @file queryCreator.py
 
+DEBUG = False
 
 from argparse import ArgumentParser as ap
 import sys
 import os
 import subprocess
 
-from datetime import date,timezone,datetime
-from dateutil import parser as dp
- 
+#rom datetime import date,timezone,datetime
+#from dateutil import parser as dp
+from metacat.webapi import MetaCatClient 
 
-# convert a date into a timestamp
-def human2number(stamp):
-  parsed = dp.isoparse(stamp)
-  print ( parsed.timestamp())
-  return parsed.timestamp()
+# # convert a date into a timestamp
+# def human2number(stamp):
+#   parsed = dp.isoparse(stamp)
+#   print ( parsed.timestamp())
+#   return parsed.timestamp()
   
 ## translate arguemnts into metacat fields
 def makemetafields():
@@ -65,32 +66,22 @@ def makequery(meta,dataset=None,ordered=None,skip=None,limit=None,min_time=None,
     if max_time != None:
         max = max_time
     
-    if timevar == "file":
+    if timevar == "created":
          var = "created_timestamp"
     elif timevar == "raw":
          var = "core.start_time"
     else:
          print (" undercognized timevar")
-         sys.exit(0)
+         sys.exit(1)
 
-    print (min,max,min_time,max_time)
     if min_time != None or max_time != None:
-        timequery = " and %s >= datetime(%s)"%(var,min)
-        timequery += " and %s <= datetime(%s)"%(var,max)
+        if var != "created_timestamp":
+            timequery = " and %s >= datetime('%s')"%(var,min)
+            timequery += " and %s <= datetime('%s')"%(var,max)
+        else:
+            timequery = " and %s >= '%s'"%(var,min)
+            timequery += " and %s <= '%s'"%(var,max)
         query += timequery
-
-    # min = '2018-01-01'
-    # max = '2100-01-01'
-    # if min_time != None:
-    #     min = min_time
-        
-    # if max_time != None:
-    #     max = max_time
-    
-    # if min_time != None and max_time != None:
-    #     timequery = " and core.start_time >= datetime(%s)"%min
-    #     timequery += " and core.start_time <= datetime(%s)"%max
-    #     query += timequery
 
     if ordered: query += " ordered "
 
@@ -100,15 +91,16 @@ def makequery(meta,dataset=None,ordered=None,skip=None,limit=None,min_time=None,
     if limit != None:
             query += " limit %d"%limit
       
-    return "\"%s\""%query
+    #return "\"%s\""%query
+    return query
 
 def main():
         parser = ap()
-        parser.add_argument('--timevar',type=str,default="file",help="creation time to select ['file'] or 'raw']")
+        parser.add_argument('--timevar',type=str,default="created",help="creation time to select ['created'] or 'raw']")
         parser.add_argument('--min_time',type=str,help='min time range (inclusive) YYYY-MM-DD UTC')
         parser.add_argument('--max_time',type=str,help='end time range (inclusive) YYYY-MM-DD UTC')
-        parser.add_argument('--file_type',type=str, help='["detector","mc"]')
-        parser.add_argument('--run_type',type=str, help='run_type, example="prododune-sp"')
+        parser.add_argument('--file_type',required=True,type=str, help='["detector","mc"]')
+        parser.add_argument('--run_type',required=True,type=str, help='run_type, example="prododune-sp"')
         parser.add_argument('--campaign',type=str, help='DUNE Campaign')
         parser.add_argument('--family',type=str, help='Application Family')
         parser.add_argument('--name', type=str, help='Application Name')
@@ -124,7 +116,7 @@ def main():
         
         args = parser.parse_args()
 
-        print (args)
+        if DEBUG: print (args)
 
         required = ["file_type","run_type"]
 
@@ -139,7 +131,6 @@ def main():
 
         for arg in metafield:
                 val = getattr(args,arg)
-                print (arg,val)
                 if val == None: 
                     continue
                 if arg in required:
@@ -150,14 +141,17 @@ def main():
         # check that enough required items are present
         if check < len(required):
               print ("a required field is missing - I must have ",required)
-              sys.exit(0)
+              sys.exit(1)
 
         query = makequery(meta,dataset=args.dataset,ordered=args.ordered,skip=args.skip,limit=args.limit,min_time=args.min_time,max_time=args.max_time,timevar=args.timevar)
-        print ("metacat query",query)
-    
-        sys.exit(1)
+        
+        return query
 
 ## command line, explains the variables.
 if __name__ == "__main__":
-    main()
-
+    mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_demo/app')
+    thequery = main()
+    print ("metacat query",thequery)
+    query_files = list(mc_client.query(thequery))
+    for l in query_files:
+         print(l["name"])
