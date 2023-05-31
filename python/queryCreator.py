@@ -44,8 +44,8 @@ def makemetafields():
 
     return metafield
 
-def makequery(meta,dataset=None,ordered=None,skip=None,limit=None,min_time=None,max_time=None,timevar="created"):
-    query = "files from " + dataset + " where"
+def makequery(meta,inputdataset=None,ordered=None,skip=None,limit=None,min_time=None,max_time=None,timevar="created"):
+    query = "files from " + inputdataset + " where"
     i  = 0
      
     for item in meta:
@@ -63,31 +63,33 @@ def makequery(meta,dataset=None,ordered=None,skip=None,limit=None,min_time=None,
     
 
 # do time range
-
-    min = '2018-01-01'
-    max = '2100-01-01'
-    if min_time != None:
-        min = min_time
+    if min_time = None and max_time == None:
+        min = '2018-01-01'
+        max = '2100-01-01'
+        if min_time != None:
+            min = min_time
+            
+        if max_time != None:
+            max = max_time
         
-    if max_time != None:
-        max = max_time
-    
-    if timevar == "created":
-         var = "created_timestamp"
-    elif timevar == "raw":
-         var = "core.start_time"
-    else:
-         print (" undercognized timevar")
-         sys.exit(1)
-
-    if min_time != None or max_time != None:
-        if var != "created_timestamp":
-            timequery = " and %s >= datetime('%s')"%(var,min)
-            timequery += " and %s <= datetime('%s')"%(var,max)
+        if timevar == "created":
+             var = "created_timestamp"
+        elif timevar == "raw":
+             var = "core.start_time"
         else:
-            timequery = " and %s >= '%s'"%(var,min)
-            timequery += " and %s <= '%s'"%(var,max)
-        query += timequery
+             print (" undercognized timevar")
+             sys.exit(1)
+
+        if min_time != None or max_time != None:
+            if var != "created_timestamp":
+                timequery = " and %s >= datetime('%s')"%(var,min)
+                timequery += " and %s <= datetime('%s')"%(var,max)
+            else:
+                timequery = " and %s >= '%s'"%(var,min)
+                timequery += " and %s <= '%s'"%(var,max)
+            query += timequery
+    else:
+        print ("No time range set, use all files")
 
     if ordered: query += " ordered "
 
@@ -102,6 +104,7 @@ def makequery(meta,dataset=None,ordered=None,skip=None,limit=None,min_time=None,
 
 def main():
         parser = ap()
+        parser.add_argument('--namespace',type=str,default=os.getenv("USER"),help="metacat namespace for dataset")
         parser.add_argument('--timevar',type=str,default="created",help="creation time to select ['created'] or 'raw']")
         parser.add_argument('--min_time',type=str,help='min time range (inclusive) YYYY-MM-DD UTC')
         parser.add_argument('--max_time',type=str,help='end time range (inclusive) YYYY-MM-DD UTC')
@@ -113,7 +116,7 @@ def main():
         parser.add_argument('--version', type=str, help='Application Version')
         parser.add_argument('--data_tier', type=str, help='data tier')
         parser.add_argument('--data_stream', type=str, help='data stream for output file if only one')
-        parser.add_argument("--dataset",default="dune:all",type=str,help="parent dataset, default=[DUNE:ALL]")
+        parser.add_argument('--inputdataset',default='dune:all',type=str,help='parent dataset, default=[\"dune:all\"]')
         parser.add_argument('--user', type=str, help='user name')
         parser.add_argument('--ordered',default=False,type=bool, help='return list ordered for reproducibility')
         parser.add_argument('--limit',type=int, help='limit on # to return')
@@ -152,7 +155,11 @@ def main():
               print ("a required field is missing - I must have ",required)
               sys.exit(1)
 
-        query = makequery(meta,dataset=args.dataset,ordered=args.ordered,skip=args.skip,limit=args.limit,min_time=args.min_time,max_time=args.max_time,timevar=args.timevar)
+        query = makequery(meta,inputdataset=args.inputdataset,ordered=args.ordered,skip=args.skip,limit=args.limit,min_time=args.min_time,max_time=args.max_time,timevar=args.timevar)
+        
+        tags = {
+        dataset
+}
         
         return query
 

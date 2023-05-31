@@ -4,6 +4,8 @@ API
 .. autosummary::
     :toctree: generated
 
+	queryCreator
+	
         samtest
 
         LArWrapper
