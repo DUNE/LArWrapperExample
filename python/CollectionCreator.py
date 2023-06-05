@@ -7,12 +7,15 @@
 ##
 # @file queryCreator.py
 
+
+
 DEBUG = True
 
 from argparse import ArgumentParser as ap
 import sys
 import os
 import subprocess
+import json
 from  collectionTags import *
 
 
@@ -21,31 +24,13 @@ from  collectionTags import *
 #from dateutil import parser as dp
 from metacat.webapi import MetaCatClient 
 
-# # convert a date into a timestamp
-# def human2number(stamp):
-#   parsed = dp.isoparse(stamp)
-#   print ( parsed.timestamp())
-#   return parsed.timestamp()
-  
-## translate arguemnts into metacat fields
-#def makemetafields():
-#    metafield = {}
-#
-#    for core in ["file_type","run_type","data_tier","data_stream"]:
-#            metafield[core] = "core."+core
-#
-#    for core in ["campaign"]:
-#            metafield[core] = "DUNE.campaign"
-#
-#    for core in ["family","name","version"]:
-#            metafield[core] = "core.application."+core
-#
-#    for core in ["other"]:
-#         metafield[core] =  "other"
-#
-#    if DEBUG: print(metafield)
-#
-#    return metafield
+
+
+def jsonwrite(path,j):
+      g = open(path,'w')
+      s = json.dumps(j,indent=2)
+      g.write(s)
+    
 
 def makequery(meta):
     query = "files from " + meta["inputdataset"] + " where"
@@ -114,7 +99,7 @@ def main():
         parser.add_argument('--time_var',type=str,default="created",help="creation time to select ['created'] or 'raw']")
         parser.add_argument('--min_time',type=str,help='min time range (inclusive) YYYY-MM-DD UTC')
         parser.add_argument('--max_time',type=str,help='end time range (inclusive) YYYY-MM-DD UTC')
-        parser.add_argument('--file_type',required=True,type=str, help='["detector","mc"]')
+        parser.add_argument('--file_type',dest='file_type',required=True,type=str, help='["detector","mc"]')
         parser.add_argument('--run_type',required=True,type=str, help='run_type, example="prododune-sp"')
         parser.add_argument('--campaign',type=str, help='DUNE Campaign')
         parser.add_argument('--family',type=str, help='Application Family')
@@ -124,7 +109,7 @@ def main():
         parser.add_argument('--data_stream', type=str, help='data stream for output file if only one')
         parser.add_argument('--inputdataset',default='dune:all',type=str,help='parent dataset, default=[\"dune:all\"]')
         parser.add_argument('--user', type=str, help='user name')
-        parser.add_argument('--ordered',default=False,type=bool, help='return list ordered for reproducibility')
+        parser.add_argument('--ordered',default=False,const=True,nargs="?", help='return list ordered for reproducibility')
         parser.add_argument('--limit',type=int, help='limit on # to return')
         parser.add_argument('--skip',type=int, help='skip N files')
         parser.add_argument('--other',type=str,help='other selections, for example, --other=\"detector.hv_value=180 and beam.momentum=1\" ')
@@ -176,6 +161,9 @@ def main():
 #              print ("a required field is missing - I must have ",required)
 #              sys.exit(1)
 
+        
+        fname = "test.json"
+        jsonwrite(fname,Tags)
         query = makequery(Tags)
         
         
