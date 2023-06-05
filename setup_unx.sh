@@ -16,7 +16,6 @@ voms-proxy-info
 export X509_USER_PROXY=/tmp/x509up_u$(id -u)  #
 setup metacat
 setup rucio
-setup python
 export MYAPP=/dune/app/users/$USER
 export LWE_CODE=$PWD
 export PYTHONPATH=$LWE_CODE/python:${PYTHONPATH}
