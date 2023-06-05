@@ -36,6 +36,6 @@ def CollectionArgMap (tags):
             argmap[tag]=tag.replace("DUNE.campaign","campaign")
             continue
         argmap[tag]=tag
-    print (argmap)
+    #print (argmap)
     return argmap
         

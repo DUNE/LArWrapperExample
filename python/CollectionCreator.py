@@ -9,7 +9,7 @@
 
 
 
-DEBUG = True
+DEBUG = False
 
 from argparse import ArgumentParser as ap
 import sys
@@ -37,7 +37,7 @@ def makequery(meta):
     
      
     for item in meta:
-        print (item)
+        if (DEBUG): print (item)
         if meta[item] == None:
             continue
         if "." not in item:
@@ -48,9 +48,9 @@ def makequery(meta):
         else:
             query += " "+item+"="+val
         query += " and"
-        print(query)
+        if (DEBUG): print(query)
     query = query[:-4]
-    print (query)
+    if (DEBUG): print (query)
     
 
 # do time range - takes some work as there are two possibilities
@@ -146,16 +146,16 @@ def main():
         for tag in Tags:
             argis=map[tag]
             val = getattr(args,argis)
-            print (tag,argis,val)
+            if DEBUG: print (tag,argis,val)
             Tags[tag] = val
-            print (tag,argis,val,type(val))
+            if DEBUG: print (tag,argis,val,type(val))
             if type(val) == 'str' and "-" in val:
                 Tags[tag] = "\'%s\'"%(val)
             
             
         
             
-        print (Tags)
+        if (DEBUG): print (Tags)
 #        # check that enough required items are present
 #        if check < len(required):
 #              print ("a required field is missing - I must have ",required)
@@ -165,6 +165,7 @@ def main():
         fname = "test.json"
         jsonwrite(fname,Tags)
         query = makequery(Tags)
+        
         
         
         
