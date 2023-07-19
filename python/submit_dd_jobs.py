@@ -176,7 +176,7 @@ def main():
   print(njobs)
   count = 0
   for nj in njobs:
-    if "HOSTNAME" in os.environ and os.environ["HOSTNAME"] not in ["dunegpvm14.fnal.gov","dunegpvm15.fnal.gov"]:
+    if False: # remove version that ran on old jobsub_client
 
         cmd =  'fife_launch -c $TESTME/batch/ddconfig.cfg ' \
               f'-Oglobal.load_limit={args.load_limit} ' \

@@ -4,4 +4,4 @@ scp tests/*.sh $DWORK/tests/.
 scp batch/* $DWORK/batch/.
 scp python/*.py $DWORK/python/.
 scp fcl/*.fcl $DWORK/fcl/.
-
+scp sql/*.sql $DWORK/sql/.

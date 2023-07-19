@@ -196,16 +196,14 @@ class DDInterface:
     Ask the project for a new file to process
     """
     print ("ask for next file")
+    site = "unknown"
     if "GLIDEIN_DUNESite" in os.environ:
         site = os.getenv("GLIDEIN_DUNESite")
-        if site == "US_FermiGrid":
-            site = "US_FNAL"
     elif "HOSTNAME" in os.environ and "dunegpvm" in os.getenv("HOSTNAME"):
         site = "US_FNAL"
-    elif site == "US_FermiGrid":
-        site = "US_FNAL"
-    else:
-        site = None
+    elif "OSG_SITE_NAME" in os.environ:
+        site = "US"+os.getenv("OSG_SITE_NAME")
+    
 
     # want to add cpu_site
 
@@ -397,7 +395,7 @@ class DDInterface:
     for j in self.loaded_files:
       replicas = list(j['replicas'].values())
       if self.debug:
-          print ("possible replicas")
+          print ("possible replicas=",len(replicas))
           for r in replicas:
               print (r)
       if len(replicas) > 0:
@@ -407,7 +405,7 @@ class DDInterface:
         pref,index = 1000,0
         count = 0
         for r in replicas:
-
+            print ("check replica",r["rse"],r["preference"],pref,index,count)
             if r["preference"] < pref:
                 pref,index =r["preference"],count
                 print ("found a better rse",r["rse"],pref,index,count)
