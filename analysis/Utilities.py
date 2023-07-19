@@ -25,7 +25,7 @@ def calculate(r=None):
     #     r["job_efficiency"] = -.1
     # if float(r["event_count"]) > 0 :
     #     r["time_per_event"] = float(r["duration"])/float(r["event_count"])
-    if r == None: return
+    if r == None: return {}
     for x in ["file_size","art_wall_time_per_event","art_total_events","event_count"]:
         if x not in r:
             print (x, " not available")
@@ -34,9 +34,13 @@ def calculate(r=None):
             print (x," is None in ",r["file_name"])
             return None
     walltimeperevent = r["art_wall_time_per_event"]
-    sizeperevent = r["file_size"]*r["art_total_events"]/r["event_count"]
+    sizeperevent = r["file_size"]/float(r["event_count"])*0.000001
+
     rate = sizeperevent/walltimeperevent
-    r["rate"] = rate*0.000001
+    r["rate"] = rate
+    if rate > 200.:
+        #print ("RATE",r)
+        print ("rate",r["file_size"],walltimeperevent,sizeperevent,r["event_count"],r["file_name"])
     return r
 
 def movetofront(mylist,key):
@@ -65,7 +69,7 @@ def getListOfTypes(data,key,inlist):
   l = inlist
 
   for item in data:
-
+    if item == None: continue
     if not key in item:
       continue
     val = item[key]#.decode('UTF-8')

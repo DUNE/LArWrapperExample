@@ -203,3 +203,19 @@ Find only the files not processed with a version of code
   .. :Note: TODO - get the file size as well?
 
   .. :Note: the syntax for a parameter matching is Regular Expressions, in particular '.\*' matches any string*
+
+
+Look at the metadata in a file
+------------------------------
+
+* samweb
+
+.. code-block:: bash
+
+      samweb get-metadata <filename>  --json
+
+* metacat
+
+.. code-block:: bash
+
+      metacat file show -m -j <namespace:filename>
