@@ -175,6 +175,7 @@ export IFDH_DEBUG=0
 
 export FHICL_FILE_PATH=${CONDOR_DIR_INPUT}/larwrapper/fcl:${FHICL_FILE_PATH}
 export FHICL_FILE_PATH=${CONDOR_DIR_INPUT}/larwrapper:${FHICL_FILE_PATH}
+export SQL_QUERY_PATH=${CONDOR_DIR_INPUT}/sql
 
 echo "fcl path:", $FHICL_FILE_PATH
 
@@ -252,6 +253,7 @@ ls  > files.txt
 echo "copy the following files to "${OUTDIR}
 cat files.txt
 ifdh cp -D $IFDH_OPTION *.json ${OUTDIR}
+ifdh cp -D $IFDH_OPTION *.db ${OUTDIR}
 ifdh cp -D $IFDH_OPTION *.txt ${OUTDIR}
 ifdh cp -D $IFDH_OPTION *.out ${OUTDIR}
 ifdh cp -D $IFDH_OPTION *.err ${OUTDIR}
