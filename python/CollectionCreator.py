@@ -216,7 +216,12 @@ def printSummary(results):
     
 def makeDataset(query,name,meta):
     did = "%s:%s"%(os.getenv("USER"),name)
-    mc_client.create_dataset(did,files_query=query,description=query,metadata=meta)
+    try:
+        mc_client.create_dataset(did,files_query=query,description=query,metadata=meta)
+        return 1
+    except:
+        print("dataset creation failed - does it already exist?")
+        return 0
     
     
     

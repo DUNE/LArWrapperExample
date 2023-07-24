@@ -2,6 +2,6 @@
         "core.run_type":"'protodune-sp'",
         "core.file_type":"mc",
         "core.data_tier":"'full-reconstructed'",
-        "dune.campaign":"PDSPProd4"
+        "dune.campaign":"PDSPProd4a"
 }
 
