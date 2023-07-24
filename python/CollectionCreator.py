@@ -129,7 +129,7 @@ def setup():
         parser.add_argument('--limit',type=int, help='limit on # to return')
         parser.add_argument('--skip',type=int, help='skip N files')
         #parser.add_argument('--other',type=str,help='other selections, for example, --other=\"detector.hv_value=180 and beam.momentum=1 ')
-        parser.add_argument('--json',type=str, help='filename for a json list of parameter to and')
+        parser.add_argument('--json',type=str, help='filename for a json list of parameters to and')
         #parser.add_argument('--summary',default=False,const=True,nargs="?", help='print a summary')
 
         XtraTags = ["min_time","max_time","ordered","limit","skip","time_var","input_dataset"]
