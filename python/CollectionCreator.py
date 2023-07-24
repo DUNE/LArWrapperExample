@@ -4,6 +4,8 @@
 #
 # @section description_main  
 #
+#  You can invoke this with python CollectionCreator --json=<json with list of required field values>
+# optional arguments are --min_time (earliest date)  --max_time (latest date)
 ##
 # @file queryCreator.py
 
@@ -32,7 +34,7 @@ def jsonwrite(path,j):
       g.write(s)
     
 def make_name(tags):
-    order=["core.run_type","core.file_type","core.data_tier","core.data_stream","dune.campaign","core.application.version","min_time","max_time"]
+    order=["core.run_type","core.file_type","core.data_tier","core.data_stream","dune.campaign","dune_mc.gen_fcl_filename","core.application.version","min_time","max_time"]
     name = ""
     for i in order:
          if i in tags and tags[i]!= None:
@@ -123,7 +125,7 @@ def setup():
         parser.add_argument('--data_stream', type=str, help='data stream for output file if only one')
         parser.add_argument('--input_dataset',default='dune:all',type=str,help='parent dataset, default=[\"dune:all\"]')
         parser.add_argument('--user', type=str, help='user name')
-        parser.add_argument('--ordered',default=False,const=True,nargs="?", help='return list ordered for reproducibility')
+        parser.add_argument('--ordered',default=True,const=True,nargs="?", help='return list ordered for reproducibility')
         parser.add_argument('--limit',type=int, help='limit on # to return')
         parser.add_argument('--skip',type=int, help='skip N files')
         #parser.add_argument('--other',type=str,help='other selections, for example, --other=\"detector.hv_value=180 and beam.momentum=1 ')
@@ -153,22 +155,6 @@ def setup():
   
         if args.user == None and os.environ["USER"] != None:  args.user = os.environ["USER"]
 
-        # load the valid arguements into query input form
-#
-#        meta = {}
-#        check = 0
-#
-#
-#        # make a map of args and values for valid metacat fields
-#        for field in metafield:
-#
-#                val = getattr(args,arg)
-#                if val == None:
-#                    continue
-#                if arg in required:
-#                    check+=1
-#
-#                meta[metafield[arg]] = "\'%s\'"%(val)
         
         if args.json == None:
             Tags = DefineCollectionTags()
@@ -198,18 +184,6 @@ def setup():
                 if type(val) == 'str' and "-" in val:
                     Tags[tag] = "\'%s\'"%(val)
                     
-            print (Tags)
-            
-            
-        
-            
-        if (DEBUG): print (Tags)
-        fname = make_name(Tags)+".json"
-        jsonwrite(fname,{"dataset.meta":Tags})
-        
-        
-        
-        
         return Tags
 
 def writequery(q,fname):
