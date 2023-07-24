@@ -32,7 +32,7 @@ def jsonwrite(path,j):
       g.write(s)
     
 def make_name(tags):
-    order=["core.run_type","core.file_type","core.data_tier","core.data_stream","DUNE.campaign","core.application.version","min_time","max_time"]
+    order=["core.run_type","core.file_type","core.data_tier","core.data_stream","dune.campaign","core.application.version","min_time","max_time"]
     name = ""
     for i in order:
          if i in tags and tags[i]!= None:
@@ -40,12 +40,13 @@ def make_name(tags):
                  name+="le"
             name += tags[i]
             name += "_"
-    name = name[:-1]
+    name = name[:-1].replace("'","")
     print ("name might be",name)
+    return name
 
 
 def makequery(meta):
-    query = "files from " + meta["inputdataset"] + " where"
+    query = "files from " + meta["input_dataset"] + " where"
     
      
     for item in meta:
@@ -105,8 +106,9 @@ def makequery(meta):
     #return "\"%s\""%query
     return query
 
-def main():
+def setup():
         parser = ap()
+         
         parser.add_argument('--namespace',type=str,default=os.getenv("USER"),help="metacat namespace for dataset")
         parser.add_argument('--time_var',type=str,default="created",help="creation time to select ['created'] or 'raw']")
         parser.add_argument('--min_time',type=str,help='min time range (inclusive) YYYY-MM-DD UTC')
@@ -119,15 +121,16 @@ def main():
         parser.add_argument('--version', type=str, help='Application Version')
         parser.add_argument('--data_tier', type=str, help='data tier')
         parser.add_argument('--data_stream', type=str, help='data stream for output file if only one')
-        parser.add_argument('--inputdataset',default='dune:all',type=str,help='parent dataset, default=[\"dune:all\"]')
+        parser.add_argument('--input_dataset',default='dune:all',type=str,help='parent dataset, default=[\"dune:all\"]')
         parser.add_argument('--user', type=str, help='user name')
         parser.add_argument('--ordered',default=False,const=True,nargs="?", help='return list ordered for reproducibility')
         parser.add_argument('--limit',type=int, help='limit on # to return')
         parser.add_argument('--skip',type=int, help='skip N files')
-        parser.add_argument('--other',type=str,help='other selections, for example, --other=\"detector.hv_value=180 and beam.momentum=1\" ')
+        #parser.add_argument('--other',type=str,help='other selections, for example, --other=\"detector.hv_value=180 and beam.momentum=1 ')
+        parser.add_argument('--json',type=str, help='filename for a json list of parameter to and')
         #parser.add_argument('--summary',default=False,const=True,nargs="?", help='print a summary')
 
-        
+        XtraTags = ["min_time","max_time","ordered","limit","skip","time_var","input_dataset"]
         args = parser.parse_args()
 
     
@@ -166,36 +169,54 @@ def main():
 #                    check+=1
 #
 #                meta[metafield[arg]] = "\'%s\'"%(val)
-        Tags = DefineCollectionTags()
-        map = CollectionArgMap(Tags)
-        for tag in Tags:
-            argis=map[tag]
-            val = getattr(args,argis)
-            if DEBUG: print (tag,argis,val)
-            Tags[tag] = val
-            if DEBUG: print (tag,argis,val,type(val))
-            if type(val) == 'str' and "-" in val:
-                Tags[tag] = "\'%s\'"%(val)
+        
+        if args.json == None:
+            Tags = DefineCollectionTags()
+            map = CollectionArgMap(Tags)
+            for tag in Tags:
+                argis=map[tag]
+                val = getattr(args,argis)
+                if DEBUG: print (tag,argis,val)
+                Tags[tag] = val
+                if DEBUG: print (tag,argis,val,type(val))
+                if type(val) == 'str' and "-" in val:
+                    Tags[tag] = "\'%s\'"%(val)
+        else:
+        # read the data description tags from json file
+            f = open(args.json,'r')
+            if f:
+                Tags = json.load(f)
+           
+            if DEBUG: print (Tags)
+            # add the extra tags
+            for tag in XtraTags:
+                argis=tag
+                val = getattr(args,argis)
+                if DEBUG: print (tag,argis,val)
+                Tags[tag] = val
+                if DEBUG: print (tag,argis,val,type(val))
+                if type(val) == 'str' and "-" in val:
+                    Tags[tag] = "\'%s\'"%(val)
+                    
+            print (Tags)
             
             
         
             
         if (DEBUG): print (Tags)
-#        # check that enough required items are present
-#        if check < len(required):
-#              print ("a required field is missing - I must have ",required)
-#              sys.exit(1)
+        fname = make_name(Tags)+".json"
+        jsonwrite(fname,{"dataset.meta":Tags})
+        
+        
+        
+        
+        return Tags
 
-        print (make_name(Tags))
-        fname = "test.json"
-        jsonwrite(fname,Tags)
-        query = makequery(Tags)
-        
-        
-        
-        
-        return query
-
+def writequery(q,fname):
+    g = open(fname+".txt",'w')
+    g.write(q)
+    g.close()
+    
 def printSummary(results):
     nfiles = total_size = 0
     for f in results:
@@ -218,12 +239,24 @@ def printSummary(results):
         unit = "B"
         n = total_size
     print("Total size:  ", "%d (%.3f %s)" % (total_size, n, unit))
+    
+def makeDataset(query,name,meta):
+    did = "%s:%s"%(os.getenv("USER"),name)
+    mc_client.create_dataset(did,files_query=query,description=query,metadata=meta)
+    
+    
+    
+
 
 ## command line, explains the variables.
 if __name__ == "__main__":
     mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_prod/app')
-    thequery = main()
-    print ("metacat query","\""+thequery+"\"")
+    Tags = setup()
+    thequery = makequery(Tags)
+    thename = make_name(Tags)
+    writequery(thequery,thename)
+    makeDataset(thequery,thename,{"dataset.meta":Tags})
+    print ("metacat query -s ","\""+thequery+"\"")
     query_files = list(mc_client.query(thequery))
     summary = True
     if summary: 

@@ -341,8 +341,8 @@ class Loginator:
         the defaultNamespace argument is just there for testing
         """
         if self.debug:print ("add metacat info")
-        os.environ["METACAT_SERVER_URL"]="https://metacat.fnal.gov:9443/dune_meta_demo/app"
-        mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_demo/app')
+        #os.environ["METACAT_SERVER_URL"]="https://metacat.fnal.gov:9443/dune_meta_demo/app"
+        mc_client = MetaCatClient(os.getenv("METACAT_SERVER_URL"))
         for f in self.outobject:
             if "namespace" in self.outobject[f] and self.outobject[f]["namespace"] != None:
                 namespace = self.outobject[f]["namespace"]
@@ -438,9 +438,10 @@ class Loginator:
         if self.debug: print ("raw time", stamp, stamp[0:20], datetime.strptime(stamp[0:20],format))
         thetime  = datetime.strptime(stamp[0:20],format)
         epoch = datetime.utcfromtimestamp(0)
+        delta = 0
         if "DT" in stamp:
-            stamp += 3600
-        return (thetime-epoch).total_seconds()
+            delta = 3600
+        return (thetime-epoch).total_seconds() + delta
 
 ## utility to change timestamps into time delta
     def duration(self,start,end):

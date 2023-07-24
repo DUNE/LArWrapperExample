@@ -7,10 +7,12 @@ from argparse import ArgumentParser as ap
 import subprocess
 
 def create_project(dataset=None, query=None, namespace = None, query_limit=None, query_skip=None, debug=False):
-  mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_demo/app')
+  print ("METACAT_URL",os.getenv("METACAT_SERVER_URL"))
+  mc_client = MetaCatClient(os.getenv("METACAT_SERVER_URL"))
+  
   dd_client = DataDispatcherClient(
-    server_url='https://metacat.fnal.gov:9443/dune/dd/data',
-    auth_server_url='https://metacat.fnal.gov:8143/auth/dune')
+    server_url=os.getenv("DATA_DISPATCHER_URL"),
+    auth_server_url=os.getenv("DATA_DISPATCHER_AUTH_URL"))
   dd_client.login_x509(os.environ['USER'],
                        os.environ['X509_USER_PROXY'])
 

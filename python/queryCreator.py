@@ -165,7 +165,7 @@ def main():
 
 ## command line, explains the variables.
 if __name__ == "__main__":
-    mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_demo/app')
+    mc_client = MetaCatClient(os.getenv("METACAT_SERVER_URL"))
     thequery = main()
     print ("metacat query","\""+thequery+"\"")
     query_files = list(mc_client.query(thequery))
