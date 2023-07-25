@@ -9,6 +9,8 @@
 ##
 # @file queryCreator.py
 
+import samweb_client
+samweb = samweb_client.SAMWebClient(experiment='dune')
 
 
 DEBUG = False
@@ -107,6 +109,22 @@ def makequery(meta):
       
     #return "\"%s\""%query
     return query
+    
+def make_sam_query(query):
+    s = query.split("where")
+    if len(s) < 2:
+        return None
+    r = s[1]
+    r = r.replace("core.","")
+    r = r.replace("dune_mc.","DUNE_MC.")
+    r = r.replace("dune.","DUNE.")
+    r = r.replace("="," ")
+    r = r.replace("'","")
+    r = r.replace("ordered","")
+    r = r.replace("created_timestamp","create_date")
+    r += " and availability:anylocation"
+    print ("samweb list-files --summary \"", r, "\"")
+    return r
 
 def setup():
         parser = ap()
@@ -172,7 +190,11 @@ def setup():
             f = open(args.json,'r')
             if f:
                 Tags = json.load(f)
-           
+            # protect special characters
+            for tag in Tags.keys():
+                if "-" in Tags[tag]:
+                    Tags[tag] = "\'%s\'"%(Tags[tag])
+                
             if DEBUG: print (Tags)
             # add the extra tags
             for tag in XtraTags:
@@ -216,12 +238,19 @@ def printSummary(results):
     
 def makeDataset(query,name,meta):
     did = "%s:%s"%(os.getenv("USER"),name)
-    try:
-        mc_client.create_dataset(did,files_query=query,description=query,metadata=meta)
-        return 1
-    except:
-        print("dataset creation failed - does it already exist?")
-        return 0
+    test= mc_client.get_dataset(did)
+    print ("look for a dataset",did)
+    if test == None:
+        print ("make a new dataset",did)
+        try:
+            mc_client.create_dataset(did,files_query=query,description=query,metadata=meta)
+            return 1
+        except:
+            print("metacat dataset creation failed - does it already exist?")
+    else:
+        print ("add files to dataset",did)
+        mc_client.add_files(did,query=query)
+    
     
     
     
@@ -232,10 +261,28 @@ if __name__ == "__main__":
     mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_prod/app')
     Tags = setup()
     thequery = makequery(Tags)
+    if DEBUG: print(thequery)
     thename = make_name(Tags)
-    writequery(thequery,thename)
+    samquery = make_sam_query(thequery)
+    if DEBUG: print (samquery)
+    
+
+    
+    
+    # do some sam stuff
+    defname=os.getenv("USER")+"_"+thename
+    print ("Try to make a sam definition:",defname)
+    x = samweb.listFilesSummary(samquery)
+    print (x)
+    if samquery != None:
+        samweb.createDefinition(defname,dims=samquery,description=samquery)
+    
+    print ("Try to make a metacat definition")
+    
+    
     makeDataset(thequery,thename,{"dataset.meta":Tags})
-    print ("metacat query -s ","\""+thequery+"\"")
+    
+    
     query_files = list(mc_client.query(thequery))
     summary = True
     if summary: 
