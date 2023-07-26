@@ -119,7 +119,8 @@ def make_sam_query(query):
     r = r.replace("core.","")
     r = r.replace("dune_mc.","DUNE_MC.")
     r = r.replace("dune.","DUNE.")
-    r = r.replace("="," ")
+   
+   
     r = r.replace("'","")
     r = r.replace("ordered","")
     r = r.replace("created_timestamp","create_date")
@@ -189,7 +190,11 @@ def setup():
                     Tags[tag] = "\'%s\'"%(val)
         else:
         # read the data description tags from json file
+            if not os.path.exists(args.json):
+                print (args.json," does not exist, quitting")
+                sys.exit(0)
             f = open(args.json,'r')
+            
             if f:
                 Tags = json.load(f)
             # protect special characters
@@ -276,17 +281,21 @@ if __name__ == "__main__":
     mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_prod/app')
     Tags,test = setup()
     thequery = makequery(Tags)
-    if DEBUG: print(thequery)
+    
+    print("metacat",thequery,"\n")
+    
     thename = make_name(Tags)
+    
     samquery = make_sam_query(thequery)
-    if DEBUG: print (samquery)
+    print ("samweb ",samquery,"\n")
     
     query_files = list(mc_client.query(thequery))
     printSummary(query_files)
 
     if not test:
+        print ("Try to make a samweb definition")
         makeSamDataset(samquery,thename)
-    
+        print ("Try to make a metacat definition")
         makeDataset(thequery,thename,{"dataset.meta":Tags})
     else:
         print ("this was just a test")
@@ -302,7 +311,7 @@ if __name__ == "__main__":
 #        except:
 #            print ("failed to make sam definition")
             
-    print ("Try to make a metacat definition")
+   
     
     query_files = list(mc_client.query(thequery))
     summary = True
