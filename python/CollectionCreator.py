@@ -150,7 +150,7 @@ def setup():
         #parser.add_argument('--other',type=str,help='other selections, for example, --other=\"detector.hv_value=180 and beam.momentum=1 ')
         parser.add_argument('--json',type=str, help='filename for a json list of parameters to and')
         #parser.add_argument('--summary',default=False,const=True,nargs="?", help='print a summary')
-
+        parser.add_argument('--test',type=bool,default=False,const=True,nargs="?",help='do in test mode')
         XtraTags = ["min_time","max_time","ordered","limit","skip","time_var","input_dataset"]
         args = parser.parse_args()
         
@@ -208,7 +208,7 @@ def setup():
                 if type(val) == 'str' and "-" in val:
                     Tags[tag] = "\'%s\'"%(val)
                     
-        return Tags
+        return Tags,args.test
 
 def writequery(q,fname):
     g = open(fname+".txt",'w')
@@ -256,24 +256,7 @@ def makeDataset(query,name,meta):
         except:
             print("metacat dataset addition failed - does it already exist?")
     
-    
-    
-    
-
-
-## command line, explains the variables.
-if __name__ == "__main__":
-    mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_prod/app')
-    Tags = setup()
-    thequery = makequery(Tags)
-    if DEBUG: print(thequery)
-    thename = make_name(Tags)
-    samquery = make_sam_query(thequery)
-    if DEBUG: print (samquery)
-    
-
-    
-    
+def makeSamDataset(query,thename):
     # do some sam stuff
     defname=os.getenv("USER")+"_"+thename
     print ("Try to make a sam definition:",defname)
@@ -284,6 +267,40 @@ if __name__ == "__main__":
             samweb.createDefinition(defname,dims=samquery,description=samquery)
         except:
             print ("failed to make sam definition")
+    
+    
+
+
+## command line, explains the variables.
+if __name__ == "__main__":
+    mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_prod/app')
+    Tags,test = setup()
+    thequery = makequery(Tags)
+    if DEBUG: print(thequery)
+    thename = make_name(Tags)
+    samquery = make_sam_query(thequery)
+    if DEBUG: print (samquery)
+    
+    query_files = list(mc_client.query(thequery))
+    printSummary(query_files)
+
+    if not test:
+        makeSamDataset(samquery,thename)
+    
+        makeDataset(thequery,thename,{"dataset.meta":Tags})
+    else:
+        print ("this was just a test")
+    
+#    # do some sam stuff
+#    defname=os.getenv("USER")+"_"+thename
+#    print ("Try to make a sam definition:",defname)
+#    x = samweb.listFilesSummary(samquery)
+#    print (x)
+#    if samquery != None :
+#        try:
+#            samweb.createDefinition(defname,dims=samquery,description=samquery)
+#        except:
+#            print ("failed to make sam definition")
             
     print ("Try to make a metacat definition")
     
