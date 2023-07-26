@@ -21,12 +21,13 @@ require = [
 
 result = m.copy()
 for r in m.keys():
+    print (r,m[r])
     if r not in require:
         result.pop(r)
 now = datetime.datetime.now()
 date_time = now.strftime("%m/%d/%Y, %H:%M:%S")
 result["Comment"]="Created by DatasetJsonMaker by %s on %s"%(os.getenv("USER"),date_time)
 print(result)
-dname = result["dune_mc.gen_fcl_filename"].replace(".fcl",".dataset.json")
+dname = result["dune.requestid"]+"_"+ result["dune_mc.gen_fcl_filename"].replace(".fcl",".dataset.json")
 g = open(dname,'w')
 json.dump(result,g,indent=4)
