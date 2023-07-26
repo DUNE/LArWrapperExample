@@ -1,0 +1,13 @@
+{
+  "dune.campaign": "fd_mc_2023a",
+  "dune.requestid": "ritm1780305",
+  "core.run_type": "fardet-hd",
+  "core.data_tier": "hit-reconstructed",
+  "core.file_type":"mc",
+  "dune_mc.beam_flux_ID": "1",
+  "dune_mc.beam_polarity": "fhc",
+  "dune_mc.detector_type": "fardet-hd",
+  "dune_mc.electron_lifetime": "10.4",
+  "dune_mc.gen_fcl_filename": "prodgenie_nutau_dune10kt_1x2x6.fcl",
+  "dune_mc.mixerconfig": "mixed"
+}

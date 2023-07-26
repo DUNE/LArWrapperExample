@@ -12,7 +12,7 @@
 import samweb_client
 samweb = samweb_client.SAMWebClient(experiment='dune')
 
-
+ 
 DEBUG = False
 
 from argparse import ArgumentParser as ap
@@ -53,7 +53,8 @@ def makequery(meta):
     query = "files from " + meta["input_dataset"] + " where"
     
      
-    for item in meta:
+    for item in meta.keys():
+        if item == "Comment": continue
         if (DEBUG): print (item)
         if meta[item] == None:
             continue
@@ -152,7 +153,8 @@ def setup():
 
         XtraTags = ["min_time","max_time","ordered","limit","skip","time_var","input_dataset"]
         args = parser.parse_args()
-
+        
+        
     
 
         if DEBUG: print (args)
@@ -249,7 +251,10 @@ def makeDataset(query,name,meta):
             print("metacat dataset creation failed - does it already exist?")
     else:
         print ("add files to dataset",did)
-        mc_client.add_files(did,query=query)
+        try:
+            mc_client.add_files(did,query=query)
+        except:
+            print("metacat dataset addition failed - does it already exist?")
     
     
     
@@ -274,14 +279,13 @@ if __name__ == "__main__":
     print ("Try to make a sam definition:",defname)
     x = samweb.listFilesSummary(samquery)
     print (x)
-    if samquery != None:
-        samweb.createDefinition(defname,dims=samquery,description=samquery)
-    
+    if samquery != None :
+        try:
+            samweb.createDefinition(defname,dims=samquery,description=samquery)
+        except:
+            print ("failed to make sam definition")
+            
     print ("Try to make a metacat definition")
-    
-    
-    makeDataset(thequery,thename,{"dataset.meta":Tags})
-    
     
     query_files = list(mc_client.query(thequery))
     summary = True
