@@ -36,17 +36,23 @@ def jsonwrite(path,j):
       g.write(s)
     
 def make_name(tags):
-    order=["core.run_type","dune.campaign","core.file_type","core.data_tier","core.data_stream","dune_mc.gen_fcl_filename","core.application.version","min_time","max_time"]
+    order=["core.run_type","dune.campaign","core.file_type","core.data_tier","core.data_stream","dune_mc.gen_fcl_filename","core.application.version","min_time","max_time","skip","limit"]
     name = ""
     for i in order:
          if i in tags and tags[i]!= None:
+            new = tags[i]
+            if i == "skip":
+                new="skip%d"%tags[i]
+            if i == "limit":
+                new="limit%d"%tags[i]
+            
             if i == "max_time":
-                 name+="le"
+                new ="le"+tags[i]
             if i == "min_time":
-                name+="gt"
-            name += tags[i]
+                new ="ge"+tags[i]
+            name += new
             name += "_"
-    name = name[:-1].replace("'","")
+    name = name[:-1]
     print ("name might be",name)
     return name
 
@@ -64,10 +70,9 @@ def makequery(meta):
         if "." not in item:
             continue
         val = meta[item]
-        if item == "other":
-            query += " "+val[1:-1]
-        else:
-            query += " "+item+"="+val
+        if type(val) == str and "-" in val and not "'" in val: val = "\'%s\'"%val
+        
+        query += " "+item+"="+str(val)
         query += " and"
         if (DEBUG): print(query)
     query = query[:-4]
@@ -105,13 +110,14 @@ def makequery(meta):
 
     if meta["ordered"]: query += " ordered "
 
-    if meta["skip"] != None:
-            query += " skip %s"%meta["skip"]
+    
 
     if meta["limit"] != None:
             query += " limit %s"%meta["limit"]
+    
+    if meta["skip"] != None:
+            query += " skip %s"%meta["skip"]
       
-    #return "\"%s\""%query
     return query
     
 def make_sam_query(query):
@@ -122,13 +128,16 @@ def make_sam_query(query):
     r = r.replace("core.","")
     r = r.replace("dune_mc.","DUNE_MC.")
     r = r.replace("dune.","DUNE.")
-   
+    r = r.replace("application.","")
    
     r = r.replace("'","")
     r = r.replace("ordered","")
     r = r.replace("created_timestamp","create_date")
-    r += " and availability:anylocation"
+    r = r.replace("limit "," with limit ")
+    r = " availability:anylocation and " + r
+    if ("skip" in r): print ("skip doesn't work yet in sam")
     print ("samweb list-files --summary \"", r, "\"")
+    
     return r
 
 def setup():
@@ -189,8 +198,8 @@ def setup():
                 if DEBUG: print (tag,argis,val)
                 Tags[tag] = val
                 if DEBUG: print (tag,argis,val,type(val))
-                if type(val) == 'str' and "-" in val:
-                    Tags[tag] = "\'%s\'"%(val)
+                #if type(val) == 'str' and "-" in val:
+                #Tags[tag] = "\'%s\'"%(val)
         else:
         # read the data description tags from json file
             if not os.path.exists(args.json):
@@ -201,10 +210,10 @@ def setup():
             if f:
                 Tags = json.load(f)
             # protect special characters
-            for tag in Tags.keys():
-                if "-" in Tags[tag]:
-                    Tags[tag] = "\'%s\'"%(Tags[tag])
-                
+#            for tag in Tags.keys():
+#                if "-" in Tags[tag]:
+#                    Tags[tag] = "\'%s\'"%(Tags[tag])
+#
             if DEBUG: print (Tags)
             # add the extra tags
             for tag in XtraTags:
@@ -247,13 +256,21 @@ def printSummary(results):
     print("Total size:  ", "%d (%.3f %s)" % (total_size, n, unit))
     
 def makeDataset(query,name,meta):
+    cleanmeta = meta["dataset.meta"].copy()
+    for x in meta["dataset.meta"].keys():
+        print (x,meta["dataset.meta"][x])
+        
+        if meta["dataset.meta"][x] == None:
+            print ("remove null key",x,meta["dataset.meta"][x])
+            cleanmeta.pop(x)
+    print (cleanmeta)
     did = "%s:%s"%(os.getenv("USER"),name)
     test= mc_client.get_dataset(did)
     print ("look for a dataset",did)
     if test == None:
         print ("make a new dataset",did)
         try:
-            mc_client.create_dataset(did,files_query=query,description=query,metadata=meta)
+            mc_client.create_dataset(did,files_query=query,description=query,metadata={"dataset.meta":cleanmeta})
             return 1
         except:
             print("metacat dataset creation failed - does it already exist?")
@@ -268,8 +285,8 @@ def makeSamDataset(query,thename):
     # do some sam stuff
     defname=os.getenv("USER")+"_"+thename
     print ("Try to make a sam definition:",defname)
-    x = samweb.listFilesSummary(samquery)
-    print (x)
+    #x = samweb.listFilesSummary(samquery)
+    #print (x)
     if samquery != None :
         try:
             samweb.createDefinition(defname,dims=samquery,description=samquery)
@@ -285,16 +302,21 @@ if __name__ == "__main__":
     Tags,test = setup()
     thequery = makequery(Tags)
     
-    print("metacat query \"",thequery,"\"\n")
+    
     
     thename = make_name(Tags)
-    
+    print ("------------------------")
+    print ("list from samweb")
     samquery = make_sam_query(thequery)
-    print ("samweb ",samquery,"\n")
-    
+    r = samweb.listFilesSummary(samquery)
+    print(r)
+    print ("------------------------")
+    print ("list from metacat")
+    print("metacat query \"",thequery,"\"\n")
     query_files = list(mc_client.query(thequery))
     printSummary(query_files)
-
+    print(json.dumps({"dataset.meta":Tags},indent=4))
+    print ("------------------------")
     if not test:
         print ("Try to make a samweb definition")
         makeSamDataset(samquery,thename)
