@@ -36,12 +36,14 @@ def jsonwrite(path,j):
       g.write(s)
     
 def make_name(tags):
-    order=["core.run_type","core.file_type","core.data_tier","core.data_stream","dune.campaign","dune_mc.gen_fcl_filename","core.application.version","min_time","max_time"]
+    order=["core.run_type","dune.campaign","core.file_type","core.data_tier","core.data_stream","dune_mc.gen_fcl_filename","core.application.version","min_time","max_time"]
     name = ""
     for i in order:
          if i in tags and tags[i]!= None:
             if i == "max_time":
                  name+="le"
+            if i == "min_time":
+                name+="gt"
             name += tags[i]
             name += "_"
     name = name[:-1].replace("'","")
