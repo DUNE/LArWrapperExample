@@ -50,7 +50,8 @@ def make_name(tags):
 
 
 def makequery(meta):
-    query = "files from " + meta["input_dataset"] + " where"
+    
+    query = "files where"
     
      
     for item in meta.keys():
@@ -143,7 +144,7 @@ def setup():
         parser.add_argument('--version', type=str, help='Application Version')
         parser.add_argument('--data_tier', type=str, help='data tier')
         parser.add_argument('--data_stream', type=str, help='data stream for output file if only one')
-        parser.add_argument('--input_dataset',default='dune:all',type=str,help='parent dataset, default=[\"dune:all\"]')
+        #parser.add_argument('--input_dataset',default='dune:all',type=str,help='parent dataset, default=[\"dune:all\"]')
         parser.add_argument('--user', type=str, help='user name')
         parser.add_argument('--ordered',default=True,const=True,nargs="?", help='return list ordered for reproducibility')
         parser.add_argument('--limit',type=int, help='limit on # to return')
@@ -152,7 +153,7 @@ def setup():
         parser.add_argument('--json',type=str, help='filename for a json list of parameters to and')
         #parser.add_argument('--summary',default=False,const=True,nargs="?", help='print a summary')
         parser.add_argument('--test',type=bool,default=False,const=True,nargs="?",help='do in test mode')
-        XtraTags = ["min_time","max_time","ordered","limit","skip","time_var","input_dataset"]
+        XtraTags = ["min_time","max_time","ordered","limit","skip","time_var"]
         args = parser.parse_args()
         
         
@@ -282,7 +283,7 @@ if __name__ == "__main__":
     Tags,test = setup()
     thequery = makequery(Tags)
     
-    print("metacat",thequery,"\n")
+    print("metacat query \"",thequery,"\"\n")
     
     thename = make_name(Tags)
     
