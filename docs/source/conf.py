@@ -56,7 +56,9 @@ extensions = [
     #'sphinxcontrib.programoutput',  # not available to github
 ]
 
-autoclass_content = "both"  # from ivmfnal
+autoclass_content = "both"  # from 
+
+autosummary_generate = True
 
 autosectionlabel_prefix_document = True
 
