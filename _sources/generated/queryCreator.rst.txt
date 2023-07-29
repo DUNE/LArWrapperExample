@@ -1,0 +1,31 @@
+﻿queryCreator
+============
+
+.. automodule:: queryCreator
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      main
+      makemetafields
+      makequery
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+

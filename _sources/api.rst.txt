@@ -4,7 +4,9 @@ API
 .. autosummary::
     :toctree: generated
 
-	queryCreator
+	    CollectionCreator
+        
+        queryCreator
 	
         samtest
 

@@ -27,6 +27,7 @@ Contents
     Intro
     sam2metacat
     metadatameaning
+    CollectionCreator
     template
     usage
     tests

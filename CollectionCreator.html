@@ -1,0 +1,178 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CollectionCreator &#8212; LArWrapperExample 0.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
+    <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Template for minimal metadata for a file" href="template.html" />
+    <link rel="prev" title="Metadata categories and samweb-&gt;metacat conversion" href="metadatameaning.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="template.html" title="Template for minimal metadata for a file"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="metadatameaning.html" title="Metadata categories and samweb-&gt;metacat conversion"
+             accesskey="P">previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">CollectionCreator</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="collectioncreator">
+<h1>CollectionCreator<a class="headerlink" href="#collectioncreator" title="Permalink to this heading">¶</a></h1>
+<p>CollectionCreator is a python script that takes a json specification for a dataset and makes both metacat datasets and sam definitions from it.</p>
+<p>The query to create the dataset is the and of the keys in the json file, with some additional qualifiers.  They include the ability to add selections on the time range for the files and the addition of a tag so that you can version your datasets (for example as the Creator code changes).</p>
+<p>samweb definitions are created with a name generated from the flags given in the json and command line.  They grow automatically as new fields meet the query criteria.</p>
+<p>metacat datasets are created but do not grow unless you rerun the CollectionCreator code with the same json file and deftag arguments. [need to add an option that takes the dataset name and grows that from its stored query.]</p>
+<p>metacat datasets also contain the query used to make them and a metadata field that contains the items used to make the dataset query.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>python/CollectionCreator.py<span class="w"> </span>--help
+usage:<span class="w"> </span>CollectionCreator.py<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--namespace<span class="w"> </span>NAMESPACE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--time_var<span class="w"> </span>TIME_VAR<span class="o">]</span>
+<span class="w">                            </span><span class="o">[</span>--min_time<span class="w"> </span>MIN_TIME<span class="o">]</span><span class="w"> </span><span class="o">[</span>--max_time<span class="w"> </span>MAX_TIME<span class="o">]</span>
+<span class="w">                            </span><span class="o">[</span>--user<span class="w"> </span>USER<span class="o">]</span><span class="w"> </span><span class="o">[</span>--ordered<span class="w"> </span><span class="o">[</span>ORDERED<span class="o">]]</span>
+<span class="w">                            </span><span class="o">[</span>--limit<span class="w"> </span>LIMIT<span class="o">]</span><span class="w"> </span><span class="o">[</span>--skip<span class="w"> </span>SKIP<span class="o">]</span><span class="w"> </span><span class="o">[</span>--json<span class="w"> </span>JSON<span class="o">]</span>
+<span class="w">                            </span><span class="o">[</span>--test<span class="w"> </span><span class="o">[</span>TEST<span class="o">]]</span>
+
+optional<span class="w"> </span>arguments:
+-h,<span class="w"> </span>--help<span class="w">            </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+--namespace<span class="w"> </span>NAMESPACE
+<span class="w">                        </span>metacat<span class="w"> </span>namespace<span class="w"> </span><span class="k">for</span><span class="w"> </span>dataset
+--time_var<span class="w"> </span>TIME_VAR<span class="w">   </span>creation<span class="w"> </span><span class="nb">time</span><span class="w"> </span>to<span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">[</span><span class="s1">&#39;created&#39;</span><span class="o">]</span><span class="w"> </span>or<span class="w"> </span><span class="s1">&#39;raw&#39;</span><span class="o">]</span>
+--min_time<span class="w"> </span>MIN_TIME<span class="w">   </span>min<span class="w"> </span><span class="nb">time</span><span class="w"> </span>range<span class="w"> </span><span class="o">(</span>inclusive<span class="o">)</span><span class="w"> </span>YYYY-MM-DD<span class="w"> </span>UTC
+--max_time<span class="w"> </span>MAX_TIME<span class="w">   </span>end<span class="w"> </span><span class="nb">time</span><span class="w"> </span>range<span class="w"> </span><span class="o">(</span>inclusive<span class="o">)</span><span class="w"> </span>YYYY-MM-DD<span class="w"> </span>UTC
+--user<span class="w"> </span>USER<span class="w">           </span>user<span class="w"> </span>name
+--ordered<span class="w"> </span><span class="o">[</span>ORDERED<span class="o">]</span><span class="w">   </span><span class="k">return</span><span class="w"> </span>list<span class="w"> </span>ordered<span class="w"> </span><span class="k">for</span><span class="w"> </span>reproducibility
+--limit<span class="w"> </span>LIMIT<span class="w">         </span>limit<span class="w"> </span>on<span class="w"> </span><span class="c1"># to return</span>
+--skip<span class="w"> </span>SKIP<span class="w">           </span>skip<span class="w"> </span>N<span class="w"> </span>files
+--json<span class="w"> </span>JSON<span class="w">           </span>filename<span class="w"> </span><span class="k">for</span><span class="w"> </span>a<span class="w"> </span>json<span class="w"> </span>list<span class="w"> </span>of<span class="w"> </span>parameters<span class="w"> </span>to<span class="w"> </span>and
+--deftag<span class="w"> </span>DEFTAG<span class="w">       </span>tag<span class="w"> </span>to<span class="w"> </span>distinguish<span class="w"> </span>different<span class="w"> </span>runs<span class="w"> </span>of<span class="w"> </span>this<span class="w"> </span>script,<span class="w"> </span>default<span class="w"> </span>is<span class="w"> </span><span class="nb">test</span>
+--test<span class="w"> </span><span class="o">[</span>TEST<span class="o">]</span><span class="w">         </span><span class="k">do</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">test</span><span class="w"> </span>mode
+</pre></div>
+</div>
+<p>Example dataset configuration json files are in directory datasets and look like:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">        </span><span class="nt">&quot;core.application.version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;v09_75_03d00&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;core.data_tier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hit-reconstructed&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;core.file_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mc&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;core.run_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fardet-hd&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;dune.campaign&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fd_mc_2023a&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;dune.requestid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ritm1780305&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;dune_mc.beam_polarity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fhc&quot;</span><span class="p">,</span>
+<span class="w">        </span><span class="nt">&quot;dune_mc.gen_fcl_filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prodgenie_nutau_dune10kt_1x2x6.fcl&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<div class="section" id="making-datasets">
+<h2>Making datasets<a class="headerlink" href="#making-datasets" title="Permalink to this heading">¶</a></h2>
+<blockquote>
+<div><p>a good way to make a dataaet specification is to</p>
+<ul class="simple">
+<li><p>take metacat metadata from a file</p></li>
+<li><p>strip out the selections that are not common to all files in the dataset</p></li>
+<li><p>store in a datasets directory</p></li>
+<li><p>run CollectionCreator as above</p></li>
+<li><p>the deftag argument allows you to test/make new versions</p></li>
+</ul>
+</div></blockquote>
+</div>
+</div>
+
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <div>
+    <h3><a href="index.html">Table of Contents</a></h3>
+    <ul>
+<li><a class="reference internal" href="#">CollectionCreator</a><ul>
+<li><a class="reference internal" href="#making-datasets">Making datasets</a></li>
+</ul>
+</li>
+</ul>
+
+  </div>
+  <div>
+    <h4>Previous topic</h4>
+    <p class="topless"><a href="metadatameaning.html"
+                          title="previous chapter">Metadata categories and samweb-&gt;metacat conversion</a></p>
+  </div>
+  <div>
+    <h4>Next topic</h4>
+    <p class="topless"><a href="template.html"
+                          title="next chapter">Template for minimal metadata for a file</a></p>
+  </div>
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/CollectionCreator.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="template.html" title="Template for minimal metadata for a file"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="metadatameaning.html" title="Metadata categories and samweb-&gt;metacat conversion"
+             >previous</a> |</li>
+        <li class="nav-item nav-item-0"><a href="index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">CollectionCreator</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Fermi National Accelerator Laboratory.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>
