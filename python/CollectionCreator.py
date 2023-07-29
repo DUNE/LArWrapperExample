@@ -36,11 +36,13 @@ def jsonwrite(path,j):
       g.write(s)
     
 def make_name(tags):
-    order=["core.run_type","dune.campaign","core.file_type","core.data_tier","core.data_stream","dune_mc.gen_fcl_filename","core.application.version","min_time","max_time","skip","limit"]
+    
+    order=["core.run_type","dune.campaign","core.file_type","core.data_tier","core.data_stream","dune_mc.gen_fcl_filename","core.application.version","min_time","max_time","skip","limit","deftag"]
     name = ""
     for i in order:
          if i in tags and tags[i]!= None:
             new = tags[i]
+            new.replace(".fcl","")
             if i == "skip":
                 new="skip%d"%tags[i]
             if i == "limit":
@@ -50,10 +52,12 @@ def make_name(tags):
                 new ="le"+tags[i]
             if i == "min_time":
                 new ="ge"+tags[i]
+            if i == "deftag":
+                new = tags[i]
             name += new
-            name += "_"
-    name = name[:-1]
-    print ("name might be",name)
+            name += "__"
+    name = name[:-2]
+    print ("name will be",name)
     return name
 
 
@@ -147,24 +151,25 @@ def setup():
         parser.add_argument('--time_var',type=str,default="created",help="creation time to select ['created'] or 'raw']")
         parser.add_argument('--min_time',type=str,help='min time range (inclusive) YYYY-MM-DD UTC')
         parser.add_argument('--max_time',type=str,help='end time range (inclusive) YYYY-MM-DD UTC')
-        parser.add_argument('--file_type',type=str, help='["detector","mc"]')
-        parser.add_argument('--run_type',type=str, help='run_type, example="prododune-sp"')
-        parser.add_argument('--campaign',type=str, help='DUNE Campaign')
-        parser.add_argument('--family',type=str, help='Application Family')
-        parser.add_argument('--name', type=str, help='Application Name')
-        parser.add_argument('--version', type=str, help='Application Version')
-        parser.add_argument('--data_tier', type=str, help='data tier')
-        parser.add_argument('--data_stream', type=str, help='data stream for output file if only one')
+        #parser.add_argument('--file_type',type=str, help='["detector","mc"]')
+        #parser.add_argument('--run_type',type=str, help='run_type, example="prododune-sp"')
+        #parser.add_argument('--campaign',type=str, help='DUNE Campaign')
+        #parser.add_argument('--family',type=str, help='Application Family')
+        #parser.add_argument('--name', type=str, help='Application Name')
+        #parser.add_argument('--version', type=str, help='Application Version')
+        #parser.add_argument('--data_tier', type=str, help='data tier')
+        #parser.add_argument('--data_stream', type=str, help='data stream for output file if only one')
         #parser.add_argument('--input_dataset',default='dune:all',type=str,help='parent dataset, default=[\"dune:all\"]')
         parser.add_argument('--user', type=str, help='user name')
         parser.add_argument('--ordered',default=True,const=True,nargs="?", help='return list ordered for reproducibility')
         parser.add_argument('--limit',type=int, help='limit on # to return')
         parser.add_argument('--skip',type=int, help='skip N files')
         #parser.add_argument('--other',type=str,help='other selections, for example, --other=\"detector.hv_value=180 and beam.momentum=1 ')
-        parser.add_argument('--json',type=str, help='filename for a json list of parameters to and')
+        parser.add_argument('--json',type=str,default=None, help='filename for a json list of parameters to and')
+        parser.add_argument('--deftag',type=str,default="test",help='tag to distinguish different runs of this script, default is test')
         #parser.add_argument('--summary',default=False,const=True,nargs="?", help='print a summary')
         parser.add_argument('--test',type=bool,default=False,const=True,nargs="?",help='do in test mode')
-        XtraTags = ["min_time","max_time","ordered","limit","skip","time_var"]
+        XtraTags = ["min_time","max_time","ordered","limit","skip","time_var","deftag"]
         args = parser.parse_args()
         
         
@@ -172,7 +177,7 @@ def setup():
 
         if DEBUG: print (args)
 
-        required1 = ["file_type","run_type"]
+        #required1 = ["file_type","run_type"]
         required2 = ["json"]
 
         ok = False
@@ -183,8 +188,6 @@ def setup():
         if not ok:  
              print ("must have either json or both file_type and run_type arguments")
              sys.exit(1)
-
-        #metafield = makemetafields()
   
         if args.user == None and os.environ["USER"] != None:  args.user = os.environ["USER"]
 
@@ -209,14 +212,10 @@ def setup():
             
             if f:
                 Tags = json.load(f)
-            # protect special characters
-#            for tag in Tags.keys():
-#                if "-" in Tags[tag]:
-#                    Tags[tag] = "\'%s\'"%(Tags[tag])
-#
             if DEBUG: print (Tags)
             # add the extra tags
             for tag in XtraTags:
+                if DEBUG: print (tag,XtraTags)
                 argis=tag
                 val = getattr(args,argis)
                 if DEBUG: print (tag,argis,val)
@@ -256,30 +255,45 @@ def printSummary(results):
     print("Total size:  ", "%d (%.3f %s)" % (total_size, n, unit))
     
 def makeDataset(query,name,meta):
-    cleanmeta = meta["dataset.meta"].copy()
-    for x in meta["dataset.meta"].keys():
-        print (x,meta["dataset.meta"][x])
+    print ("query",query)
+    
+    cleanmeta = meta.copy()
+    # move dataset creation flags into dataset....
+    for x in meta.keys():
+        if not "." in x:
+            print ("rename search params")
+            cleanmeta["datasetpar."+x]=meta[x]
+            if x in cleanmeta:cleanmeta.pop(x)
         
-        if meta["dataset.meta"][x] == None:
-            print ("remove null key",x,meta["dataset.meta"][x])
-            cleanmeta.pop(x)
+    for x in meta.keys():
+        if x not in cleanmeta: continue
+        
+        if meta[x] == None:
+            print ("remove null key",x,meta[x])
+            if x in cleanmeta: cleanmeta.pop(x)
+        else:
+            cleanmeta[x] = meta[x]
+        
     print (cleanmeta)
+    
     did = "%s:%s"%(os.getenv("USER"),name)
     test= mc_client.get_dataset(did)
     print ("look for a dataset",did)
+    
     if test == None:
-        print ("make a new dataset",did)
-        try:
-            mc_client.create_dataset(did,files_query=query,description=query,metadata={"dataset.meta":cleanmeta})
-            return 1
-        except:
-            print("metacat dataset creation failed - does it already exist?")
-    else:
-        print ("add files to dataset",did)
-        try:
+            print ("make a new dataset",did)
+#        try:
+            mc_client.create_dataset(did,files_query=query,description=query,metadata=cleanmeta)
+            #return 1
+#        except:
+#            print("metacat dataset creation failed - does it already exist?")
+    else: # already there
+            print ("add files to dataset",did)
+            print ("query",query)
+            #try:
             mc_client.add_files(did,query=query)
-        except:
-            print("metacat dataset addition failed - does it already exist?")
+            #except:
+            #    print("metacat dataset addition failed - does it already exist?")
     
 def makeSamDataset(query,thename):
     # do some sam stuff
@@ -321,7 +335,7 @@ if __name__ == "__main__":
         print ("Try to make a samweb definition")
         makeSamDataset(samquery,thename)
         print ("Try to make a metacat definition")
-        makeDataset(thequery,thename,{"dataset.meta":Tags})
+        makeDataset(thequery,thename,Tags)
     else:
         print ("this was just a test")
     

@@ -63,7 +63,7 @@ def makequery(meta,inputdataset=None,ordered=None,skip=None,limit=None,min_time=
     
 
 # do time range
-    if min_time = None and max_time == None:
+    if min_time == None and max_time == None:
         min = '2018-01-01'
         max = '2100-01-01'
         if min_time != None:

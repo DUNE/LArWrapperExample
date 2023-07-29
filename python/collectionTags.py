@@ -17,7 +17,7 @@ def DefineCollectionTags():
         "time_var":None,
         "min_time":None,
         "max_time":None,
-        "other":None
+        "deftag":None
     }
     return CollectionTags
 
