@@ -50,10 +50,11 @@ Example dataset configuration json files are in directory datasets and look like
             "dune_mc.gen_fcl_filename": "prodgenie_nutau_dune10kt_1x2x6.fcl"
     }
 
+
 Making datasets
 ---------------
 
-    a good way to make a dataaet specification is to 
+    a good way to make a dataset specification is to 
 
     - take metacat metadata from a file
 
@@ -65,5 +66,17 @@ Making datasets
 
     - the deftag argument allows you to test/make new versions
 
+The command 
 
+.. code-block::
+    
+        python python/CollectionCreator.py --json=datasets/fd_mc_2023a_prodgenie_nutau_dune10kt_1x2x6.json --deftag=v0
+
+made a metacat dataset called:
+
+`schellma:fardet-hd__fd_mc_2023a__mc__hit-reconstructed__prodgenie_nutau_dune10kt_1x2x6.fcl__v09_75_03d00__v0`
+
+which you can find at:
+
+https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&name=fardet-hd__fd_mc_2023a__mc__hit-reconstructed__prodgenie_nutau_dune10kt_1x2x6.fcl__v09_75_03d00__v0
 
