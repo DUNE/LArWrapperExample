@@ -1,0 +1,10 @@
+{
+    "core.application.version": "v09_75_03d00",
+    "core.data_tier": "hit-reconstructed",
+    "core.file_type": "mc",
+    "core.run_type": "fardet-vd",
+    "dune.campaign": "fd_mc_2023a",
+    "dune.requestid": "ritm1780305",
+    "dune_mc.beam_polarity": "rhc",
+    "dune_mc.gen_fcl_filename": "prodgenie_anutau_dunevd10kt_1x8x6_3view_30deg.fcl"
+}
