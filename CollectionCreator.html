@@ -47,11 +47,16 @@
             
   <div class="section" id="collectioncreator">
 <h1>CollectionCreator<a class="headerlink" href="#collectioncreator" title="Permalink to this heading">¶</a></h1>
+<div class="section" id="description">
+<h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">¶</a></h2>
 <p>CollectionCreator is a python script that takes a json specification for a dataset and makes both metacat datasets and sam definitions from it.</p>
 <p>The query to create the dataset is the and of the keys in the json file, with some additional qualifiers.  They include the ability to add selections on the time range for the files and the addition of a tag so that you can version your datasets (for example as the Creator code changes).</p>
 <p>samweb definitions are created with a name generated from the flags given in the json and command line.  They grow automatically as new fields meet the query criteria.</p>
 <p>metacat datasets are created but do not grow unless you rerun the CollectionCreator code with the same json file and deftag arguments. [need to add an option that takes the dataset name and grows that from its stored query.]</p>
 <p>metacat datasets also contain the query used to make them and a metadata field that contains the items used to make the dataset query.</p>
+</div>
+<div class="section" id="collectioncreator-arguments">
+<h2>CollectionCreator arguments<a class="headerlink" href="#collectioncreator-arguments" title="Permalink to this heading">¶</a></h2>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>python/CollectionCreator.py<span class="w"> </span>--help
 usage:<span class="w"> </span>CollectionCreator.py<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--namespace<span class="w"> </span>NAMESPACE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--time_var<span class="w"> </span>TIME_VAR<span class="o">]</span>
 <span class="w">                            </span><span class="o">[</span>--min_time<span class="w"> </span>MIN_TIME<span class="o">]</span><span class="w"> </span><span class="o">[</span>--max_time<span class="w"> </span>MAX_TIME<span class="o">]</span>
@@ -75,6 +80,9 @@ optional<span class="w"> </span>arguments:
 --test<span class="w"> </span><span class="o">[</span>TEST<span class="o">]</span><span class="w">         </span><span class="k">do</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">test</span><span class="w"> </span>mode
 </pre></div>
 </div>
+</div>
+<div class="section" id="example-configuration-file">
+<h2>Example configuration file<a class="headerlink" href="#example-configuration-file" title="Permalink to this heading">¶</a></h2>
 <p>Example dataset configuration json files are in directory datasets and look like:</p>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
 <span class="w">        </span><span class="nt">&quot;core.application.version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;v09_75_03d00&quot;</span><span class="p">,</span>
@@ -87,6 +95,7 @@ optional<span class="w"> </span>arguments:
 <span class="w">        </span><span class="nt">&quot;dune_mc.gen_fcl_filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prodgenie_nutau_dune10kt_1x2x6.fcl&quot;</span>
 <span class="p">}</span>
 </pre></div>
+</div>
 </div>
 <div class="section" id="making-datasets">
 <h2>Making datasets<a class="headerlink" href="#making-datasets" title="Permalink to this heading">¶</a></h2>
@@ -122,6 +131,9 @@ optional<span class="w"> </span>arguments:
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
 <li><a class="reference internal" href="#">CollectionCreator</a><ul>
+<li><a class="reference internal" href="#description">Description</a></li>
+<li><a class="reference internal" href="#collectioncreator-arguments">CollectionCreator arguments</a></li>
+<li><a class="reference internal" href="#example-configuration-file">Example configuration file</a></li>
 <li><a class="reference internal" href="#making-datasets">Making datasets</a></li>
 </ul>
 </li>

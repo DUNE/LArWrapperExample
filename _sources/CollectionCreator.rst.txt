@@ -1,6 +1,9 @@
 CollectionCreator
 =================
 
+Description
+-----------
+
 CollectionCreator is a python script that takes a json specification for a dataset and makes both metacat datasets and sam definitions from it.
 
 The query to create the dataset is the and of the keys in the json file, with some additional qualifiers.  They include the ability to add selections on the time range for the files and the addition of a tag so that you can version your datasets (for example as the Creator code changes).
@@ -10,6 +13,9 @@ samweb definitions are created with a name generated from the flags given in the
 metacat datasets are created but do not grow unless you rerun the CollectionCreator code with the same json file and deftag arguments. [need to add an option that takes the dataset name and grows that from its stored query.]
 
 metacat datasets also contain the query used to make them and a metadata field that contains the items used to make the dataset query. 
+
+CollectionCreator arguments
+---------------------------
 
 .. code-block:: bash
 
@@ -34,6 +40,9 @@ metacat datasets also contain the query used to make them and a metadata field t
     --json JSON           filename for a json list of parameters to and
     --deftag DEFTAG       tag to distinguish different runs of this script, default is test
     --test [TEST]         do in test mode
+
+Example configuration file
+--------------------------
 
 Example dataset configuration json files are in directory datasets and look like:
 
