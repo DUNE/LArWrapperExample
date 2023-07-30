@@ -25,9 +25,9 @@ Contents
 .. toctree::
 
     Intro
+    CollectionCreator
     sam2metacat
     metadatameaning
-    CollectionCreator
     template
     usage
     tests

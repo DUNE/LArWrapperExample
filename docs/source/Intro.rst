@@ -1,8 +1,12 @@
 What this package does
 ======================
 
-  * Example scripts ( :doc:`tests` ) for running LArSoft using either `samweb <https://cdcvs.fnal.gov/redmine/projects/sam-web-client/wiki>`_ or the new `Data Dispatcher (dd) <https://data-dispatcher.readthedocs.io/en/latest/>`_ data delivery systems.
+  * a :doc:`generated/CollectionCreator` script that takes a dataset configuration file and produces both a samweb definition and a meta dataset.
 
+  this is independent of the other packages
+
+
+  * Example scripts ( :doc:`tests` ) for running LArSoft using either `samweb <https://cdcvs.fnal.gov/redmine/projects/sam-web-client/wiki>`_ or the new `Data Dispatcher (dd) <https://data-dispatcher.readthedocs.io/en/latest/>`_ data delivery systems.
 
   * A log parser :doc:`generated/LArWrapper` that gathers information about the processing of an input file for monitoring purposes.
 
