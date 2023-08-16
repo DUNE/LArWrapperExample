@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CollectionCreator &#8212; LArWrapperExample 0.2 documentation</title>
+    <title>CollectionCreatorClass &#8212; LArWrapperExample 0.2 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -17,8 +17,8 @@
     <script src="_static/sphinx_highlight.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="CollectionCreatorClass" href="CollectionCreatorClass.html" />
-    <link rel="prev" title="What this package does" href="Intro.html" /> 
+    <link rel="next" title="Usage" href="usage.html" />
+    <link rel="prev" title="CollectionCreator" href="CollectionCreator.html" /> 
   </head><body>
     <div class="related" role="navigation" aria-label="related navigation">
       <h3>Navigation</h3>
@@ -30,13 +30,13 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="CollectionCreatorClass.html" title="CollectionCreatorClass"
+          <a href="usage.html" title="Usage"
              accesskey="N">next</a> |</li>
         <li class="right" >
-          <a href="Intro.html" title="What this package does"
+          <a href="CollectionCreator.html" title="CollectionCreator"
              accesskey="P">previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">CollectionCreator</a></li> 
+        <li class="nav-item nav-item-this"><a href="">CollectionCreatorClass</a></li> 
       </ul>
     </div>  
 
@@ -45,21 +45,21 @@
         <div class="bodywrapper">
           <div class="body" role="main">
             
-  <div class="section" id="collectioncreator">
-<h1>CollectionCreator<a class="headerlink" href="#collectioncreator" title="Permalink to this heading">¶</a></h1>
+  <div class="section" id="collectioncreatorclass">
+<h1>CollectionCreatorClass<a class="headerlink" href="#collectioncreatorclass" title="Permalink to this heading">¶</a></h1>
+<p>Replaces CollectionCreator</p>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">¶</a></h2>
-<p>CollectionCreator is a python script that takes a json specification for a dataset and makes both metacat datasets and sam definitions from it.</p>
+<p>CollectionCreatorClass is a python script/class that takes a json specification for a dataset and makes both metacat datasets and sam definitions from it.</p>
 <p>The query to create the dataset is the and of the keys in the json file, with some additional qualifiers.  They include the ability to add selections on the time range for the files and the addition of a tag so that you can version your datasets (for example as the Creator code changes).</p>
 <p>samweb definitions are created with a name generated from the flags given in the json and command line.  They grow automatically as new fields meet the query criteria.</p>
 <p>metacat datasets are created but do not grow unless you rerun the CollectionCreator code with the same json file and deftag arguments. <em>[need to add an option that takes the dataset name and grows that from its stored query.]</em></p>
 <p>metacat datasets also contain the query used to make them and a metadata field that contains the items used to make the dataset query.</p>
-<p><em>[for now it is hardcoded to create the metacat dataset in a namespace named `$USER`]</em></p>
 </div>
-<div class="section" id="collectioncreator-arguments">
-<h2>CollectionCreator arguments<a class="headerlink" href="#collectioncreator-arguments" title="Permalink to this heading">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>python/CollectionCreator.py<span class="w"> </span>--help
-usage:<span class="w"> </span>CollectionCreator.py<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--namespace<span class="w"> </span>NAMESPACE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--time_var<span class="w"> </span>TIME_VAR<span class="o">]</span>
+<div class="section" id="collectioncreatorclass-arguments">
+<h2>CollectionCreatorClass arguments<a class="headerlink" href="#collectioncreatorclass-arguments" title="Permalink to this heading">¶</a></h2>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>python/CollectionCreatorClass.py<span class="w"> </span>--help
+usage:<span class="w"> </span>CollectionCreatorClass.py<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--namespace<span class="w"> </span>NAMESPACE<span class="o">]</span>
 <span class="w">                            </span><span class="o">[</span>--min_time<span class="w"> </span>MIN_TIME<span class="o">]</span><span class="w"> </span><span class="o">[</span>--max_time<span class="w"> </span>MAX_TIME<span class="o">]</span>
 <span class="w">                            </span><span class="o">[</span>--user<span class="w"> </span>USER<span class="o">]</span><span class="w"> </span><span class="o">[</span>--ordered<span class="w"> </span><span class="o">[</span>ORDERED<span class="o">]]</span>
 <span class="w">                            </span><span class="o">[</span>--limit<span class="w"> </span>LIMIT<span class="o">]</span><span class="w"> </span><span class="o">[</span>--skip<span class="w"> </span>SKIP<span class="o">]</span><span class="w"> </span><span class="o">[</span>--json<span class="w"> </span>JSON<span class="o">]</span>
@@ -78,7 +78,7 @@ optional<span class="w"> </span>arguments:
 --skip<span class="w"> </span>SKIP<span class="w">           </span>skip<span class="w"> </span>N<span class="w"> </span>files
 --json<span class="w"> </span>JSON<span class="w">           </span>filename<span class="w"> </span><span class="k">for</span><span class="w"> </span>a<span class="w"> </span>json<span class="w"> </span>list<span class="w"> </span>of<span class="w"> </span>parameters<span class="w"> </span>to<span class="w"> </span>and
 --deftag<span class="w"> </span>DEFTAG<span class="w">       </span>tag<span class="w"> </span>to<span class="w"> </span>distinguish<span class="w"> </span>different<span class="w"> </span>runs<span class="w"> </span>of<span class="w"> </span>this<span class="w"> </span>script,<span class="w"> </span>default<span class="w"> </span>is<span class="w"> </span><span class="nb">test</span>
---test<span class="w"> </span><span class="o">[</span>TEST<span class="o">]</span><span class="w">         </span><span class="k">do</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">test</span><span class="w"> </span>mode
+--test<span class="w"> </span><span class="o">[</span>TEST<span class="o">]</span><span class="w">         </span><span class="k">do</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">test</span><span class="w"> </span>mode<span class="w"> </span>-<span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>actually<span class="w"> </span>make<span class="w"> </span>a<span class="w"> </span><span class="nb">set</span><span class="w"> </span>but<span class="w"> </span>prints<span class="w"> </span>out<span class="w"> </span>what<span class="w"> </span>you<span class="w"> </span>would<span class="w"> </span>get
 </pre></div>
 </div>
 </div>
@@ -111,7 +111,7 @@ optional<span class="w"> </span>arguments:
 </ul>
 </div></blockquote>
 <p>The command</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">python</span><span class="o">/</span><span class="n">CollectionCreator</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">json</span><span class="o">=</span><span class="n">datasets</span><span class="o">/</span><span class="n">fd_mc_2023a_prodgenie_nutau_dune10kt_1x2x6</span><span class="o">.</span><span class="n">json</span> <span class="o">--</span><span class="n">deftag</span><span class="o">=</span><span class="n">v0</span>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="n">python</span><span class="o">/</span><span class="n">CollectionCreatorClass</span><span class="o">.</span><span class="n">py</span> <span class="o">--</span><span class="n">json</span><span class="o">=</span><span class="n">datasets</span><span class="o">/</span><span class="n">fd_mc_2023a_prodgenie_nutau_dune10kt_1x2x6</span><span class="o">.</span><span class="n">json</span> <span class="o">--</span><span class="n">deftag</span><span class="o">=</span><span class="n">v0</span>
 </pre></div>
 </div>
 <p>made a metacat dataset called:</p>
@@ -131,9 +131,9 @@ optional<span class="w"> </span>arguments:
   <div>
     <h3><a href="index.html">Table of Contents</a></h3>
     <ul>
-<li><a class="reference internal" href="#">CollectionCreator</a><ul>
+<li><a class="reference internal" href="#">CollectionCreatorClass</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
-<li><a class="reference internal" href="#collectioncreator-arguments">CollectionCreator arguments</a></li>
+<li><a class="reference internal" href="#collectioncreatorclass-arguments">CollectionCreatorClass arguments</a></li>
 <li><a class="reference internal" href="#example-configuration-file">Example configuration file</a></li>
 <li><a class="reference internal" href="#making-datasets">Making datasets</a></li>
 </ul>
@@ -143,18 +143,18 @@ optional<span class="w"> </span>arguments:
   </div>
   <div>
     <h4>Previous topic</h4>
-    <p class="topless"><a href="Intro.html"
-                          title="previous chapter">What this package does</a></p>
+    <p class="topless"><a href="CollectionCreator.html"
+                          title="previous chapter">CollectionCreator</a></p>
   </div>
   <div>
     <h4>Next topic</h4>
-    <p class="topless"><a href="CollectionCreatorClass.html"
-                          title="next chapter">CollectionCreatorClass</a></p>
+    <p class="topless"><a href="usage.html"
+                          title="next chapter">Usage</a></p>
   </div>
   <div role="note" aria-label="source link">
     <h3>This Page</h3>
     <ul class="this-page-menu">
-      <li><a href="_sources/CollectionCreator.rst.txt"
+      <li><a href="_sources/CollectionCreatorClass.rst.txt"
             rel="nofollow">Show Source</a></li>
     </ul>
    </div>
@@ -182,13 +182,13 @@ optional<span class="w"> </span>arguments:
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="CollectionCreatorClass.html" title="CollectionCreatorClass"
+          <a href="usage.html" title="Usage"
              >next</a> |</li>
         <li class="right" >
-          <a href="Intro.html" title="What this package does"
+          <a href="CollectionCreator.html" title="CollectionCreator"
              >previous</a> |</li>
         <li class="nav-item nav-item-0"><a href="index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
-        <li class="nav-item nav-item-this"><a href="">CollectionCreator</a></li> 
+        <li class="nav-item nav-item-this"><a href="">CollectionCreatorClass</a></li> 
       </ul>
     </div>
     <div class="footer" role="contentinfo">

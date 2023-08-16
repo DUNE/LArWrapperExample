@@ -1,10 +1,13 @@
-CollectionCreator
-=================
+CollectionCreatorClass
+======================
+
+Replaces CollectionCreator
+
 
 Description
 -----------
 
-CollectionCreator is a python script that takes a json specification for a dataset and makes both metacat datasets and sam definitions from it.
+CollectionCreatorClass is a python script/class that takes a json specification for a dataset and makes both metacat datasets and sam definitions from it.
 
 The query to create the dataset is the and of the keys in the json file, with some additional qualifiers.  They include the ability to add selections on the time range for the files and the addition of a tag so that you can version your datasets (for example as the Creator code changes).
 
@@ -14,15 +17,14 @@ metacat datasets are created but do not grow unless you rerun the CollectionCrea
 
 metacat datasets also contain the query used to make them and a metadata field that contains the items used to make the dataset query. 
 
-*[for now it is hardcoded to create the metacat dataset in a namespace named `$USER`]*
 
-CollectionCreator arguments
----------------------------
+CollectionCreatorClass arguments
+--------------------------------
 
 .. code-block:: bash
 
-    python python/CollectionCreator.py --help
-    usage: CollectionCreator.py [-h] [--namespace NAMESPACE] [--time_var TIME_VAR]
+    python python/CollectionCreatorClass.py --help
+    usage: CollectionCreatorClass.py [-h] [--namespace NAMESPACE] 
                                 [--min_time MIN_TIME] [--max_time MAX_TIME]
                                 [--user USER] [--ordered [ORDERED]]
                                 [--limit LIMIT] [--skip SKIP] [--json JSON]
@@ -41,7 +43,7 @@ CollectionCreator arguments
     --skip SKIP           skip N files
     --json JSON           filename for a json list of parameters to and
     --deftag DEFTAG       tag to distinguish different runs of this script, default is test
-    --test [TEST]         do in test mode
+    --test [TEST]         do in test mode - does not actually make a set but prints out what you would get
 
 Example configuration file
 --------------------------
@@ -81,7 +83,7 @@ The command
 
 .. code-block::
     
-        python python/CollectionCreator.py --json=datasets/fd_mc_2023a_prodgenie_nutau_dune10kt_1x2x6.json --deftag=v0
+        python python/CollectionCreatorClass.py --json=datasets/fd_mc_2023a_prodgenie_nutau_dune10kt_1x2x6.json --deftag=v0
 
 made a metacat dataset called:
 
