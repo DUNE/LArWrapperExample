@@ -20,7 +20,7 @@ import sys
 import os
 import subprocess
 import json
-from  collectionTags import *
+#from  collectionTags import *
 
 
 
@@ -171,10 +171,6 @@ def setup():
         parser.add_argument('--test',type=bool,default=False,const=True,nargs="?",help='do in test mode')
         XtraTags = ["min_time","max_time","ordered","limit","skip","time_var","deftag"]
         args = parser.parse_args()
-        
-        
-    
-
         if DEBUG: print (args)
 
         #required1 = ["file_type","run_type"]
@@ -193,21 +189,23 @@ def setup():
 
         
         if args.json == None:
-            Tags = DefineCollectionTags()
-            map = CollectionArgMap(Tags)
-            for tag in Tags:
-                argis=map[tag]
-                val = getattr(args,argis)
-                if DEBUG: print (tag,argis,val)
-                Tags[tag] = val
-                if DEBUG: print (tag,argis,val,type(val))
-                #if type(val) == 'str' and "-" in val:
-                #Tags[tag] = "\'%s\'"%(val)
+            print ("no json file, in future you will be able to append to a dataset directly")
+            sys.exit(1)
+#            Tags = DefineCollectionTags()
+#            map = CollectionArgMap(Tags)
+#            for tag in Tags:
+#                argis=map[tag]
+#                val = getattr(args,argis)
+#                if DEBUG: print (tag,argis,val)
+#                Tags[tag] = val
+#                if DEBUG: print (tag,argis,val,type(val))
+#                #if type(val) == 'str' and "-" in val:
+#                #Tags[tag] = "\'%s\'"%(val)
         else:
         # read the data description tags from json file
             if not os.path.exists(args.json):
                 print (args.json," does not exist, quitting")
-                sys.exit(0)
+                sys.exit(1)
             f = open(args.json,'r')
             
             if f:
@@ -269,12 +267,12 @@ def makeDataset(query,name,meta):
         if x not in cleanmeta: continue
         
         if meta[x] == None:
-            print ("remove null key",x,meta[x])
+            if DEBUG: print ("remove null key",x,meta[x])
             if x in cleanmeta: cleanmeta.pop(x)
         else:
             cleanmeta[x] = meta[x]
         
-    print (cleanmeta)
+    if DEBUG: print (cleanmeta)
     
     did = "%s:%s"%(os.getenv("USER"),name)
     test= mc_client.get_dataset(did)
@@ -338,25 +336,4 @@ if __name__ == "__main__":
         makeDataset(thequery,thename,Tags)
     else:
         print ("this was just a test")
-    
-#    # do some sam stuff
-#    defname=os.getenv("USER")+"_"+thename
-#    print ("Try to make a sam definition:",defname)
-#    x = samweb.listFilesSummary(samquery)
-#    print (x)
-#    if samquery != None :
-#        try:
-#            samweb.createDefinition(defname,dims=samquery,description=samquery)
-#        except:
-#            print ("failed to make sam definition")
-            
-   
-    
-    query_files = list(mc_client.query(thequery))
-    summary = True
-    if summary: 
-         printSummary(query_files)
-    else:
-        for l in query_files:
-         
-            print("%s:%s"%(l["namespace"],l["name"]))
+ 

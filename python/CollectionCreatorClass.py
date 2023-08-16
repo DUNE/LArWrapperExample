@@ -27,11 +27,7 @@ from metacat.webapi import MetaCatClient
 
 class CollectionCreatorClass:
 
-    def jsonwrite(self,path,j):
-        g = open(path,'w')
-        s = json.dumps(j,indent=2)
-        g.write(s)
-    
+    # make a version that takes a template instead of this list
     def make_name(self):
         
         order=["core.run_type","dune.campaign","core.file_type","core.data_tier","core.data_stream","dune_mc.gen_fcl_filename","core.application.version","min_time","max_time","skip","limit","deftag"]
@@ -57,7 +53,7 @@ class CollectionCreatorClass:
         print ("name will be",name)
         self.name = name
 
-
+    # make a metacat query from the json inputs
     def makequery(self):
         
         query = "files where"
@@ -71,16 +67,18 @@ class CollectionCreatorClass:
             if "." not in item:
                 continue
             val = self.meta[item]
+            # put quotes around values that have "-" in them because metacat doesn't interpret "-" well
             if type(val) == str and "-" in val and not "'" in val: val = "\'%s\'"%val
-            
+ 
             query += " "+item+"="+str(val)
             query += " and"
             if (DEBUG): print(query)
+        # strip off the last "and"
         query = query[:-4]
         if (DEBUG): print (query)
     
 
-    # do time range - takes some work as there are two possibilities
+        # do time range - takes some work as there are two possibilities
         if self.meta["min_time"] != None or self.meta["max_time"] != None:
             min = None
             max = None
@@ -90,28 +88,19 @@ class CollectionCreatorClass:
             if self.meta["max_time"] != None:
                 max = self.meta["max_time"]
             
-            if "created" in self.meta["time_var"]:
-                var = "created_timestamp"
-            elif "raw" in self.meta["time_var"]:
-                var = "core.start_time"
-            else:
-                print (" undercognized time_var")
-                sys.exit(1)
-
+            
+            var = "created_timestamp"
+            
             timequery = "" 
-            if var != "created_timestamp":
-                if min != None: timequery += " and %s >= datetime('%s')"%(var,min)
-                if max != None: timequery += " and %s <= datetime('%s')"%(var,max)
-            else:
-                if min != None: timequery += " and %s >= '%s'"%(var,min)
-                if max != None: timequery += " and %s <= '%s'"%(var,max)
+            
+            
+            if min != None: timequery += " and %s >= '%s'"%(var,min)
+            if max != None: timequery += " and %s <= '%s'"%(var,max)
             query += timequery
         else:
             print ("No time range set, use all files")
 
         if self.meta["ordered"]: query += " ordered "
-
-        
 
         if self.meta["limit"] != None:
                 query += " limit %s"%self.meta["limit"]
@@ -145,33 +134,22 @@ class CollectionCreatorClass:
             parser = ap()
             
             parser.add_argument('--namespace',type=str,default=os.getenv("USER"),help="metacat namespace for dataset")
-            parser.add_argument('--time_var',type=str,default="created",help="creation time to select ['created'] or 'raw']")
+
             parser.add_argument('--min_time',type=str,help='min time range (inclusive) YYYY-MM-DD UTC')
             parser.add_argument('--max_time',type=str,help='end time range (inclusive) YYYY-MM-DD UTC')
-            #parser.add_argument('--file_type',type=str, help='["detector","mc"]')
-            #parser.add_argument('--run_type',type=str, help='run_type, example="prododune-sp"')
-            #parser.add_argument('--campaign',type=str, help='DUNE Campaign')
-            #parser.add_argument('--family',type=str, help='Application Family')
-            #parser.add_argument('--name', type=str, help='Application Name')
-            #parser.add_argument('--version', type=str, help='Application Version')
-            #parser.add_argument('--data_tier', type=str, help='data tier')
-            #parser.add_argument('--data_stream', type=str, help='data stream for output file if only one')
-            #parser.add_argument('--input_dataset',default='dune:all',type=str,help='parent dataset, default=[\"dune:all\"]')
+            
             parser.add_argument('--user', type=str, help='user name')
             parser.add_argument('--ordered',default=True,const=True,nargs="?", help='return list ordered for reproducibility')
             parser.add_argument('--limit',type=int, help='limit on # to return')
             parser.add_argument('--skip',type=int, help='skip N files')
-            #parser.add_argument('--other',type=str,help='other selections, for example, --other=\"detector.hv_value=180 and beam.momentum=1 ')
             parser.add_argument('--json',type=str,default=None, help='filename for a json list of parameters to and')
             parser.add_argument('--deftag',type=str,default="test",help='tag to distinguish different runs of this script, default is test')
-            #parser.add_argument('--summary',default=False,const=True,nargs="?", help='print a summary')
+            parser.add_argument('--summary',default=False,const=True,nargs="?", help='print a summary')
             parser.add_argument('--test',type=bool,default=False,const=True,nargs="?",help='do in test mode')
-            XtraTags = ["min_time","max_time","ordered","limit","skip","time_var","deftag"]
+            XtraTags = ["min_time","max_time","ordered","limit","skip","deftag"]
             args = parser.parse_args()
             if DEBUG: print (args)
 
-    
-            
             if args.user == None and os.environ["USER"] != None:  args.user = os.environ["USER"]
 
             self.namespace = args.namespace
@@ -229,13 +207,13 @@ class CollectionCreatorClass:
         print("Total size:  ", "%d (%.3f %s)" % (total_size, n, unit))
     
     def makeDataset(self):
-        print ("query",self.metaquery)
+        if DEBUG: print ("query",self.metaquery)
         
         cleanmeta = self.meta.copy()
         # move dataset creation flags into dataset....
         for x in self.meta.keys():
             if not "." in x:
-                print ("rename search params")
+                print ("rename search params that are not . type")
                 cleanmeta["datasetpar."+x]=self.meta[x]
                 if x in cleanmeta:cleanmeta.pop(x)
             
@@ -252,11 +230,12 @@ class CollectionCreatorClass:
         
         did = "%s:%s"%(self.namespace,self.name)
         test= mc_client.get_dataset(did)
-        print ("look for a dataset",did)
+        print ("look for an existing dataset",did)
         
         if test == None:
                 print ("make a new dataset",did)
-    #        try:
+                print ("query",self.metaquery)
+            #try:
                 mc_client.create_dataset(did,files_query=self.metaquery,description=self.metaquery,metadata=cleanmeta)
                 #return 1
     #        except:
@@ -273,7 +252,7 @@ class CollectionCreatorClass:
         # do some sam stuff
         defname=os.getenv("USER")+"_"+self.name
         print ("Try to make a sam definition:",defname)
-       
+        print ("query",self.samquery)
         if self.samquery != None :
             try:
                 samweb.createDefinition(defname,dims=self.samquery,description=self.samquery)
@@ -285,13 +264,17 @@ class CollectionCreatorClass:
 
 ## command line, explains the variables.
 if __name__ == "__main__":
-    mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_prod/app')
+    mc_client = MetaCatClient(os.getenv("METACAT_SERVER_URL"))
     creator = CollectionCreatorClass()
+    # read in command line args
     creator.setup()
+    # make metacat query
     creator.makequery() 
+    # make up a name
     creator.make_name()
     print ("------------------------")
     print ("list from samweb")
+    # make a sam query
     creator.make_sam_query()
     
     r = samweb.listFilesSummary(creator.samquery)
@@ -303,6 +286,8 @@ if __name__ == "__main__":
     creator.printSummary(query_files)
     print (creator.meta)
     print(json.dumps({"dataset.meta":creator.meta},indent=4))
+
+    # actually make the sam definition and metacat dataset
     print ("------------------------")
     if not creator.test:
         print ("Try to make a samweb definition")

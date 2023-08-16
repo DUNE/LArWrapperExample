@@ -6,8 +6,6 @@ API
     :recursive:
 
 	    CollectionCreator
-        
-        queryCreator
 	
         samtest
 

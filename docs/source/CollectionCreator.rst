@@ -10,9 +10,11 @@ The query to create the dataset is the and of the keys in the json file, with so
 
 samweb definitions are created with a name generated from the flags given in the json and command line.  They grow automatically as new fields meet the query criteria.
 
-metacat datasets are created but do not grow unless you rerun the CollectionCreator code with the same json file and deftag arguments. [need to add an option that takes the dataset name and grows that from its stored query.]
+metacat datasets are created but do not grow unless you rerun the CollectionCreator code with the same json file and deftag arguments. *[need to add an option that takes the dataset name and grows that from its stored query.]*
 
 metacat datasets also contain the query used to make them and a metadata field that contains the items used to make the dataset query. 
+
+*[for now it is hardcoded to create the metacat dataset in a namespace named `$USER`]*
 
 CollectionCreator arguments
 ---------------------------
