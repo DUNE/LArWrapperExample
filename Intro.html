@@ -49,9 +49,10 @@
 <h1>What this package does<a class="headerlink" href="#what-this-package-does" title="Permalink to this heading">¶</a></h1>
 <blockquote>
 <div><ul class="simple">
-<li><p>a <a class="reference internal" href="generated/CollectionCreator.html"><span class="doc">CollectionCreator</span></a> script that takes a dataset configuration file and produces both a samweb definition and a meta dataset.</p></li>
+<li><p>a <span class="xref std std-doc">generated/CollectionCreatorClass</span> script that takes a dataset configuration file and produces both a samweb definition and a meta dataset.</p></li>
 </ul>
 <p>this is independent of the other packages</p>
+<p>and a suite of scripts <span class="xref std std-doc">generated/Loginator</span>,  <span class="xref std std-doc">generated/LArWrapper</span> <span class="xref std std-doc">generated/DDInterface</span> that wrap LArSoft and log outputs.</p>
 <ul class="simple">
 <li><p>Example scripts ( <a class="reference internal" href="tests.html"><span class="doc">Tests</span></a> ) for running LArSoft using either <a class="reference external" href="https://cdcvs.fnal.gov/redmine/projects/sam-web-client/wiki">samweb</a> or the new <a class="reference external" href="https://data-dispatcher.readthedocs.io/en/latest/">Data Dispatcher (dd)</a> data delivery systems.</p></li>
 <li><p>A log parser <span class="xref std std-doc">generated/LArWrapper</span> that gathers information about the processing of an input file for monitoring purposes.</p></li>
@@ -63,8 +64,8 @@ This is useful both for profiling jobs before large processing campaigns and for
 <p>The package has subdirectoris:</p>
 <table class="docutils align-default">
 <colgroup>
-<col style="width: 15%" />
-<col style="width: 85%" />
+<col style="width: 19%" />
+<col style="width: 81%" />
 </colgroup>
 <tbody>
 <tr class="row-odd"><td><p>python</p></td>
@@ -81,6 +82,9 @@ This is useful both for profiling jobs before large processing campaigns and for
 </tr>
 <tr class="row-odd"><td><p>docs</p></td>
 <td><p>documentation</p></td>
+</tr>
+<tr class="row-even"><td><p>datasets</p></td>
+<td><p>json descriptions of datasets</p></td>
 </tr>
 </tbody>
 </table>

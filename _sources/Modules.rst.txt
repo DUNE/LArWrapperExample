@@ -1,6 +1,13 @@
 Python APIs
 -----------
 
+CollectionCreatorClass
+**********************
+
+.. autoclass:: CollectionCreatorClass::CollectionCreatorClass
+    :members: 
+    :undoc-members:
+
 samtest
 *******
 
@@ -26,3 +33,5 @@ submit_dd_jobs
 
 .. autofunction:: submit_dd_jobs::create_project
 .. autofunction:: submit_dd_jobs::main
+
+
