@@ -1,6 +1,11 @@
 Related documentation
 =====================
 
+DUNE specific
+-------------
+
+  `DUNE metacat documentation <https://dune.github.io/DataCatalogDocs/index.html>`_
+
 metacat
 -------
 
