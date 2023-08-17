@@ -22,7 +22,7 @@ Indices and tables
 Contents
 --------
 
-`metacat documentation <https://dune.github.io/DataCatalogDocs/index.html>`_
+
 
 .. toctree::
    
