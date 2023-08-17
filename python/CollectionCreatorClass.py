@@ -15,7 +15,7 @@ import samweb_client
 samweb = samweb_client.SAMWebClient(experiment='dune')
 
  
-DEBUG = False
+DEBUG = True
 
 from argparse import ArgumentParser as ap
 import sys
@@ -231,7 +231,8 @@ class CollectionCreatorClass:
         did = "%s:%s"%(self.namespace,self.name)
         test= mc_client.get_dataset(did)
         print ("look for an existing dataset",did)
-        
+
+
         if test == None:
                 print ("make a new dataset",did)
                 print ("query",self.metaquery)

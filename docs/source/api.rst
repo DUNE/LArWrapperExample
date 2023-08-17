@@ -6,6 +6,8 @@ API
     :recursive:
 
 	    CollectionCreator
+
+        CollectionCreatorClass
 	
         samtest
 
