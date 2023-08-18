@@ -29,29 +29,53 @@ class CollectionCreatorClass:
 
     # make a version that takes a template instead of this list
     def make_name(self):
+
+        if "defname" in self.meta.keys():
+            template = self.meta["defname"]
+            namekeys = template.split("%")
+            if DEBUG: print (namekeys)
+            if DEBUG: print (self.meta)
+            for x in namekeys:
+                if DEBUG: print (x)
+                if x == '': continue
+                if x in self.meta.keys():
+                    if self.meta[x] == None:
+                        template = template.replace(x,"none")
+                    else:
+                        template = template.replace(x,self.meta[x])
+                else:
+                    print ("asked for a string in the name that is not in the definition",x)
+                    sys.exit(1)
+            
+            template = template.replace("%",".")
+            if DEBUG:  print ("draft name",template)
+            self.name = template
+
+
         
-        order=["core.run_type","dune.campaign","core.file_type","core.data_tier","core.data_stream","dune_mc.gen_fcl_filename","core.application.version","min_time","max_time","skip","limit","deftag"]
-        name = ""
-        for i in order:
-            if i in self.meta and self.meta[i]!= None:
-                new = self.meta[i]
-                new.replace(".fcl","")
-                if i == "skip":
-                    new="skip%d"%self.meta[i]
-                if i == "limit":
-                    new="limit%d"%self.meta[i]
-                
-                if i == "max_time":
-                    new ="le"+self.meta[i]
-                if i == "min_time":
-                    new ="ge"+self.metas[i]
-                if i == "deftag":
+        else:
+            order=["core.run_type","dune.campaign","core.file_type","core.data_tier","core.data_stream","dune_mc.gen_fcl_filename","core.application.version","min_time","max_time","skip","limit","deftag"]
+            name = ""
+            for i in order:
+                if i in self.meta and self.meta[i]!= None:
                     new = self.meta[i]
-                name += new
-                name += "__"
-        name = name[:-2]
-        print ("name will be",name)
-        self.name = name
+                    new.replace(".fcl","")
+                    if i == "skip":
+                        new="skip%d"%self.meta[i]
+                    if i == "limit":
+                        new="limit%d"%self.meta[i]
+                    
+                    if i == "max_time":
+                        new ="le"+self.meta[i]
+                    if i == "min_time":
+                        new ="ge"+self.metas[i]
+                    if i == "deftag":
+                        new = self.meta[i]
+                    name += new
+                    name += "__"
+            name = name[:-2]
+            print ("name will be",name)
+            self.name = name
 
     # make a metacat query from the json inputs
     def makequery(self):
@@ -79,15 +103,24 @@ class CollectionCreatorClass:
     
 
         # do time range - takes some work as there are two possibilities
-        if self.meta["min_time"] != None or self.meta["max_time"] != None:
+
+        min = ""
+        max = ""
+        
+        if "min_time" not in self.meta or self.meta["min_time"] == None: 
             min = None
+
+        if "max_time" not in self.meta or self.meta["max_time"] == None: 
             max = None
-            if self.meta["min_time"] != None:
+
+        if max != None and min != None:
+
+            if min != None:
                 min = self.meta["min_time"]
-                
-            if self.meta["max_time"] != None:
+                    
+            if max != None:
                 max = self.meta["max_time"]
-            
+                
             
             var = "created_timestamp"
             
@@ -135,18 +168,18 @@ class CollectionCreatorClass:
             
             parser.add_argument('--namespace',type=str,default=os.getenv("USER"),help="metacat namespace for dataset")
 
-            parser.add_argument('--min_time',type=str,help='min time range (inclusive) YYYY-MM-DD UTC')
-            parser.add_argument('--max_time',type=str,help='end time range (inclusive) YYYY-MM-DD UTC')
+            #parser.add_argument('--min_time',type=str,help='min time range (inclusive) YYYY-MM-DD UTC')
+            #parser.add_argument('--max_time',type=str,help='end time range (inclusive) YYYY-MM-DD UTC')
             
             parser.add_argument('--user', type=str, help='user name')
             parser.add_argument('--ordered',default=True,const=True,nargs="?", help='return list ordered for reproducibility')
             parser.add_argument('--limit',type=int, help='limit on # to return')
             parser.add_argument('--skip',type=int, help='skip N files')
             parser.add_argument('--json',type=str,default=None, help='filename for a json list of parameters to and')
-            parser.add_argument('--deftag',type=str,default="test",help='tag to distinguish different runs of this script, default is test')
+            #parser.add_argument('--deftag',type=str,default="test",help='tag to distinguish different runs of this script, default is test')
             parser.add_argument('--summary',default=False,const=True,nargs="?", help='print a summary')
             parser.add_argument('--test',type=bool,default=False,const=True,nargs="?",help='do in test mode')
-            XtraTags = ["min_time","max_time","ordered","limit","skip","deftag"]
+            XtraTags = ["ordered","limit","skip"]
             args = parser.parse_args()
             if DEBUG: print (args)
 
@@ -242,6 +275,8 @@ class CollectionCreatorClass:
     #        except:
     #            print("metacat dataset creation failed - does it already exist?")
         else: # already there
+                info = mc_client.get_dataset(did)
+                print ("info",info)
                 print ("add files to dataset",did)
                 print ("query",self.metaquery)
                 #try:

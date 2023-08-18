@@ -1,4 +1,6 @@
 {
+        "defnamespace":"schellma",
+        "defname":"%core.file_type%core.run_type%dune.campaign%core.application.version%core.data_tier%dune_mc.gen_fcl_filename%deftag",
         "core.application.version": "v09_75_03d00",
         "core.data_tier": "hit-reconstructed",
         "core.file_type": "mc",
@@ -6,5 +8,6 @@
         "dune.campaign": "fd_mc_2023a",
         "dune.requestid": "ritm1780305",
         "dune_mc.beam_polarity": "fhc",
-        "dune_mc.gen_fcl_filename": "prodgenie_nutau_dune10kt_1x2x6.fcl"
+        "dune_mc.gen_fcl_filename": "prodgenie_nutau_dune10kt_1x2x6.fcl",
+        "deftag": "testme"
 }
