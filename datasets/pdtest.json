@@ -1,12 +1,12 @@
 {
-  "defname":"core.file_type%core.run_type%DUNE.campaign%core.data_tier%core.data_stream%min_time%max_time",
+  "description":"test of description",
+  "defname":"core.file_type%core.run_type%dune.campaign%core.data_tier%core.data_stream%min_time%max_time%deftag",
   "core.run_type": "protodune-sp",
   "core.file_type": "detector",
   "core.data_tier": "full-reconstructed",
   "core.data_stream": "physics",
-  "inputdataset": "dune:all",
-  "DUNE.campaign": "PDSPProd4",
-  "min_time":null,
-  "max_time":"2022-02-03",
-  "deftag":"testme"
+  "dune.campaign": "PDSPProd4",
+  "min_time":"2021-01-03",
+  "max_time":"2022-10-03",
+  "deftag":"testme6"
 }

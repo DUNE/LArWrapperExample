@@ -15,7 +15,7 @@ import samweb_client
 samweb = samweb_client.SAMWebClient(experiment='dune')
 
  
-DEBUG = True
+DEBUG = False
 
 from argparse import ArgumentParser as ap
 import sys
@@ -29,6 +29,9 @@ class CollectionCreatorClass:
 
     # make a version that takes a template instead of this list
     def make_name(self):
+
+        if self.did != None:
+            return
 
         if "defname" in self.meta.keys():
             template = self.meta["defname"]
@@ -49,22 +52,18 @@ class CollectionCreatorClass:
             
             template = template.replace("%",".")
             if DEBUG:  print ("draft name",template)
-            self.name = template
+            self.defname = template
 
 
         
         else:
-            order=["core.run_type","dune.campaign","core.file_type","core.data_tier","core.data_stream","dune_mc.gen_fcl_filename","core.application.version","min_time","max_time","skip","limit","deftag"]
+            order=["core.run_type","dune.campaign","core.file_type","core.data_tier","core.data_stream","dune_mc.gen_fcl_filename","core.application.version","min_time","max_time","deftag"]
             name = ""
             for i in order:
                 if i in self.meta and self.meta[i]!= None:
                     new = self.meta[i]
                     new.replace(".fcl","")
-                    if i == "skip":
-                        new="skip%d"%self.meta[i]
-                    if i == "limit":
-                        new="limit%d"%self.meta[i]
-                    
+            
                     if i == "max_time":
                         new ="le"+self.meta[i]
                     if i == "min_time":
@@ -75,10 +74,15 @@ class CollectionCreatorClass:
                     name += "__"
             name = name[:-2]
             print ("name will be",name)
-            self.name = name
+            self.defname = name
 
     # make a metacat query from the json inputs
     def makequery(self):
+
+        # skip if already set (generally by did)
+        if self.metaquery != None:
+            if DEBUG: print ("found a query",self.metaquery)
+            return
         
         query = "files where"
         
@@ -135,15 +139,11 @@ class CollectionCreatorClass:
 
         if self.meta["ordered"]: query += " ordered "
 
-        if self.meta["limit"] != None:
-                query += " limit %s"%self.meta["limit"]
-        
-        if self.meta["skip"] != None:
-                query += " skip %s"%self.meta["skip"]
-        
         self.metaquery = query
         
     def make_sam_query(self):
+        
+
         s = self.metaquery.split("where")
         if len(s) < 2:
             return None
@@ -173,13 +173,14 @@ class CollectionCreatorClass:
             
             parser.add_argument('--user', type=str, help='user name')
             parser.add_argument('--ordered',default=True,const=True,nargs="?", help='return list ordered for reproducibility')
-            parser.add_argument('--limit',type=int, help='limit on # to return')
-            parser.add_argument('--skip',type=int, help='skip N files')
+            #parser.add_argument('--limit',type=int, help='limit on # to return')
+            #parser.add_argument('--skip',type=int, help='skip N files')
             parser.add_argument('--json',type=str,default=None, help='filename for a json list of parameters to and')
+            parser.add_argument('--did',type=str,default=None,help="<namespace>:<name> for existing dataset to append to")
             #parser.add_argument('--deftag',type=str,default="test",help='tag to distinguish different runs of this script, default is test')
             parser.add_argument('--summary',default=False,const=True,nargs="?", help='print a summary')
             parser.add_argument('--test',type=bool,default=False,const=True,nargs="?",help='do in test mode')
-            XtraTags = ["ordered","limit","skip"]
+            XtraTags = []#"ordered","limit","skip"]
             args = parser.parse_args()
             if DEBUG: print (args)
 
@@ -187,9 +188,36 @@ class CollectionCreatorClass:
 
             self.namespace = args.namespace
 
+            # check if using prexisting did
+
             if args.json == None:
-                print ("no json file, in future you will be able to append to a dataset directly")
-                sys.exit(1)
+                if args.did == None:
+                    print ("no json or did file, in future you will be able to append to a dataset directly")
+                    sys.exit(1)
+                else:  # yes this is pre-existing
+                    self.did = args.did
+                    stuff = self.did.split(":")
+                    if DEBUG: print ("did",stuff)
+                    if len(stuff)!=2:
+                        print ("did", self.did, "has invalid format")
+                        sys.exit(1)
+                    if self.namespace == os.getenv("USER"):
+                        print ("getting namespace from --did", stuff[0])
+                        self.namespace = stuff[0]
+                    self.defname = stuff[1]
+                    info = mc_client.get_dataset(self.did)
+                    self.info = info
+                    if DEBUG: print(json.dumps(info,indent=4))
+
+                    if "datasetpar.query" in info["metadata"]:
+                        if DEBUG: print ("found the query", info["metadata"]["datasetpar.query"])
+                        self.metaquery = info["metadata"]["datasetpar.query"]
+                    else:
+                            print ("could not find a query in the dataset metadata for ", self.did, info)
+                            sys.exit(1)
+
+                self.meta = None
+                    
     
             else:
             # read the data description tags from json file
@@ -197,21 +225,23 @@ class CollectionCreatorClass:
                     print ("json file",args.json," does not exist, quitting")
                     sys.exit(1)
                 f = open(args.json,'r')
+                required = ["core.file_type", "core.run_type"]
                 
                 if f:
                     Tags = json.load(f)
+                for x in required:
+                    if x not in Tags:
+                        print("This constraint isrequired for all DUNE data", x)
+                        sys.exit(1)
+                if args.ordered:
+                    Tags["ordered"]=True
+                else:
+                    Tags["ordered"]=False
                 if DEBUG: print (Tags)
-                # add the extra tags
-                for tag in XtraTags:
-                    if DEBUG: print (tag,XtraTags)
-                    argis=tag
-                    val = getattr(args,argis)
-                    if DEBUG: print (tag,argis,val)
-                    Tags[tag] = val
-                    if DEBUG: print (tag,argis,val,type(val))
-                    if type(val) == 'str' and "-" in val:
-                        Tags[tag] = "\'%s\'"%(val)
-            self.meta = Tags
+                self.metaquery = None  # fill in later
+                self.meta = Tags
+                self.did = None
+                
             self.test = args.test      
             
 
@@ -242,11 +272,22 @@ class CollectionCreatorClass:
     def makeDataset(self):
         if DEBUG: print ("query",self.metaquery)
         
+        if self.did != None:
+            if not self.test:
+                print ("add files to existing dataset", self.did)
+                mc_client.add_files(self.did,query=self.metaquery)
+            else:
+                print ("this was just a test with an existing dataset")
+            return
+
         cleanmeta = self.meta.copy()
         # move dataset creation flags into dataset....
         for x in self.meta.keys():
             if not "." in x:
-                print ("rename search params that are not . type")
+                if DEBUG: print ("rename search params that are not . type")
+                if x == "description":  # this goes in the real description field
+                    if x in cleanmeta:cleanmeta.pop(x)
+                    continue
                 cleanmeta["datasetpar."+x]=self.meta[x]
                 if x in cleanmeta:cleanmeta.pop(x)
             
@@ -260,8 +301,13 @@ class CollectionCreatorClass:
                 cleanmeta[x] = self.meta[x]
             
         if DEBUG: print (cleanmeta)
+
+        cleanmeta["datasetpar.query"] = self.metaquery
+
+
         
-        did = "%s:%s"%(self.namespace,self.name)
+        did = "%s:%s"%(self.namespace,self.defname)
+        
         test= mc_client.get_dataset(did)
         print ("look for an existing dataset",did)
 
@@ -270,23 +316,25 @@ class CollectionCreatorClass:
                 print ("make a new dataset",did)
                 print ("query",self.metaquery)
             #try:
-                mc_client.create_dataset(did,files_query=self.metaquery,description=self.metaquery,metadata=cleanmeta)
+                mc_client.create_dataset(did,files_query=self.metaquery,description=self.meta["description"],metadata=cleanmeta)
+                self.did = did
                 #return 1
     #        except:
     #            print("metacat dataset creation failed - does it already exist?")
         else: # already there
                 info = mc_client.get_dataset(did)
-                print ("info",info)
+                if DEBUG: print ("info",info)
                 print ("add files to dataset",did)
-                print ("query",self.metaquery)
+                print ("query was",self.metaquery)
                 #try:
                 mc_client.add_files(did,query=self.metaquery)
+                self.did = did
                 #except:
                 #    print("metacat dataset addition failed - does it already exist?")
         
     def makeSamDataset(self):
         # do some sam stuff
-        defname=os.getenv("USER")+"_"+self.name
+        defname=os.getenv("USER")+"_"+self.defname
         print ("Try to make a sam definition:",defname)
         print ("query",self.samquery)
         if self.samquery != None :
@@ -306,6 +354,8 @@ if __name__ == "__main__":
     creator.setup()
     # make metacat query
     creator.makequery() 
+
+    print (creator.metaquery)
     # make up a name
     creator.make_name()
     print ("------------------------")
@@ -320,8 +370,10 @@ if __name__ == "__main__":
     print("metacat query \"",creator.metaquery,"\"\n")
     query_files = list(mc_client.query(creator.metaquery))
     creator.printSummary(query_files)
-    print (creator.meta)
-    print(json.dumps({"dataset.meta":creator.meta},indent=4))
+    
+    if creator.meta: print(json.dumps({"dataset.meta":creator.meta},indent=4))
+    if creator.did: 
+        print(json.dumps(creator.info,indent=4))
 
     # actually make the sam definition and metacat dataset
     print ("------------------------")
@@ -330,6 +382,10 @@ if __name__ == "__main__":
         creator.makeSamDataset()
         print ("Try to make a metacat definition")
         creator.makeDataset()
+        #print ("creator.did",creator.did)
+        info = mc_client.get_dataset(creator.did)
+        print(json.dumps(info,indent=4))
+
     else:
         print ("this was just a test")
  
