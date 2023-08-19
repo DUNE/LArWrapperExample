@@ -50,10 +50,10 @@
 <p>Replaces CollectionCreator</p>
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">¶</a></h2>
-<p>CollectionCreatorClass is a python script/class that takes a json specification for a dataset and makes both metacat datasets and sam definitions from it.</p>
-<p>The query to create the dataset is the and of the keys in the json file, with some additional qualifiers.  They include the ability to add selections on the time range  and runs for the files and the addition of a tag so that you can version your datasets (for example as the Creator code changes).</p>
+<p><cite>CollectionCreatorClass</cite> is a python script/class that takes a <cite>json</cite> specification for a dataset and makes both metacat datasets and sam definitions from it.</p>
+<p>The query to create the dataset is the <cite>AND</cite> of the keys in the json file, with some additional qualifiers.  They include the ability to add selections on the time range  and runs and the addition of a tag so that you can version your datasets (for example as the Creator code changes).</p>
 <p>samweb definitions are created with a name generated from the flags given in the json and command line.  They grow automatically as new fields meet the query criteria.</p>
-<p>metacat datasets are created but do not grow unless you rerun the CollectionCreator code with the –did argumennt.</p>
+<p>metacat datasets are created but do not grow unless you rerun the <cite>CollectionCreatorClass</cite> code with the <cite>–did</cite> argumennt.</p>
 <p>The <cite>–did</cite> argument pulls the stored query from the pre-existing dataset and adds files matching that query.</p>
 <p>metacat datasets also contain the query used to make them and a metadata field that contains the items used to make the dataset query.</p>
 </div>
@@ -75,9 +75,9 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="example-configuration-file">
-<h2>Example configuration file<a class="headerlink" href="#example-configuration-file" title="Permalink to this heading">¶</a></h2>
-<p>Example dataset configuration json files are in directory datasets and look like:</p>
+<div class="section" id="example-configuration-files">
+<h2>Example configuration files<a class="headerlink" href="#example-configuration-files" title="Permalink to this heading">¶</a></h2>
+<p>Example dataset configuration json files are in directory <cite>datasets</cite> and look like:</p>
 <div class="section" id="for-simulation">
 <h3>For simulation<a class="headerlink" href="#for-simulation" title="Permalink to this heading">¶</a></h3>
 <p><cite>datasets/mctest.json</cite></p>
@@ -121,7 +121,7 @@
 <h3>Special tags:<a class="headerlink" href="#special-tags" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
 <li><p>Tags with “.” in them are normal metacat tags and are anded together to make the query.</p></li>
-<li><p>Tags such as <cite>max_time</cite>, <cite>min_time</cite> and <cite>runs</cite> have special metacat syntax so are flagged by the absence of a “.”.</p></li>
+<li><p>metacat fields such as <cite>max_time</cite>, <cite>min_time</cite> and <cite>runs</cite> have special metacat syntax so are flagged by the absence of a “.” and then interpreted by the script.</p></li>
 <li><p>Special dataset tags include a <cite>defname</cite> template that allows you to build the dataset name from fields and a special tag <cite>deftag</cite>,</p></li>
 <li><p>There is a <cite>description</cite> tag that allows you to describe your dataset.</p></li>
 </ul>
@@ -134,9 +134,10 @@
 <ul class="simple">
 <li><p>take metacat metadata from a file</p></li>
 <li><p>strip out the selections that are not common to all files in the dataset</p></li>
-<li><p>store in a datasets directory</p></li>
-<li><p>run CollectionCreator as above</p></li>
-<li><p>the deftag argument allows you to test/make new versions</p></li>
+<li><p>add a description, a name format and a deftag</p></li>
+<li><p>store in new json file</p></li>
+<li><p>run CollectionCreatorClass</p></li>
+<li><p>the <cite>–test</cite> argument allows you to test without actually doing anything</p></li>
 </ul>
 </div></blockquote>
 <p>The command</p>
@@ -147,18 +148,61 @@
 <p><cite>schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7</cite></p>
 <p>which you can find at:</p>
 <p><a class="reference external" href="https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&amp;name=detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7">https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&amp;name=detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7</a></p>
-<p>. code-block:</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">CollectionCreatorClass</span> <span class="o">--</span><span class="n">json</span><span class="o">=</span><span class="n">datasets</span><span class="o">/</span><span class="n">mctest</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
-<p>does similar for mc sample.</p>
+<p>does similar for an mc sample and makes</p>
+<p><cite>schellma:mc.fardet-hd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nutau_dune10kt_1x2x6.fcl.testme7</cite></p>
+<p><a class="reference external" href="https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&amp;name=mc.fardet-hd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nutau_dune10kt_1x2x6.fcl.testme7">https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&amp;name=mc.fardet-hd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nutau_dune10kt_1x2x6.fcl.testme7</a></p>
 </div>
 <div class="section" id="adding-to-datasets">
 <h2>Adding to datasets<a class="headerlink" href="#adding-to-datasets" title="Permalink to this heading">¶</a></h2>
 <p>Metacat does not grow datasets, so if you want to add files to a dataset as files arrive you can reuse the original query using the <cite>–did</cite> argument.</p>
-<p>. code-block:</p>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>python -m CollectionCreatorClass --did=`schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7`
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">CollectionCreatorClass</span> <span class="o">--</span><span class="n">did</span><span class="o">=</span><span class="n">schellma</span><span class="p">:</span><span class="n">detector</span><span class="o">.</span><span class="n">protodune</span><span class="o">-</span><span class="n">sp</span><span class="o">.</span><span class="n">PDSPProd4</span><span class="o">.</span><span class="n">full</span><span class="o">-</span><span class="n">reconstructed</span><span class="o">.</span><span class="n">physics</span><span class="mf">.2021</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mf">03.2022</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mf">03.</span><span class="n">testme7</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="inspecting-and-finding-datasets-using-the-dataset-metadata-you-created">
+<h2>Inspecting and finding datasets using the dataset metadata you created<a class="headerlink" href="#inspecting-and-finding-datasets-using-the-dataset-metadata-you-created" title="Permalink to this heading">¶</a></h2>
+<div class="section" id="finding">
+<h3>Finding<a class="headerlink" href="#finding" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">metacat</span> <span class="n">query</span> <span class="n">datasets</span> <span class="n">matching</span> <span class="n">schellma</span><span class="p">:</span><span class="o">*</span> <span class="n">having</span> <span class="n">datasetpar</span><span class="o">.</span><span class="n">deftag</span><span class="o">=</span><span class="n">testme7</span>
+</pre></div>
+</div>
+<p>finds all the datasets in namespace <cite>schellma</cite> that have <cite>deftag</cite> <cite>testme7</cite>.  You can search for any of the other parameters.</p>
+</div>
+<div class="section" id="inspecting">
+<h3>Inspecting<a class="headerlink" href="#inspecting" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">metacat</span> <span class="n">dataset</span> <span class="n">show</span> <span class="n">schellma</span><span class="p">:</span><span class="n">mc</span><span class="o">.</span><span class="n">fardet</span><span class="o">-</span><span class="n">hd</span><span class="o">.</span><span class="n">fd_mc_2023a</span><span class="o">.</span><span class="n">v09_75_03d00</span><span class="o">.</span><span class="n">hit</span><span class="o">-</span><span class="n">reconstructed</span><span class="o">.</span><span class="n">prodgenie_nutau_dune10kt_1x2x6</span><span class="o">.</span><span class="n">fcl</span><span class="o">.</span><span class="n">testme7</span>
+</pre></div>
+</div>
+<p>produces</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">Namespace</span><span class="p">:</span>             <span class="n">schellma</span>
+<span class="n">Name</span><span class="p">:</span>                  <span class="n">mc</span><span class="o">.</span><span class="n">fardet</span><span class="o">-</span><span class="n">hd</span><span class="o">.</span><span class="n">fd_mc_2023a</span><span class="o">.</span><span class="n">v09_75_03d00</span><span class="o">.</span><span class="n">hit</span><span class="o">-</span><span class="n">reconstructed</span><span class="o">.</span><span class="n">prodgenie_nutau_dune10kt_1x2x6</span><span class="o">.</span><span class="n">fcl</span><span class="o">.</span><span class="n">testme7</span>
+<span class="n">Description</span><span class="p">:</span>           <span class="n">mc</span> <span class="n">files</span> <span class="kn">from</span> <span class="nn">fd_mc_2023a</span>
+<span class="n">Creator</span><span class="p">:</span>               <span class="n">schellma</span>
+<span class="n">Created</span> <span class="n">at</span><span class="p">:</span>            <span class="mi">2023</span><span class="o">-</span><span class="mi">08</span><span class="o">-</span><span class="mi">19</span> <span class="mi">22</span><span class="p">:</span><span class="mi">37</span><span class="p">:</span><span class="mi">32</span> <span class="n">UTC</span>
+<span class="n">Estimated</span> <span class="n">file</span> <span class="n">count</span><span class="p">:</span>  <span class="mi">20464</span>
+<span class="n">Restricted</span><span class="p">:</span>            <span class="n">no</span>
+<span class="n">Metadata</span><span class="p">:</span>
+<span class="p">{</span>
+    <span class="s2">&quot;core.application.version&quot;</span><span class="p">:</span> <span class="s2">&quot;v09_75_03d00&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;core.data_tier&quot;</span><span class="p">:</span> <span class="s2">&quot;hit-reconstructed&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;core.file_type&quot;</span><span class="p">:</span> <span class="s2">&quot;mc&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;core.run_type&quot;</span><span class="p">:</span> <span class="s2">&quot;fardet-hd&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;datasetpar.defname&quot;</span><span class="p">:</span> <span class="s2">&quot;</span><span class="si">%c</span><span class="s2">ore.file_type</span><span class="si">%c</span><span class="s2">ore.run_type</span><span class="si">%d</span><span class="s2">une.campaign</span><span class="si">%c</span><span class="s2">ore.application.version</span><span class="si">%c</span><span class="s2">ore.data_tier</span><span class="si">%d</span><span class="s2">une_mc.gen_fcl_filename</span><span class="si">%d</span><span class="s2">eftag&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;datasetpar.defnamespace&quot;</span><span class="p">:</span> <span class="s2">&quot;schellma&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;datasetpar.deftag&quot;</span><span class="p">:</span> <span class="s2">&quot;testme7&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;datasetpar.ordered&quot;</span><span class="p">:</span> <span class="n">true</span><span class="p">,</span>
+    <span class="s2">&quot;datasetpar.query&quot;</span><span class="p">:</span> <span class="s2">&quot;files where core.application.version=v09_75_03d00 and core.data_tier=&#39;hit-reconstructed&#39; and core.file_type=mc and core.run_type=&#39;fardet-hd&#39; and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nutau_dune10kt_1x2x6.fcl ordered &quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dune.campaign&quot;</span><span class="p">:</span> <span class="s2">&quot;fd_mc_2023a&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dune.requestid&quot;</span><span class="p">:</span> <span class="s2">&quot;ritm1780305&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dune_mc.beam_polarity&quot;</span><span class="p">:</span> <span class="s2">&quot;fhc&quot;</span><span class="p">,</span>
+    <span class="s2">&quot;dune_mc.gen_fcl_filename&quot;</span><span class="p">:</span> <span class="s2">&quot;prodgenie_nutau_dune10kt_1x2x6.fcl&quot;</span>
+<span class="p">}</span>
+<span class="n">Constraints</span><span class="p">:</span>
+</pre></div>
+</div>
 </div>
 </div>
 </div>
@@ -176,7 +220,7 @@
 <li><a class="reference internal" href="#">CollectionCreatorClass</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
 <li><a class="reference internal" href="#collectioncreatorclass-arguments">CollectionCreatorClass arguments</a></li>
-<li><a class="reference internal" href="#example-configuration-file">Example configuration file</a><ul>
+<li><a class="reference internal" href="#example-configuration-files">Example configuration files</a><ul>
 <li><a class="reference internal" href="#for-simulation">For simulation</a></li>
 <li><a class="reference internal" href="#for-data">For data:</a></li>
 <li><a class="reference internal" href="#special-tags">Special tags:</a></li>
@@ -184,6 +228,11 @@
 </li>
 <li><a class="reference internal" href="#making-datasets">Making datasets</a></li>
 <li><a class="reference internal" href="#adding-to-datasets">Adding to datasets</a></li>
+<li><a class="reference internal" href="#inspecting-and-finding-datasets-using-the-dataset-metadata-you-created">Inspecting and finding datasets using the dataset metadata you created</a><ul>
+<li><a class="reference internal" href="#finding">Finding</a></li>
+<li><a class="reference internal" href="#inspecting">Inspecting</a></li>
+</ul>
+</li>
 </ul>
 </li>
 </ul>

@@ -7,13 +7,13 @@ Replaces CollectionCreator
 Description
 -----------
 
-CollectionCreatorClass is a python script/class that takes a json specification for a dataset and makes both metacat datasets and sam definitions from it.
+`CollectionCreatorClass` is a python script/class that takes a `json` specification for a dataset and makes both metacat datasets and sam definitions from it.
 
-The query to create the dataset is the and of the keys in the json file, with some additional qualifiers.  They include the ability to add selections on the time range  and runs for the files and the addition of a tag so that you can version your datasets (for example as the Creator code changes).
+The query to create the dataset is the `AND` of the keys in the json file, with some additional qualifiers.  They include the ability to add selections on the time range  and runs and the addition of a tag so that you can version your datasets (for example as the Creator code changes).
 
 samweb definitions are created with a name generated from the flags given in the json and command line.  They grow automatically as new fields meet the query criteria.
 
-metacat datasets are created but do not grow unless you rerun the CollectionCreator code with the --did argumennt.  
+metacat datasets are created but do not grow unless you rerun the `CollectionCreatorClass` code with the `--did` argumennt.  
 
 The `--did` argument pulls the stored query from the pre-existing dataset and adds files matching that query. 
 
@@ -39,10 +39,10 @@ CollectionCreatorClass arguments
         --did DID             <namespace>:<name> for existing dataset to append to
         --test [TEST]         do in test mode
 
-Example configuration file
---------------------------
+Example configuration files
+---------------------------
 
-Example dataset configuration json files are in directory datasets and look like:
+Example dataset configuration json files are in directory `datasets` and look like:
 
 For simulation
 ++++++++++++++
@@ -92,7 +92,7 @@ Special tags:
 
 - Tags with "." in them are normal metacat tags and are anded together to make the query.  
 
-- Tags such as `max_time`, `min_time` and `runs` have special metacat syntax so are flagged by the absence of a ".". 
+- metacat fields such as `max_time`, `min_time` and `runs` have special metacat syntax so are flagged by the absence of a "." and then interpreted by the script.
 
 - Special dataset tags include a `defname` template that allows you to build the dataset name from fields and a special tag `deftag`,
 
@@ -107,11 +107,13 @@ Making datasets
 
     - strip out the selections that are not common to all files in the dataset
 
-    - store in a datasets directory
+    - add a description, a name format and a deftag
 
-    - run CollectionCreator as above
+    - store in new json file 
 
-    - the deftag argument allows you to test/make new versions
+    - run CollectionCreatorClass 
+
+    - the `--test` argument allows you to test without actually doing anything
 
 The command 
 
@@ -127,18 +129,70 @@ which you can find at:
 
 https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&name=detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7
 
-. code-block::
+.. code-block::
 
     python -m CollectionCreatorClass --json=datasets/mctest.json
 
-does similar for mc sample.
+does similar for an mc sample and makes
+
+`schellma:mc.fardet-hd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nutau_dune10kt_1x2x6.fcl.testme7`
+
+https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&name=mc.fardet-hd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nutau_dune10kt_1x2x6.fcl.testme7
 
 Adding to datasets
 ------------------
 
 Metacat does not grow datasets, so if you want to add files to a dataset as files arrive you can reuse the original query using the `--did` argument.
 
-. code-block::
+.. code-block::
     
-    python -m CollectionCreatorClass --did=`schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7`
+    python -m CollectionCreatorClass --did=schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7
 
+Inspecting and finding datasets using the dataset metadata you created
+----------------------------------------------------------------------
+
+Finding
++++++++
+
+.. code-block:: 
+
+    metacat query datasets matching schellma:* having datasetpar.deftag=testme7
+
+finds all the datasets in namespace `schellma` that have `deftag` `testme7`.  You can search for any of the other parameters. 
+
+
+Inspecting
+++++++++++
+
+.. code-block:: 
+
+    metacat dataset show schellma:mc.fardet-hd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nutau_dune10kt_1x2x6.fcl.testme7
+
+produces
+
+.. code-block:: 
+
+    Namespace:             schellma
+    Name:                  mc.fardet-hd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nutau_dune10kt_1x2x6.fcl.testme7
+    Description:           mc files from fd_mc_2023a
+    Creator:               schellma
+    Created at:            2023-08-19 22:37:32 UTC
+    Estimated file count:  20464 
+    Restricted:            no
+    Metadata:
+    {
+        "core.application.version": "v09_75_03d00",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "core.run_type": "fardet-hd",
+        "datasetpar.defname": "%core.file_type%core.run_type%dune.campaign%core.application.version%core.data_tier%dune_mc.gen_fcl_filename%deftag",
+        "datasetpar.defnamespace": "schellma",
+        "datasetpar.deftag": "testme7",
+        "datasetpar.ordered": true,
+        "datasetpar.query": "files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nutau_dune10kt_1x2x6.fcl ordered ",
+        "dune.campaign": "fd_mc_2023a",
+        "dune.requestid": "ritm1780305",
+        "dune_mc.beam_polarity": "fhc",
+        "dune_mc.gen_fcl_filename": "prodgenie_nutau_dune10kt_1x2x6.fcl"
+    }
+    Constraints:
