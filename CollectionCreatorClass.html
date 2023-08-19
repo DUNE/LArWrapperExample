@@ -51,51 +51,78 @@
 <div class="section" id="description">
 <h2>Description<a class="headerlink" href="#description" title="Permalink to this heading">¶</a></h2>
 <p>CollectionCreatorClass is a python script/class that takes a json specification for a dataset and makes both metacat datasets and sam definitions from it.</p>
-<p>The query to create the dataset is the and of the keys in the json file, with some additional qualifiers.  They include the ability to add selections on the time range for the files and the addition of a tag so that you can version your datasets (for example as the Creator code changes).</p>
+<p>The query to create the dataset is the and of the keys in the json file, with some additional qualifiers.  They include the ability to add selections on the time range  and runs for the files and the addition of a tag so that you can version your datasets (for example as the Creator code changes).</p>
 <p>samweb definitions are created with a name generated from the flags given in the json and command line.  They grow automatically as new fields meet the query criteria.</p>
-<p>metacat datasets are created but do not grow unless you rerun the CollectionCreator code with the same json file and deftag arguments. <em>[need to add an option that takes the dataset name and grows that from its stored query.]</em></p>
+<p>metacat datasets are created but do not grow unless you rerun the CollectionCreator code with the –did argumennt.</p>
+<p>The <cite>–did</cite> argument pulls the stored query from the pre-existing dataset and adds files matching that query.</p>
 <p>metacat datasets also contain the query used to make them and a metadata field that contains the items used to make the dataset query.</p>
 </div>
 <div class="section" id="collectioncreatorclass-arguments">
 <h2>CollectionCreatorClass arguments<a class="headerlink" href="#collectioncreatorclass-arguments" title="Permalink to this heading">¶</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>python<span class="w"> </span>python/CollectionCreatorClass.py<span class="w"> </span>--help
-usage:<span class="w"> </span>CollectionCreatorClass.py<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--namespace<span class="w"> </span>NAMESPACE<span class="o">]</span>
-<span class="w">                            </span><span class="o">[</span>--min_time<span class="w"> </span>MIN_TIME<span class="o">]</span><span class="w"> </span><span class="o">[</span>--max_time<span class="w"> </span>MAX_TIME<span class="o">]</span>
-<span class="w">                            </span><span class="o">[</span>--user<span class="w"> </span>USER<span class="o">]</span><span class="w"> </span><span class="o">[</span>--ordered<span class="w"> </span><span class="o">[</span>ORDERED<span class="o">]]</span>
-<span class="w">                            </span><span class="o">[</span>--limit<span class="w"> </span>LIMIT<span class="o">]</span><span class="w"> </span><span class="o">[</span>--skip<span class="w"> </span>SKIP<span class="o">]</span><span class="w"> </span><span class="o">[</span>--json<span class="w"> </span>JSON<span class="o">]</span>
-<span class="w">                            </span><span class="o">[</span>--test<span class="w"> </span><span class="o">[</span>TEST<span class="o">]]</span>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>usage:<span class="w"> </span>CollectionCreatorClass.py<span class="w"> </span><span class="o">[</span>-h<span class="o">]</span><span class="w"> </span><span class="o">[</span>--namespace<span class="w"> </span>NAMESPACE<span class="o">]</span><span class="w"> </span><span class="o">[</span>--user<span class="w"> </span>USER<span class="o">]</span>
+<span class="w">                             </span><span class="o">[</span>--ordered<span class="w"> </span><span class="o">[</span>ORDERED<span class="o">]]</span><span class="w"> </span><span class="o">[</span>--json<span class="w"> </span>JSON<span class="o">]</span>
+<span class="w">                             </span><span class="o">[</span>--did<span class="w"> </span>DID<span class="o">]</span><span class="w"> </span><span class="o">[</span>--test<span class="w"> </span><span class="o">[</span>TEST<span class="o">]]</span>
 
-optional<span class="w"> </span>arguments:
--h,<span class="w"> </span>--help<span class="w">            </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
---namespace<span class="w"> </span>NAMESPACE
+<span class="w">    </span>optional<span class="w"> </span>arguments:
+<span class="w">    </span>-h,<span class="w"> </span>--help<span class="w">            </span>show<span class="w"> </span>this<span class="w"> </span><span class="nb">help</span><span class="w"> </span>message<span class="w"> </span>and<span class="w"> </span><span class="nb">exit</span>
+<span class="w">    </span>--namespace<span class="w"> </span>NAMESPACE
 <span class="w">                        </span>metacat<span class="w"> </span>namespace<span class="w"> </span><span class="k">for</span><span class="w"> </span>dataset
---time_var<span class="w"> </span>TIME_VAR<span class="w">   </span>creation<span class="w"> </span><span class="nb">time</span><span class="w"> </span>to<span class="w"> </span><span class="k">select</span><span class="w"> </span><span class="o">[</span><span class="s1">&#39;created&#39;</span><span class="o">]</span><span class="w"> </span>or<span class="w"> </span><span class="s1">&#39;raw&#39;</span><span class="o">]</span>
---min_time<span class="w"> </span>MIN_TIME<span class="w">   </span>min<span class="w"> </span><span class="nb">time</span><span class="w"> </span>range<span class="w"> </span><span class="o">(</span>inclusive<span class="o">)</span><span class="w"> </span>YYYY-MM-DD<span class="w"> </span>UTC
---max_time<span class="w"> </span>MAX_TIME<span class="w">   </span>end<span class="w"> </span><span class="nb">time</span><span class="w"> </span>range<span class="w"> </span><span class="o">(</span>inclusive<span class="o">)</span><span class="w"> </span>YYYY-MM-DD<span class="w"> </span>UTC
---user<span class="w"> </span>USER<span class="w">           </span>user<span class="w"> </span>name
---ordered<span class="w"> </span><span class="o">[</span>ORDERED<span class="o">]</span><span class="w">   </span><span class="k">return</span><span class="w"> </span>list<span class="w"> </span>ordered<span class="w"> </span><span class="k">for</span><span class="w"> </span>reproducibility
---limit<span class="w"> </span>LIMIT<span class="w">         </span>limit<span class="w"> </span>on<span class="w"> </span><span class="c1"># to return</span>
---skip<span class="w"> </span>SKIP<span class="w">           </span>skip<span class="w"> </span>N<span class="w"> </span>files
---json<span class="w"> </span>JSON<span class="w">           </span>filename<span class="w"> </span><span class="k">for</span><span class="w"> </span>a<span class="w"> </span>json<span class="w"> </span>list<span class="w"> </span>of<span class="w"> </span>parameters<span class="w"> </span>to<span class="w"> </span>and
---deftag<span class="w"> </span>DEFTAG<span class="w">       </span>tag<span class="w"> </span>to<span class="w"> </span>distinguish<span class="w"> </span>different<span class="w"> </span>runs<span class="w"> </span>of<span class="w"> </span>this<span class="w"> </span>script,<span class="w"> </span>default<span class="w"> </span>is<span class="w"> </span><span class="nb">test</span>
---test<span class="w"> </span><span class="o">[</span>TEST<span class="o">]</span><span class="w">         </span><span class="k">do</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">test</span><span class="w"> </span>mode<span class="w"> </span>-<span class="w"> </span>does<span class="w"> </span>not<span class="w"> </span>actually<span class="w"> </span>make<span class="w"> </span>a<span class="w"> </span><span class="nb">set</span><span class="w"> </span>but<span class="w"> </span>prints<span class="w"> </span>out<span class="w"> </span>what<span class="w"> </span>you<span class="w"> </span>would<span class="w"> </span>get
+<span class="w">    </span>--user<span class="w"> </span>USER<span class="w">           </span>user<span class="w"> </span>name
+<span class="w">    </span>--ordered<span class="w"> </span><span class="o">[</span>ORDERED<span class="o">]</span><span class="w">   </span><span class="k">return</span><span class="w"> </span>list<span class="w"> </span>ordered<span class="w"> </span><span class="k">for</span><span class="w"> </span>reproducibility
+<span class="w">    </span>--json<span class="w"> </span>JSON<span class="w">           </span>filename<span class="w"> </span><span class="k">for</span><span class="w"> </span>a<span class="w"> </span>json<span class="w"> </span>list<span class="w"> </span>of<span class="w"> </span>parameters<span class="w"> </span>to<span class="w"> </span>and
+<span class="w">    </span>--did<span class="w"> </span>DID<span class="w">             </span>&lt;namespace&gt;:&lt;name&gt;<span class="w"> </span><span class="k">for</span><span class="w"> </span>existing<span class="w"> </span>dataset<span class="w"> </span>to<span class="w"> </span>append<span class="w"> </span>to
+<span class="w">    </span>--test<span class="w"> </span><span class="o">[</span>TEST<span class="o">]</span><span class="w">         </span><span class="k">do</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">test</span><span class="w"> </span>mode
 </pre></div>
 </div>
 </div>
 <div class="section" id="example-configuration-file">
 <h2>Example configuration file<a class="headerlink" href="#example-configuration-file" title="Permalink to this heading">¶</a></h2>
 <p>Example dataset configuration json files are in directory datasets and look like:</p>
+<div class="section" id="for-simulation">
+<h3>For simulation<a class="headerlink" href="#for-simulation" title="Permalink to this heading">¶</a></h3>
 <div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
-<span class="w">        </span><span class="nt">&quot;core.application.version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;v09_75_03d00&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;core.data_tier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hit-reconstructed&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;core.file_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mc&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;core.run_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fardet-hd&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;dune.campaign&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fd_mc_2023a&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;dune.requestid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ritm1780305&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;dune_mc.beam_polarity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fhc&quot;</span><span class="p">,</span>
-<span class="w">        </span><span class="nt">&quot;dune_mc.gen_fcl_filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prodgenie_nutau_dune10kt_1x2x6.fcl&quot;</span>
+<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;mc files for HD&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;defnamespace&quot;</span><span class="p">:</span><span class="s2">&quot;schellma&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;defname&quot;</span><span class="p">:</span><span class="s2">&quot;%core.file_type%core.run_type%dune.campaign%core.application.version%core.data_tier%dune_mc.gen_fcl_filename%deftag&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;core.application.version&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;v09_75_03d00&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;core.data_tier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;hit-reconstructed&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;core.file_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mc&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;core.run_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fardet-hd&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;dune.campaign&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fd_mc_2023a&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;dune.requestid&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ritm1780305&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;dune_mc.beam_polarity&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;fhc&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;dune_mc.gen_fcl_filename&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;prodgenie_nutau_dune10kt_1x2x6.fcl&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;deftag&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;testme&quot;</span>
 <span class="p">}</span>
 </pre></div>
+</div>
+</div>
+<div class="section" id="for-data">
+<h3>For data:<a class="headerlink" href="#for-data" title="Permalink to this heading">¶</a></h3>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;test of data with runs&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;defname&quot;</span><span class="p">:</span><span class="s2">&quot;core.file_type%core.run_type%dune.campaign%core.data_tier%core.data_stream%min_time%max_time%deftag&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;core.run_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;protodune-sp&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;core.file_type&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;detector&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;core.data_tier&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;full-reconstructed&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;core.data_stream&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;physics&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;dune.campaign&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;PDSPProd4&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;min_time&quot;</span><span class="p">:</span><span class="s2">&quot;2021-01-03&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;max_time&quot;</span><span class="p">:</span><span class="s2">&quot;2022-10-03&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;runs&quot;</span><span class="p">:</span><span class="s2">&quot;5141:5143&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;deftag&quot;</span><span class="p">:</span><span class="s2">&quot;testme6&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div>
+<div class="section" id="special-tags">
+<h3>Special tags:<a class="headerlink" href="#special-tags" title="Permalink to this heading">¶</a></h3>
+<ul class="simple">
+<li><p>Tags with “.” in them are normal metacat tags and are anded together to make the query.</p></li>
+<li><p>Tags such as <cite>max_time</cite>, <cite>min_time</cite> and <cite>runs</cite> have special metacat syntax so are flagged by the absence of a “.”.</p></li>
+<li><p>Special dataset tags include a <cite>defname</cite> template that allows you to build the dataset name from fields and a special tag <cite>deftag</cite>,</p></li>
+<li><p>There is a <cite>description</cite> tag that allows you to describe your dataset.</p></li>
+</ul>
 </div>
 </div>
 <div class="section" id="making-datasets">
@@ -134,7 +161,12 @@ optional<span class="w"> </span>arguments:
 <li><a class="reference internal" href="#">CollectionCreatorClass</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
 <li><a class="reference internal" href="#collectioncreatorclass-arguments">CollectionCreatorClass arguments</a></li>
-<li><a class="reference internal" href="#example-configuration-file">Example configuration file</a></li>
+<li><a class="reference internal" href="#example-configuration-file">Example configuration file</a><ul>
+<li><a class="reference internal" href="#for-simulation">For simulation</a></li>
+<li><a class="reference internal" href="#for-data">For data:</a></li>
+<li><a class="reference internal" href="#special-tags">Special tags:</a></li>
+</ul>
+</li>
 <li><a class="reference internal" href="#making-datasets">Making datasets</a></li>
 </ul>
 </li>
