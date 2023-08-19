@@ -27,10 +27,13 @@ from metacat.webapi import MetaCatClient
 
 class CollectionCreatorClass:
 
-    # make a version that takes a template instead of this list
+    ## create a name from template in json file. If none exists use a list of fields. 
     def make_name(self):
 
         if self.did != None:
+            names = self.did.split(":")
+            self.defname = names[1]
+            self.namespace = names[0]
             return
 
         if "defname" in self.meta.keys():
@@ -51,6 +54,7 @@ class CollectionCreatorClass:
                     sys.exit(1)
             
             template = template.replace("%",".")
+            if template[0] == ".": template = template[1:]
             if DEBUG:  print ("draft name",template)
             self.defname = template
 
@@ -76,7 +80,8 @@ class CollectionCreatorClass:
             print ("name will be",name)
             self.defname = name
 
-    # make a metacat query from the json inputs
+    ## make a metacat query from the AND of the json inputs
+
     def makequery(self):
 
         # skip if already set (generally by did)
@@ -100,11 +105,18 @@ class CollectionCreatorClass:
  
             query += " "+item+"="+str(val)
             query += " and"
-            if (DEBUG): print(query)
+            
         # strip off the last "and"
         query = query[:-4]
         if (DEBUG): print (query)
     
+        if "runs" in self.meta:
+            runs = self.meta["runs"]
+            if ":" not in runs:
+                runs = "(%s)"%runs
+            rquery = " and core.runs[any] in %s"%runs
+             
+            query += rquery
 
         # do time range - takes some work as there are two possibilities
 
@@ -139,48 +151,50 @@ class CollectionCreatorClass:
 
         if self.meta["ordered"]: query += " ordered "
 
+        if (DEBUG): print(query)
         self.metaquery = query
         
+
+    ## convert a metacat query into a sam query
+
     def make_sam_query(self):
         
-
+        if self.metaquery == None:
+            print (" no metacat query to make sam query from")
+            sys.exit(1)
         s = self.metaquery.split("where")
         if len(s) < 2:
             return None
         r = s[1]
+        # convert some fields
         r = r.replace("core.","")
         r = r.replace("dune_mc.","DUNE_MC.")
         r = r.replace("dune.","DUNE.")
         r = r.replace("application.","")
-    
+        r = r.replace("runs[any] in","run_number")
+        r = r.replace(":","-")
         r = r.replace("'","")
         r = r.replace("ordered","")
         r = r.replace("created_timestamp","create_date")
         r = r.replace("limit "," with limit ")
         r = " availability:anylocation and " + r
-        if ("skip" in r): print ("skip doesn't work yet in sam")
+        # if ("skip" in r): print ("skip doesn't work yet in sam")
         print ("samweb list-files --summary \"", r, "\"")
         
         self.samquery = r
 
+    ## parse sys.argv and either get existing query or read json and make a new query/dataset
     def setup(self):
             parser = ap()
             
             parser.add_argument('--namespace',type=str,default=os.getenv("USER"),help="metacat namespace for dataset")
-
-            #parser.add_argument('--min_time',type=str,help='min time range (inclusive) YYYY-MM-DD UTC')
-            #parser.add_argument('--max_time',type=str,help='end time range (inclusive) YYYY-MM-DD UTC')
-            
             parser.add_argument('--user', type=str, help='user name')
             parser.add_argument('--ordered',default=True,const=True,nargs="?", help='return list ordered for reproducibility')
-            #parser.add_argument('--limit',type=int, help='limit on # to return')
-            #parser.add_argument('--skip',type=int, help='skip N files')
             parser.add_argument('--json',type=str,default=None, help='filename for a json list of parameters to and')
             parser.add_argument('--did',type=str,default=None,help="<namespace>:<name> for existing dataset to append to")
-            #parser.add_argument('--deftag',type=str,default="test",help='tag to distinguish different runs of this script, default is test')
-            parser.add_argument('--summary',default=False,const=True,nargs="?", help='print a summary')
             parser.add_argument('--test',type=bool,default=False,const=True,nargs="?",help='do in test mode')
-            XtraTags = []#"ordered","limit","skip"]
+            XtraTags = []
+
             args = parser.parse_args()
             if DEBUG: print (args)
 
@@ -188,13 +202,13 @@ class CollectionCreatorClass:
 
             self.namespace = args.namespace
 
-            # check if using prexisting did
+            # check if using prexisting did - if so reuse existing query
 
             if args.json == None:
                 if args.did == None:
                     print ("no json or did file, in future you will be able to append to a dataset directly")
                     sys.exit(1)
-                else:  # yes this is pre-existing
+                else:  # yes this is pre-existing dataset
                     self.did = args.did
                     stuff = self.did.split(":")
                     if DEBUG: print ("did",stuff)
@@ -214,9 +228,10 @@ class CollectionCreatorClass:
                         self.metaquery = info["metadata"]["datasetpar.query"]
                     else:
                             print ("could not find a query in the dataset metadata for ", self.did, info)
+                            print ("this only works for datasets made with CollectionCreatorClass")
                             sys.exit(1)
 
-                self.meta = None
+                self.meta = None  # tell program you did not read json file
                     
     
             else:
@@ -231,7 +246,7 @@ class CollectionCreatorClass:
                     Tags = json.load(f)
                 for x in required:
                     if x not in Tags:
-                        print("This constraint isrequired for all DUNE data", x)
+                        print("This constraint is required for all DUNE data", x)
                         sys.exit(1)
                 if args.ordered:
                     Tags["ordered"]=True
@@ -240,12 +255,12 @@ class CollectionCreatorClass:
                 if DEBUG: print (Tags)
                 self.metaquery = None  # fill in later
                 self.meta = Tags
-                self.did = None
+                self.did = None # tell program you got info from json
                 
             self.test = args.test      
             
+    ## just a nice reformatting of results
 
-    
     def printSummary(self,results):
         nfiles = total_size = 0
         for f in results:
@@ -269,9 +284,17 @@ class CollectionCreatorClass:
             n = total_size
         print("Total size:  ", "%d (%.3f %s)" % (total_size, n, unit))
     
+    ## use the query from makequery to make a metacat dataset
+
     def makeDataset(self):
+        if self.metaquery == None:
+             print ("ERROR: need to run make_query or supply an input dataset first")
+             sys.exit(1)
+
         if DEBUG: print ("query",self.metaquery)
         
+        # already have a dataset - just want to update it
+
         if self.did != None:
             if not self.test:
                 print ("add files to existing dataset", self.did)
@@ -279,13 +302,15 @@ class CollectionCreatorClass:
             else:
                 print ("this was just a test with an existing dataset")
             return
+        
+        # need to make dataset metadata from json input in self.meta
 
         cleanmeta = self.meta.copy()
         # move dataset creation flags into dataset....
         for x in self.meta.keys():
-            if not "." in x:
+            if not "." in x: # we have some extra parameters - need to store properly
                 if DEBUG: print ("rename search params that are not . type")
-                if x == "description":  # this goes in the real description field
+                if x == "description":  # this goes in the real description field so skip
                     if x in cleanmeta:cleanmeta.pop(x)
                     continue
                 cleanmeta["datasetpar."+x]=self.meta[x]
@@ -302,15 +327,14 @@ class CollectionCreatorClass:
             
         if DEBUG: print (cleanmeta)
 
+        # store the query used to make this dataset for future reuse
         cleanmeta["datasetpar.query"] = self.metaquery
 
-
-        
         did = "%s:%s"%(self.namespace,self.defname)
         
         test= mc_client.get_dataset(did)
-        print ("look for an existing dataset",did)
 
+        print ("look for an existing dataset",did)
 
         if test == None:
                 print ("make a new dataset",did)
@@ -332,6 +356,8 @@ class CollectionCreatorClass:
                 #except:
                 #    print("metacat dataset addition failed - does it already exist?")
         
+    ## make a samweb dataset
+
     def makeSamDataset(self):
         # do some sam stuff
         defname=os.getenv("USER")+"_"+self.defname
@@ -350,33 +376,33 @@ class CollectionCreatorClass:
 if __name__ == "__main__":
     mc_client = MetaCatClient(os.getenv("METACAT_SERVER_URL"))
     creator = CollectionCreatorClass()
+    
     # read in command line args
     creator.setup()
+    
+    creator.make_name()
     # make metacat query
     creator.makequery() 
-
-    print (creator.metaquery)
-    # make up a name
-    creator.make_name()
-    print ("------------------------")
-    print ("list from samweb")
+    
+    print ("\n------------------------")
+    print ("samweb query")
     # make a sam query
     creator.make_sam_query()
-    
+   # print("samweb list-files --summary \"",creator.samquery,"\"\n")
     r = samweb.listFilesSummary(creator.samquery)
     print(r)
-    print ("------------------------")
-    print ("list from metacat")
+    print ("\n------------------------")
+    print ("metacat query")
     print("metacat query \"",creator.metaquery,"\"\n")
     query_files = list(mc_client.query(creator.metaquery))
     creator.printSummary(query_files)
-    
+    print ("\n dataset metadata")
     if creator.meta: print(json.dumps({"dataset.meta":creator.meta},indent=4))
     if creator.did: 
         print(json.dumps(creator.info,indent=4))
 
     # actually make the sam definition and metacat dataset
-    print ("------------------------")
+    print ("\n ------------------------")
     if not creator.test:
         print ("Try to make a samweb definition")
         creator.makeSamDataset()

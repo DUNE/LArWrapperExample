@@ -1,4 +1,5 @@
 {
+        "description":"mc files from fd_mc_2023a",
         "defnamespace":"schellma",
         "defname":"%core.file_type%core.run_type%dune.campaign%core.application.version%core.data_tier%dune_mc.gen_fcl_filename%deftag",
         "core.application.version": "v09_75_03d00",
