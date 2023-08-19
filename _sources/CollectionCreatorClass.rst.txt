@@ -47,6 +47,8 @@ Example dataset configuration json files are in directory datasets and look like
 For simulation
 ++++++++++++++
 
+`datasets/mctest.json`
+
 .. code-block:: json
 
     {
@@ -61,11 +63,13 @@ For simulation
         "dune.requestid": "ritm1780305",
         "dune_mc.beam_polarity": "fhc",
         "dune_mc.gen_fcl_filename": "prodgenie_nutau_dune10kt_1x2x6.fcl",
-        "deftag": "testme"
+        "deftag": "testme7"
     }   
 
 For data:
 +++++++++
+
+`datasets/pdtest.json`
 
 .. code-block:: json
 
@@ -80,7 +84,7 @@ For data:
         "min_time":"2021-01-03",
         "max_time":"2022-10-03",
         "runs":"5141:5143",
-        "deftag":"testme6"
+        "deftag":"testme7"
     }
 
 Special tags:
@@ -113,13 +117,28 @@ The command
 
 .. code-block::
     
-        python python/CollectionCreatorClass.py --json=datasets/fd_mc_2023a_prodgenie_nutau_dune10kt_1x2x6.json --deftag=v0
+    python -m CollectionCreatorClass --json=datasets/pdtest.json
 
 made a metacat dataset called:
 
-`schellma:fardet-hd__fd_mc_2023a__mc__hit-reconstructed__prodgenie_nutau_dune10kt_1x2x6.fcl__v09_75_03d00__v0`
+`schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7`
 
 which you can find at:
 
-https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&name=fardet-hd__fd_mc_2023a__mc__hit-reconstructed__prodgenie_nutau_dune10kt_1x2x6.fcl__v09_75_03d00__v0
+https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&name=detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7
+
+. code-block::
+
+    python -m CollectionCreatorClass --json=datasets/mctest.json
+
+does similar for mc sample.
+
+Adding to datasets
+------------------
+
+Metacat does not grow datasets, so if you want to add files to a dataset as files arrive you can reuse the original query using the `--did` argument.
+
+. code-block::
+    
+    python -m CollectionCreatorClass --did=`schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7`
 
