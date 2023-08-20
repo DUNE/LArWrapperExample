@@ -123,11 +123,11 @@ The command
 
 made a metacat dataset called:
 
-`schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7`
+`schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.5141-5143.2021-01-03.2022-10-03.testme7`
 
 which you can find at:
 
-https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&name=detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7
+https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&name=schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.5141-5143.2021-01-03.2022-10-03.testme7
 
 .. code-block::
 
@@ -142,7 +142,7 @@ https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&
 Adding to datasets
 ------------------
 
-Metacat does not grow datasets, so if you want to add files to a dataset as files arrive you can reuse the original query using the `--did` argument.
+`metacat` does not grow datasets automatically as `samweb` does, so if you want to add files to a dataset when new files arrive you can reuse the original query using the `--did` argument.  You can NOT do this by either never using the `--did` option or by using a date range in which case files created after a given date will not be added.
 
 .. code-block::
     

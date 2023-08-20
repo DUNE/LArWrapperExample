@@ -145,9 +145,9 @@
 </pre></div>
 </div>
 <p>made a metacat dataset called:</p>
-<p><cite>schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7</cite></p>
+<p><cite>schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.5141-5143.2021-01-03.2022-10-03.testme7</cite></p>
 <p>which you can find at:</p>
-<p><a class="reference external" href="https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&amp;name=detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7">https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&amp;name=detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7</a></p>
+<p><a class="reference external" href="https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&amp;name=schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.5141-5143.2021-01-03.2022-10-03.testme7">https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/dataset?namespace=schellma&amp;name=schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.5141-5143.2021-01-03.2022-10-03.testme7</a></p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">CollectionCreatorClass</span> <span class="o">--</span><span class="n">json</span><span class="o">=</span><span class="n">datasets</span><span class="o">/</span><span class="n">mctest</span><span class="o">.</span><span class="n">json</span>
 </pre></div>
 </div>
@@ -157,7 +157,7 @@
 </div>
 <div class="section" id="adding-to-datasets">
 <h2>Adding to datasets<a class="headerlink" href="#adding-to-datasets" title="Permalink to this heading">¶</a></h2>
-<p>Metacat does not grow datasets, so if you want to add files to a dataset as files arrive you can reuse the original query using the <cite>–did</cite> argument.</p>
+<p><cite>metacat</cite> does not grow datasets automatically as <cite>samweb</cite> does, so if you want to add files to a dataset when new files arrive you can reuse the original query using the <cite>–did</cite> argument.  You can NOT do this by either never using the <cite>–did</cite> option or by using a date range in which case files created after a given date will not be added.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">CollectionCreatorClass</span> <span class="o">--</span><span class="n">did</span><span class="o">=</span><span class="n">schellma</span><span class="p">:</span><span class="n">detector</span><span class="o">.</span><span class="n">protodune</span><span class="o">-</span><span class="n">sp</span><span class="o">.</span><span class="n">PDSPProd4</span><span class="o">.</span><span class="n">full</span><span class="o">-</span><span class="n">reconstructed</span><span class="o">.</span><span class="n">physics</span><span class="mf">.2021</span><span class="o">-</span><span class="mi">01</span><span class="o">-</span><span class="mf">03.2022</span><span class="o">-</span><span class="mi">10</span><span class="o">-</span><span class="mf">03.</span><span class="n">testme7</span>
 </pre></div>
 </div>
