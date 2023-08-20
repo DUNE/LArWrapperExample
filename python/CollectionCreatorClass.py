@@ -54,6 +54,7 @@ class CollectionCreatorClass:
                     sys.exit(1)
             
             template = template.replace("%",".")
+            template = template.replace(":","-") # protect against ":" for ranges
             if template[0] == ".": template = template[1:]
             if DEBUG:  print ("draft name",template)
             self.defname = template

@@ -1,6 +1,6 @@
 {
   "description":"test of description",
-  "defname":"core.file_type%core.run_type%dune.campaign%core.data_tier%core.data_stream%min_time%max_time%deftag",
+  "defname":"core.file_type%core.run_type%dune.campaign%core.data_tier%core.data_stream%runs%min_time%max_time%deftag",
   "core.run_type": "protodune-sp",
   "core.file_type": "detector",
   "core.data_tier": "full-reconstructed",
