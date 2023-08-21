@@ -35,29 +35,47 @@ class CollectionCreatorClass:
             self.defname = names[1]
             self.namespace = names[0]
             return
+        
+        ignore = ["description","defname","namespace","ordered"]
 
         if "defname" in self.meta.keys():
             template = self.meta["defname"]
             namekeys = template.split("%")
             if DEBUG: print (namekeys)
             if DEBUG: print (self.meta)
-            for x in namekeys:
-                if DEBUG: print (x)
-                if x == '': continue
-                if x in self.meta.keys():
+            for x in self.meta.keys():
+                if x in ignore: continue
+                extend = "%"+x
+                print ("extend",extend)
+                if extend in template:
                     if self.meta[x] == None:
                         template = template.replace(x,"none")
                     else:
-                        template = template.replace(x,self.meta[x])
+                        template = template.replace(extend,self.meta[x])
+                    continue
                 else:
-                    print ("asked for a string in the name that is not in the definition",x)
-                    sys.exit(1)
+                    print ("keyword ",x,"not in defname, are you sure?")
+            if "%" in template:
+                print ("unrecognized tag in defname",template)
+            
+            # for x in namekeys:
+            #     if DEBUG: print (x)
+            #     if x == '': continue
+            #     if x in self.meta.keys():
+            #         if self.meta[x] == None:
+            #             template = template.replace(x,"none")
+            #         else:
+            #             template = template.replace(x,self.meta[x])
+            #     else:
+            #         print ("asked for a string in the name that is not in the definition",x)
+            #         sys.exit(1)
             
             template = template.replace("%",".")
             template = template.replace(":","-") # protect against ":" for ranges
             if template[0] == ".": template = template[1:]
-            if DEBUG:  print ("draft name",template)
+            print ("dataset name",template)
             self.defname = template
+            
 
 
         
