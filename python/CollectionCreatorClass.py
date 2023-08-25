@@ -110,7 +110,8 @@ class CollectionCreatorClass:
             self.name = names[1]
             self.namespace = names[0]
             return
-        
+        print ("----------------------------")
+        print ("make a name for this dataset")
         ignore = ["description","defname","namespace","ordered"]
 
         if "defname" in self.meta.keys():
@@ -149,7 +150,8 @@ class CollectionCreatorClass:
             template = template.replace(":","-") # protect against ":" for ranges
             template = template.replace(",","_") # protect against "," in lists
             if template[0] == ".": template = template[1:]
-            print ("dataset name will be: ",template)
+            
+            print ("dataset name will be: ",template,"\n")
             self.name = template
         
             
@@ -180,7 +182,8 @@ class CollectionCreatorClass:
     ## make a metacat query from the AND of the json inputs
 
     def make_query(self):
-
+        print ("---------------------")
+        print ("make or find a metacat query")
         # skip if already set (generally by did)
         if self.metaquery != None:
             if DEBUG: print ("found a query",self.metaquery)
@@ -248,14 +251,15 @@ class CollectionCreatorClass:
 
         query += " ordered "
 
-        if (DEBUG): print(query)
+        print(query,"\n")
         self.metaquery = query
         
 
     ## convert a metacat query into a sam query
 
     def make_sam_query(self):
-        
+        print ("-------------------------")
+        print ("make a samweb query")
         if self.metaquery == None:
             print (" no metacat query to make sam query from")
             sys.exit(1)
@@ -277,7 +281,7 @@ class CollectionCreatorClass:
         r = " availability:anylocation and " + r
         # if ("skip" in r): print ("skip doesn't work yet in sam")
         # print ("samweb list-files --summary \"", r, "\"")
-        
+        print (r,"\n")
         self.samquery = r
 
     ## parse sys.argv and either get existing query or read json and make a new query/dataset
@@ -410,6 +414,8 @@ class CollectionCreatorClass:
     ## use the query from make_query to make a metacat dataset
 
     def makeDataset(self):
+        print ("---------------------------")
+        print ("try to make a metacat dataset")
         if self.metaquery == None:
              print ("ERROR: need to run make_query or supply an input dataset first")
              sys.exit(1)
@@ -463,7 +469,7 @@ class CollectionCreatorClass:
             print ("no dataset of this name yet")
             already = None
 
-        print ("look for an existing dataset",did, already)
+        
 
         if already == None:
                 print ("make a new dataset",did)
@@ -472,18 +478,22 @@ class CollectionCreatorClass:
                 mc_client.create_dataset(did,files_query=self.metaquery,description=self.meta["description"],metadata=cleanmeta)
                 self.did = did
                 self.info = mc_client.get_dataset(did)
-                print ("think I made one", self.did)
+                print ("made dataset", self.did, "\n")
                 #return 1
     #        except:
     #            print("metacat dataset creation failed - does it already exist?")
         else: # already there
-                info = mc_client.get_dataset(did)
-                if DEBUG: print ("info",info)
-                print ("add files to dataset",did)
+               
+                if DEBUG: print ("info",already)
+
+                print ("add files to existing dataset",did)
                 print ("query was",self.metaquery)
                 #try:
                 mc_client.add_files(did,query=self.metaquery)
+                self.info = mc_client.get_dataset(did)
                 self.did = did
+                print ("extended dataset", self.did,"\n")
+
                 #except:
                 #    print("metacat dataset addition failed - does it already exist?")
         
@@ -491,14 +501,27 @@ class CollectionCreatorClass:
 
     def makeSamDataset(self):
         # do some sam stuff
+        print ("--------------------")
+        print ("make sam definition")
         defname=os.getenv("USER")+"_"+self.name
         print ("Try to make a sam definition:",defname)
-        #print ("query",self.samquery)
+
+        try:
+            r = samweb.listFilesSummary("defname:"+defname)
+            print ("samweb status",r)
+            if r !=  None:
+                print ("definition already exists")
+                return
+            else:
+                print ("no such definition exists, need to make it")
+        except:
+            print ("no such definition exists, need to make it")
         if self.samquery != None :
             try:
                 samweb.createDefinition(defname,dims=self.samquery,description=self.samquery)
+                print ("made definition",self.defname,"\n")
             except:
-                print ("failed to make sam definition")
+                print ("failed to make sam definition\n")
         
     
 

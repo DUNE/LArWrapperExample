@@ -53,6 +53,7 @@ if len(sys.argv) > 1 and sys.argv[1] == "run":
     test = False
 for det in experiments:
     for fcl in fcls[det]:
+        print ("\n------------------------------------------------------------------------\n")
         md = template
         md["core.run_type"] = det
         md["core.application.version"] = versions[det]
@@ -61,24 +62,26 @@ for det in experiments:
             md["dune_mc.beam_polarity"] = "rhc"
         creator = CollectionCreatorClass()
         creator.load(md,test=test)
-        print ("name", creator.name)
-        print ("\nMETA", creator.metaquery)
-        print ("\nSAM",creator.samquery)
+        #print ("name", creator.name)
+
+        #print ("\nMETA", creator.metaquery)
+        #print ("\nSAM",creator.samquery)
         r = samweb.listFilesSummary(creator.samquery)
-        print ("SAM", r)
-        print("metacat query \"",creator.metaquery,"\"\n")
+        print ("SAM", r,"\n")
+        #print("----------------------\n make metacat query \"",creator.metaquery,"\"\n")
         
         query_files = list(mc_client.query(creator.metaquery))
         creator.printSummary(query_files)
-        print(json.dumps(md,indent=4))
+        #(json.dumps(md,indent=4))
         fname = creator.name+".json"
         f = open(fname,'w')
         json.dump(md, f,indent=4)
         f.close()
         if not test:
-            print ("Try to create a dataset")
+            
             
             creator.run(md,test=test)
+            print (json.dumps(creator.info,indent=4))
             
         
 
