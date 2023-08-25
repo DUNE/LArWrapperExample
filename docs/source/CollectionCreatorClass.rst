@@ -34,7 +34,6 @@ CollectionCreatorClass arguments
         --namespace NAMESPACE
                             metacat namespace for dataset
         --user USER           user name
-        --ordered [ORDERED]   return list ordered for reproducibility
         --json JSON           filename for a json list of parameters to and
         --did DID             <namespace>:<name> for existing dataset to append to
         --test [TEST]         do in test mode
@@ -90,13 +89,16 @@ For data:
 Special tags:
 +++++++++++++
 
-- Tags with "." in them are normal metacat tags and are anded together to make the query.  
+- metacat fields with  % in them are normal metacat tags and are anded together to make the query.  
 
-- metacat fields such as `max_time`, `min_time` and `runs` have special metacat syntax so are flagged by the absence of a "." and then interpreted by the script.
+- fields such as `max_time`, `min_time` and `runs` have special metacat syntax so are flagged by the absence of a "." and then interpreted by the script.
 
-- Special dataset tags include a `defname` template that allows you to build the dataset name from fields and a special tag `deftag`,
+- Special dataset tags include a `defname` template that allows you to build the dataset name from fields and a special tag `deftag` to allow multiple versions. 
 
 - There is a `description` tag that allows you to describe your dataset.
+
+- the `defname` field allows you to specify a filename in which keys like `%dune.campaign` are replaced by the value of dune.campaign.  This allows you to avoid messing with defname every time you change a flag.
+
 
 Making datasets
 ---------------
