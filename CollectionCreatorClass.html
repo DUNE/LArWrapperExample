@@ -68,7 +68,6 @@
 <span class="w">    </span>--namespace<span class="w"> </span>NAMESPACE
 <span class="w">                        </span>metacat<span class="w"> </span>namespace<span class="w"> </span><span class="k">for</span><span class="w"> </span>dataset
 <span class="w">    </span>--user<span class="w"> </span>USER<span class="w">           </span>user<span class="w"> </span>name
-<span class="w">    </span>--ordered<span class="w"> </span><span class="o">[</span>ORDERED<span class="o">]</span><span class="w">   </span><span class="k">return</span><span class="w"> </span>list<span class="w"> </span>ordered<span class="w"> </span><span class="k">for</span><span class="w"> </span>reproducibility
 <span class="w">    </span>--json<span class="w"> </span>JSON<span class="w">           </span>filename<span class="w"> </span><span class="k">for</span><span class="w"> </span>a<span class="w"> </span>json<span class="w"> </span>list<span class="w"> </span>of<span class="w"> </span>parameters<span class="w"> </span>to<span class="w"> </span>and
 <span class="w">    </span>--did<span class="w"> </span>DID<span class="w">             </span>&lt;namespace&gt;:&lt;name&gt;<span class="w"> </span><span class="k">for</span><span class="w"> </span>existing<span class="w"> </span>dataset<span class="w"> </span>to<span class="w"> </span>append<span class="w"> </span>to
 <span class="w">    </span>--test<span class="w"> </span><span class="o">[</span>TEST<span class="o">]</span><span class="w">         </span><span class="k">do</span><span class="w"> </span><span class="k">in</span><span class="w"> </span><span class="nb">test</span><span class="w"> </span>mode
@@ -120,10 +119,11 @@
 <div class="section" id="special-tags">
 <h3>Special tags:<a class="headerlink" href="#special-tags" title="Permalink to this heading">¶</a></h3>
 <ul class="simple">
-<li><p>Tags with “.” in them are normal metacat tags and are anded together to make the query.</p></li>
-<li><p>metacat fields such as <cite>max_time</cite>, <cite>min_time</cite> and <cite>runs</cite> have special metacat syntax so are flagged by the absence of a “.” and then interpreted by the script.</p></li>
-<li><p>Special dataset tags include a <cite>defname</cite> template that allows you to build the dataset name from fields and a special tag <cite>deftag</cite>,</p></li>
+<li><p>metacat fields with  % in them are normal metacat tags and are anded together to make the query.</p></li>
+<li><p>fields such as <cite>max_time</cite>, <cite>min_time</cite> and <cite>runs</cite> have special metacat syntax so are flagged by the absence of a “.” and then interpreted by the script.</p></li>
+<li><p>Special dataset tags include a <cite>defname</cite> template that allows you to build the dataset name from fields and a special tag <cite>deftag</cite> to allow multiple versions.</p></li>
 <li><p>There is a <cite>description</cite> tag that allows you to describe your dataset.</p></li>
+<li><p>the <cite>defname</cite> field allows you to specify a filename in which keys like <cite>%dune.campaign</cite> are replaced by the value of dune.campaign.  This allows you to avoid messing with defname every time you change a flag.</p></li>
 </ul>
 </div>
 </div>
