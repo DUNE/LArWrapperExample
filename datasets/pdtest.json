@@ -1,6 +1,6 @@
 {
   "description":"test of description",
-  "defname":"core.file_type%core.run_type%dune.campaign%core.data_tier%core.data_stream%runs%min_time%max_time%deftag",
+  "defname":"%core.file_type.%core.run_type.%dune.campaign.%core.data_tier.%core.data_stream.runs_%runs.%min_time_to_%max_time.%deftag",
   "core.run_type": "protodune-sp",
   "core.file_type": "detector",
   "core.data_tier": "full-reconstructed",
@@ -8,6 +8,6 @@
   "dune.campaign": "PDSPProd4",
   "min_time":"2021-01-03",
   "max_time":"2022-10-03",
-  "runs":"5141:5143",
-  "deftag":"testme7"
+  "runs":"5141,5143",
+  "deftag":"test_v2"
 }
