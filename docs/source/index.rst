@@ -27,7 +27,6 @@ Contents
 .. toctree::
    
     Intro
-    CollectionCreator
     CollectionCreatorClass
     usage
     tests

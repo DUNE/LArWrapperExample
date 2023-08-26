@@ -7,7 +7,7 @@ CollectionCreatorClass
 .. autoclass:: CollectionCreatorClass::CollectionCreatorClass
     :members: 
     :undoc-members:
-
+ 
 samtest
 *******
 

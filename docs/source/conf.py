@@ -23,6 +23,7 @@ print("top",top)
 py = os.path.join(top,"python")
 sys.path.insert(0,top)
 sys.path.insert(0,py)
+sys.path.insert(0,os.path.join(top,"scripts"))
 sys.path.insert(0,os.path.join(top,"tests"))
 
 

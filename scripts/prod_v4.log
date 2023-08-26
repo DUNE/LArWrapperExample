@@ -1,0 +1,720 @@
+
+------------------------------------------------------------------------
+
+----------------------------
+make a name for this dataset
+keyword  defnamespace not in defname, are you sure?
+keyword  dune.requestid not in defname, are you sure?
+keyword  dune_mc.beam_polarity not in defname, are you sure?
+dataset name will be:  mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nu_dune10kt_1x2x6.fcl.prod_v4 
+
+---------------------
+make or find a metacat query
+No time range set, use all files
+files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nu_dune10kt_1x2x6.fcl ordered  
+
+-------------------------
+make a samweb query
+ availability:anylocation and  version=v09_78_01d01 and data_tier=hit-reconstructed and file_type=mc and run_type=fardet-hd and DUNE.campaign=fd_mc_2023a and DUNE.requestid=ritm1780305 and DUNE_MC.beam_polarity=fhc and DUNE_MC.gen_fcl_filename=prodgenie_nu_dune10kt_1x2x6.fcl   
+
+SAM {'file_count': 0, 'total_file_size': None, 'total_event_count': None} 
+
+Files:        0
+Total size:   0 (0.000 B)
+---------------------------
+try to make a metacat dataset
+make a new dataset schellma:mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nu_dune10kt_1x2x6.fcl.prod_v4
+query files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nu_dune10kt_1x2x6.fcl ordered 
+made dataset schellma:mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nu_dune10kt_1x2x6.fcl.prod_v4 
+
+--------------------
+make sam definition
+Try to make a sam definition: schellma_mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nu_dune10kt_1x2x6.fcl.prod_v4
+no such definition exists, need to make it
+failed to make sam definition
+
+{
+    "namespace": "schellma",
+    "name": "mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nu_dune10kt_1x2x6.fcl.prod_v4",
+    "frozen": false,
+    "monotonic": false,
+    "metadata": {
+        "core.run_type": "fardet-hd",
+        "dune.campaign": "fd_mc_2023a",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "dune.requestid": "ritm1780305",
+        "datasetpar.query": "files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nu_dune10kt_1x2x6.fcl ordered ",
+        "datasetpar.deftag": "prod_v4",
+        "datasetpar.defname": "%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%dune_mc.gen_fcl_filename.%deftag",
+        "dune_mc.beam_polarity": "fhc",
+        "datasetpar.defnamespace": "schellma",
+        "core.application.version": "v09_78_01d01",
+        "dune_mc.gen_fcl_filename": "prodgenie_nu_dune10kt_1x2x6.fcl"
+    },
+    "creator": "schellma",
+    "created_timestamp": 1693086087.116921,
+    "file_meta_requirements": {},
+    "description": "mc files from fd_mc_2023a",
+    "file_count": 0
+}
+
+------------------------------------------------------------------------
+
+----------------------------
+make a name for this dataset
+keyword  defnamespace not in defname, are you sure?
+keyword  dune.requestid not in defname, are you sure?
+keyword  dune_mc.beam_polarity not in defname, are you sure?
+dataset name will be:  mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nutau_dune10kt_1x2x6.fcl.prod_v4 
+
+---------------------
+make or find a metacat query
+No time range set, use all files
+files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nutau_dune10kt_1x2x6.fcl ordered  
+
+-------------------------
+make a samweb query
+ availability:anylocation and  version=v09_78_01d01 and data_tier=hit-reconstructed and file_type=mc and run_type=fardet-hd and DUNE.campaign=fd_mc_2023a and DUNE.requestid=ritm1780305 and DUNE_MC.beam_polarity=fhc and DUNE_MC.gen_fcl_filename=prodgenie_nutau_dune10kt_1x2x6.fcl   
+
+SAM {'file_count': 0, 'total_file_size': None, 'total_event_count': None} 
+
+Files:        0
+Total size:   0 (0.000 B)
+---------------------------
+try to make a metacat dataset
+make a new dataset schellma:mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nutau_dune10kt_1x2x6.fcl.prod_v4
+query files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nutau_dune10kt_1x2x6.fcl ordered 
+made dataset schellma:mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nutau_dune10kt_1x2x6.fcl.prod_v4 
+
+--------------------
+make sam definition
+Try to make a sam definition: schellma_mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nutau_dune10kt_1x2x6.fcl.prod_v4
+no such definition exists, need to make it
+failed to make sam definition
+
+{
+    "namespace": "schellma",
+    "name": "mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nutau_dune10kt_1x2x6.fcl.prod_v4",
+    "frozen": false,
+    "monotonic": false,
+    "metadata": {
+        "core.run_type": "fardet-hd",
+        "dune.campaign": "fd_mc_2023a",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "dune.requestid": "ritm1780305",
+        "datasetpar.query": "files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nutau_dune10kt_1x2x6.fcl ordered ",
+        "datasetpar.deftag": "prod_v4",
+        "datasetpar.defname": "%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%dune_mc.gen_fcl_filename.%deftag",
+        "dune_mc.beam_polarity": "fhc",
+        "datasetpar.defnamespace": "schellma",
+        "core.application.version": "v09_78_01d01",
+        "dune_mc.gen_fcl_filename": "prodgenie_nutau_dune10kt_1x2x6.fcl"
+    },
+    "creator": "schellma",
+    "created_timestamp": 1693086087.912716,
+    "file_meta_requirements": {},
+    "description": "mc files from fd_mc_2023a",
+    "file_count": 0
+}
+
+------------------------------------------------------------------------
+
+----------------------------
+make a name for this dataset
+keyword  defnamespace not in defname, are you sure?
+keyword  dune.requestid not in defname, are you sure?
+keyword  dune_mc.beam_polarity not in defname, are you sure?
+dataset name will be:  mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nue_dune10kt_1x2x6.fcl.prod_v4 
+
+---------------------
+make or find a metacat query
+No time range set, use all files
+files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nue_dune10kt_1x2x6.fcl ordered  
+
+-------------------------
+make a samweb query
+ availability:anylocation and  version=v09_78_01d01 and data_tier=hit-reconstructed and file_type=mc and run_type=fardet-hd and DUNE.campaign=fd_mc_2023a and DUNE.requestid=ritm1780305 and DUNE_MC.beam_polarity=fhc and DUNE_MC.gen_fcl_filename=prodgenie_nue_dune10kt_1x2x6.fcl   
+
+SAM {'file_count': 0, 'total_file_size': None, 'total_event_count': None} 
+
+Files:        0
+Total size:   0 (0.000 B)
+---------------------------
+try to make a metacat dataset
+make a new dataset schellma:mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nue_dune10kt_1x2x6.fcl.prod_v4
+query files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nue_dune10kt_1x2x6.fcl ordered 
+made dataset schellma:mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nue_dune10kt_1x2x6.fcl.prod_v4 
+
+--------------------
+make sam definition
+Try to make a sam definition: schellma_mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nue_dune10kt_1x2x6.fcl.prod_v4
+no such definition exists, need to make it
+failed to make sam definition
+
+{
+    "namespace": "schellma",
+    "name": "mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_nue_dune10kt_1x2x6.fcl.prod_v4",
+    "frozen": false,
+    "monotonic": false,
+    "metadata": {
+        "core.run_type": "fardet-hd",
+        "dune.campaign": "fd_mc_2023a",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "dune.requestid": "ritm1780305",
+        "datasetpar.query": "files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nue_dune10kt_1x2x6.fcl ordered ",
+        "datasetpar.deftag": "prod_v4",
+        "datasetpar.defname": "%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%dune_mc.gen_fcl_filename.%deftag",
+        "dune_mc.beam_polarity": "fhc",
+        "datasetpar.defnamespace": "schellma",
+        "core.application.version": "v09_78_01d01",
+        "dune_mc.gen_fcl_filename": "prodgenie_nue_dune10kt_1x2x6.fcl"
+    },
+    "creator": "schellma",
+    "created_timestamp": 1693086088.518441,
+    "file_meta_requirements": {},
+    "description": "mc files from fd_mc_2023a",
+    "file_count": 0
+}
+
+------------------------------------------------------------------------
+
+----------------------------
+make a name for this dataset
+keyword  defnamespace not in defname, are you sure?
+keyword  dune.requestid not in defname, are you sure?
+keyword  dune_mc.beam_polarity not in defname, are you sure?
+dataset name will be:  mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anu_dune10kt_1x2x6.fcl.prod_v4 
+
+---------------------
+make or find a metacat query
+No time range set, use all files
+files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anu_dune10kt_1x2x6.fcl ordered  
+
+-------------------------
+make a samweb query
+ availability:anylocation and  version=v09_78_01d01 and data_tier=hit-reconstructed and file_type=mc and run_type=fardet-hd and DUNE.campaign=fd_mc_2023a and DUNE.requestid=ritm1780305 and DUNE_MC.beam_polarity=rhc and DUNE_MC.gen_fcl_filename=prodgenie_anu_dune10kt_1x2x6.fcl   
+
+SAM {'file_count': 10321, 'total_file_size': 14783843024733, 'total_event_count': 1032100} 
+
+Files:        10321
+Total size:   14783843024733 (13.446 TB)
+---------------------------
+try to make a metacat dataset
+make a new dataset schellma:mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anu_dune10kt_1x2x6.fcl.prod_v4
+query files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anu_dune10kt_1x2x6.fcl ordered 
+made dataset schellma:mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anu_dune10kt_1x2x6.fcl.prod_v4 
+
+--------------------
+make sam definition
+Try to make a sam definition: schellma_mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anu_dune10kt_1x2x6.fcl.prod_v4
+no such definition exists, need to make it
+failed to make sam definition
+
+{
+    "namespace": "schellma",
+    "name": "mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anu_dune10kt_1x2x6.fcl.prod_v4",
+    "frozen": false,
+    "monotonic": false,
+    "metadata": {
+        "core.run_type": "fardet-hd",
+        "dune.campaign": "fd_mc_2023a",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "dune.requestid": "ritm1780305",
+        "datasetpar.query": "files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anu_dune10kt_1x2x6.fcl ordered ",
+        "datasetpar.deftag": "prod_v4",
+        "datasetpar.defname": "%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%dune_mc.gen_fcl_filename.%deftag",
+        "dune_mc.beam_polarity": "rhc",
+        "datasetpar.defnamespace": "schellma",
+        "core.application.version": "v09_78_01d01",
+        "dune_mc.gen_fcl_filename": "prodgenie_anu_dune10kt_1x2x6.fcl"
+    },
+    "creator": "schellma",
+    "created_timestamp": 1693086089.972889,
+    "file_meta_requirements": {},
+    "description": "mc files from fd_mc_2023a",
+    "file_count": 10321
+}
+
+------------------------------------------------------------------------
+
+----------------------------
+make a name for this dataset
+keyword  defnamespace not in defname, are you sure?
+keyword  dune.requestid not in defname, are you sure?
+keyword  dune_mc.beam_polarity not in defname, are you sure?
+dataset name will be:  mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anutau_dune10kt_1x2x6.fcl.prod_v4 
+
+---------------------
+make or find a metacat query
+No time range set, use all files
+files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anutau_dune10kt_1x2x6.fcl ordered  
+
+-------------------------
+make a samweb query
+ availability:anylocation and  version=v09_78_01d01 and data_tier=hit-reconstructed and file_type=mc and run_type=fardet-hd and DUNE.campaign=fd_mc_2023a and DUNE.requestid=ritm1780305 and DUNE_MC.beam_polarity=rhc and DUNE_MC.gen_fcl_filename=prodgenie_anutau_dune10kt_1x2x6.fcl   
+
+SAM {'file_count': 1114, 'total_file_size': 1944411036146, 'total_event_count': 111400} 
+
+Files:        1114
+Total size:   1944411036146 (1.768 TB)
+---------------------------
+try to make a metacat dataset
+make a new dataset schellma:mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anutau_dune10kt_1x2x6.fcl.prod_v4
+query files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anutau_dune10kt_1x2x6.fcl ordered 
+made dataset schellma:mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anutau_dune10kt_1x2x6.fcl.prod_v4 
+
+--------------------
+make sam definition
+Try to make a sam definition: schellma_mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anutau_dune10kt_1x2x6.fcl.prod_v4
+no such definition exists, need to make it
+failed to make sam definition
+
+{
+    "namespace": "schellma",
+    "name": "mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anutau_dune10kt_1x2x6.fcl.prod_v4",
+    "frozen": false,
+    "monotonic": false,
+    "metadata": {
+        "core.run_type": "fardet-hd",
+        "dune.campaign": "fd_mc_2023a",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "dune.requestid": "ritm1780305",
+        "datasetpar.query": "files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anutau_dune10kt_1x2x6.fcl ordered ",
+        "datasetpar.deftag": "prod_v4",
+        "datasetpar.defname": "%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%dune_mc.gen_fcl_filename.%deftag",
+        "dune_mc.beam_polarity": "rhc",
+        "datasetpar.defnamespace": "schellma",
+        "core.application.version": "v09_78_01d01",
+        "dune_mc.gen_fcl_filename": "prodgenie_anutau_dune10kt_1x2x6.fcl"
+    },
+    "creator": "schellma",
+    "created_timestamp": 1693086093.835501,
+    "file_meta_requirements": {},
+    "description": "mc files from fd_mc_2023a",
+    "file_count": 1114
+}
+
+------------------------------------------------------------------------
+
+----------------------------
+make a name for this dataset
+keyword  defnamespace not in defname, are you sure?
+keyword  dune.requestid not in defname, are you sure?
+keyword  dune_mc.beam_polarity not in defname, are you sure?
+dataset name will be:  mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anue_dune10kt_1x2x6.fcl.prod_v4 
+
+---------------------
+make or find a metacat query
+No time range set, use all files
+files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anue_dune10kt_1x2x6.fcl ordered  
+
+-------------------------
+make a samweb query
+ availability:anylocation and  version=v09_78_01d01 and data_tier=hit-reconstructed and file_type=mc and run_type=fardet-hd and DUNE.campaign=fd_mc_2023a and DUNE.requestid=ritm1780305 and DUNE_MC.beam_polarity=rhc and DUNE_MC.gen_fcl_filename=prodgenie_anue_dune10kt_1x2x6.fcl   
+
+SAM {'file_count': 3463, 'total_file_size': 7053867810346, 'total_event_count': 346300} 
+
+Files:        3463
+Total size:   7053867810346 (6.415 TB)
+---------------------------
+try to make a metacat dataset
+make a new dataset schellma:mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anue_dune10kt_1x2x6.fcl.prod_v4
+query files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anue_dune10kt_1x2x6.fcl ordered 
+made dataset schellma:mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anue_dune10kt_1x2x6.fcl.prod_v4 
+
+--------------------
+make sam definition
+Try to make a sam definition: schellma_mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anue_dune10kt_1x2x6.fcl.prod_v4
+no such definition exists, need to make it
+failed to make sam definition
+
+{
+    "namespace": "schellma",
+    "name": "mc.fardet-hd.fd_mc_2023a.v09_78_01d01.hit-reconstructed.prodgenie_anue_dune10kt_1x2x6.fcl.prod_v4",
+    "frozen": false,
+    "monotonic": false,
+    "metadata": {
+        "core.run_type": "fardet-hd",
+        "dune.campaign": "fd_mc_2023a",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "dune.requestid": "ritm1780305",
+        "datasetpar.query": "files where core.application.version=v09_78_01d01 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-hd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anue_dune10kt_1x2x6.fcl ordered ",
+        "datasetpar.deftag": "prod_v4",
+        "datasetpar.defname": "%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%dune_mc.gen_fcl_filename.%deftag",
+        "dune_mc.beam_polarity": "rhc",
+        "datasetpar.defnamespace": "schellma",
+        "core.application.version": "v09_78_01d01",
+        "dune_mc.gen_fcl_filename": "prodgenie_anue_dune10kt_1x2x6.fcl"
+    },
+    "creator": "schellma",
+    "created_timestamp": 1693086095.246664,
+    "file_meta_requirements": {},
+    "description": "mc files from fd_mc_2023a",
+    "file_count": 3463
+}
+
+------------------------------------------------------------------------
+
+----------------------------
+make a name for this dataset
+keyword  defnamespace not in defname, are you sure?
+keyword  dune.requestid not in defname, are you sure?
+keyword  dune_mc.beam_polarity not in defname, are you sure?
+dataset name will be:  mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4 
+
+---------------------
+make or find a metacat query
+No time range set, use all files
+files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nu_dunevd10kt_1x8x6_3view_30deg.fcl ordered  
+
+-------------------------
+make a samweb query
+ availability:anylocation and  version=v09_75_03d00 and data_tier=hit-reconstructed and file_type=mc and run_type=fardet-vd and DUNE.campaign=fd_mc_2023a and DUNE.requestid=ritm1780305 and DUNE_MC.beam_polarity=fhc and DUNE_MC.gen_fcl_filename=prodgenie_nu_dunevd10kt_1x8x6_3view_30deg.fcl   
+
+SAM {'file_count': 22561, 'total_file_size': 20123199104443, 'total_event_count': 2255704} 
+
+Files:        22559
+Total size:   20123184668661 (18.302 TB)
+---------------------------
+try to make a metacat dataset
+make a new dataset schellma:mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4
+query files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nu_dunevd10kt_1x8x6_3view_30deg.fcl ordered 
+made dataset schellma:mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4 
+
+--------------------
+make sam definition
+Try to make a sam definition: schellma_mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4
+no such definition exists, need to make it
+failed to make sam definition
+
+{
+    "namespace": "schellma",
+    "name": "mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4",
+    "frozen": false,
+    "monotonic": false,
+    "metadata": {
+        "core.run_type": "fardet-vd",
+        "dune.campaign": "fd_mc_2023a",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "dune.requestid": "ritm1780305",
+        "datasetpar.query": "files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nu_dunevd10kt_1x8x6_3view_30deg.fcl ordered ",
+        "datasetpar.deftag": "prod_v4",
+        "datasetpar.defname": "%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%dune_mc.gen_fcl_filename.%deftag",
+        "dune_mc.beam_polarity": "fhc",
+        "datasetpar.defnamespace": "schellma",
+        "core.application.version": "v09_75_03d00",
+        "dune_mc.gen_fcl_filename": "prodgenie_nu_dunevd10kt_1x8x6_3view_30deg.fcl"
+    },
+    "creator": "schellma",
+    "created_timestamp": 1693086098.872655,
+    "file_meta_requirements": {},
+    "description": "mc files from fd_mc_2023a",
+    "file_count": 22559
+}
+
+------------------------------------------------------------------------
+
+----------------------------
+make a name for this dataset
+keyword  defnamespace not in defname, are you sure?
+keyword  dune.requestid not in defname, are you sure?
+keyword  dune_mc.beam_polarity not in defname, are you sure?
+dataset name will be:  mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4 
+
+---------------------
+make or find a metacat query
+No time range set, use all files
+files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl ordered  
+
+-------------------------
+make a samweb query
+ availability:anylocation and  version=v09_75_03d00 and data_tier=hit-reconstructed and file_type=mc and run_type=fardet-vd and DUNE.campaign=fd_mc_2023a and DUNE.requestid=ritm1780305 and DUNE_MC.beam_polarity=fhc and DUNE_MC.gen_fcl_filename=prodgenie_nu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl   
+
+SAM {'file_count': 23233, 'total_file_size': 29217549601523, 'total_event_count': 2323102} 
+
+Files:        23232
+Total size:   29217539216102 (26.573 TB)
+---------------------------
+try to make a metacat dataset
+make a new dataset schellma:mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4
+query files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl ordered 
+made dataset schellma:mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4 
+
+--------------------
+make sam definition
+Try to make a sam definition: schellma_mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4
+no such definition exists, need to make it
+failed to make sam definition
+
+{
+    "namespace": "schellma",
+    "name": "mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4",
+    "frozen": false,
+    "monotonic": false,
+    "metadata": {
+        "core.run_type": "fardet-vd",
+        "dune.campaign": "fd_mc_2023a",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "dune.requestid": "ritm1780305",
+        "datasetpar.query": "files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl ordered ",
+        "datasetpar.deftag": "prod_v4",
+        "datasetpar.defname": "%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%dune_mc.gen_fcl_filename.%deftag",
+        "dune_mc.beam_polarity": "fhc",
+        "datasetpar.defnamespace": "schellma",
+        "core.application.version": "v09_75_03d00",
+        "dune_mc.gen_fcl_filename": "prodgenie_nu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl"
+    },
+    "creator": "schellma",
+    "created_timestamp": 1693086109.603806,
+    "file_meta_requirements": {},
+    "description": "mc files from fd_mc_2023a",
+    "file_count": 23232
+}
+
+------------------------------------------------------------------------
+
+----------------------------
+make a name for this dataset
+keyword  defnamespace not in defname, are you sure?
+keyword  dune.requestid not in defname, are you sure?
+keyword  dune_mc.beam_polarity not in defname, are you sure?
+dataset name will be:  mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4 
+
+---------------------
+make or find a metacat query
+No time range set, use all files
+files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl ordered  
+
+-------------------------
+make a samweb query
+ availability:anylocation and  version=v09_75_03d00 and data_tier=hit-reconstructed and file_type=mc and run_type=fardet-vd and DUNE.campaign=fd_mc_2023a and DUNE.requestid=ritm1780305 and DUNE_MC.beam_polarity=fhc and DUNE_MC.gen_fcl_filename=prodgenie_nu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl   
+
+SAM {'file_count': 22440, 'total_file_size': 24565653623646, 'total_event_count': 2243802} 
+
+Files:        22439
+Total size:   24565545301334 (22.342 TB)
+---------------------------
+try to make a metacat dataset
+make a new dataset schellma:mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4
+query files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl ordered 
+made dataset schellma:mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4 
+
+--------------------
+make sam definition
+Try to make a sam definition: schellma_mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4
+no such definition exists, need to make it
+failed to make sam definition
+
+{
+    "namespace": "schellma",
+    "name": "mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_nu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4",
+    "frozen": false,
+    "monotonic": false,
+    "metadata": {
+        "core.run_type": "fardet-vd",
+        "dune.campaign": "fd_mc_2023a",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "dune.requestid": "ritm1780305",
+        "datasetpar.query": "files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=fhc and dune_mc.gen_fcl_filename=prodgenie_nu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl ordered ",
+        "datasetpar.deftag": "prod_v4",
+        "datasetpar.defname": "%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%dune_mc.gen_fcl_filename.%deftag",
+        "dune_mc.beam_polarity": "fhc",
+        "datasetpar.defnamespace": "schellma",
+        "core.application.version": "v09_75_03d00",
+        "dune_mc.gen_fcl_filename": "prodgenie_nu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl"
+    },
+    "creator": "schellma",
+    "created_timestamp": 1693086119.146071,
+    "file_meta_requirements": {},
+    "description": "mc files from fd_mc_2023a",
+    "file_count": 22439
+}
+
+------------------------------------------------------------------------
+
+----------------------------
+make a name for this dataset
+keyword  defnamespace not in defname, are you sure?
+keyword  dune.requestid not in defname, are you sure?
+keyword  dune_mc.beam_polarity not in defname, are you sure?
+dataset name will be:  mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4 
+
+---------------------
+make or find a metacat query
+No time range set, use all files
+files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anu_dunevd10kt_1x8x6_3view_30deg.fcl ordered  
+
+-------------------------
+make a samweb query
+ availability:anylocation and  version=v09_75_03d00 and data_tier=hit-reconstructed and file_type=mc and run_type=fardet-vd and DUNE.campaign=fd_mc_2023a and DUNE.requestid=ritm1780305 and DUNE_MC.beam_polarity=rhc and DUNE_MC.gen_fcl_filename=prodgenie_anu_dunevd10kt_1x8x6_3view_30deg.fcl   
+
+SAM {'file_count': 20871, 'total_file_size': 22144398771792, 'total_event_count': 2086902} 
+
+Files:        20870
+Total size:   22144394383868 (20.140 TB)
+---------------------------
+try to make a metacat dataset
+make a new dataset schellma:mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4
+query files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anu_dunevd10kt_1x8x6_3view_30deg.fcl ordered 
+made dataset schellma:mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4 
+
+--------------------
+make sam definition
+Try to make a sam definition: schellma_mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4
+no such definition exists, need to make it
+failed to make sam definition
+
+{
+    "namespace": "schellma",
+    "name": "mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4",
+    "frozen": false,
+    "monotonic": false,
+    "metadata": {
+        "core.run_type": "fardet-vd",
+        "dune.campaign": "fd_mc_2023a",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "dune.requestid": "ritm1780305",
+        "datasetpar.query": "files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anu_dunevd10kt_1x8x6_3view_30deg.fcl ordered ",
+        "datasetpar.deftag": "prod_v4",
+        "datasetpar.defname": "%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%dune_mc.gen_fcl_filename.%deftag",
+        "dune_mc.beam_polarity": "rhc",
+        "datasetpar.defnamespace": "schellma",
+        "core.application.version": "v09_75_03d00",
+        "dune_mc.gen_fcl_filename": "prodgenie_anu_dunevd10kt_1x8x6_3view_30deg.fcl"
+    },
+    "creator": "schellma",
+    "created_timestamp": 1693086128.143661,
+    "file_meta_requirements": {},
+    "description": "mc files from fd_mc_2023a",
+    "file_count": 20870
+}
+
+------------------------------------------------------------------------
+
+----------------------------
+make a name for this dataset
+keyword  defnamespace not in defname, are you sure?
+keyword  dune.requestid not in defname, are you sure?
+keyword  dune_mc.beam_polarity not in defname, are you sure?
+dataset name will be:  mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4 
+
+---------------------
+make or find a metacat query
+No time range set, use all files
+files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl ordered  
+
+-------------------------
+make a samweb query
+ availability:anylocation and  version=v09_75_03d00 and data_tier=hit-reconstructed and file_type=mc and run_type=fardet-vd and DUNE.campaign=fd_mc_2023a and DUNE.requestid=ritm1780305 and DUNE_MC.beam_polarity=rhc and DUNE_MC.gen_fcl_filename=prodgenie_anu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl   
+
+SAM {'file_count': 20653, 'total_file_size': 33333291053807, 'total_event_count': 2065102} 
+
+Files:        20652
+Total size:   33333284155349 (30.316 TB)
+---------------------------
+try to make a metacat dataset
+make a new dataset schellma:mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4
+query files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl ordered 
+made dataset schellma:mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4 
+
+--------------------
+make sam definition
+Try to make a sam definition: schellma_mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4
+no such definition exists, need to make it
+failed to make sam definition
+
+{
+    "namespace": "schellma",
+    "name": "mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4",
+    "frozen": false,
+    "monotonic": false,
+    "metadata": {
+        "core.run_type": "fardet-vd",
+        "dune.campaign": "fd_mc_2023a",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "dune.requestid": "ritm1780305",
+        "datasetpar.query": "files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl ordered ",
+        "datasetpar.deftag": "prod_v4",
+        "datasetpar.defname": "%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%dune_mc.gen_fcl_filename.%deftag",
+        "dune_mc.beam_polarity": "rhc",
+        "datasetpar.defnamespace": "schellma",
+        "core.application.version": "v09_75_03d00",
+        "dune_mc.gen_fcl_filename": "prodgenie_anu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl"
+    },
+    "creator": "schellma",
+    "created_timestamp": 1693086138.833772,
+    "file_meta_requirements": {},
+    "description": "mc files from fd_mc_2023a",
+    "file_count": 20652
+}
+
+------------------------------------------------------------------------
+
+----------------------------
+make a name for this dataset
+keyword  defnamespace not in defname, are you sure?
+keyword  dune.requestid not in defname, are you sure?
+keyword  dune_mc.beam_polarity not in defname, are you sure?
+dataset name will be:  mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4 
+
+---------------------
+make or find a metacat query
+No time range set, use all files
+files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl ordered  
+
+-------------------------
+make a samweb query
+ availability:anylocation and  version=v09_75_03d00 and data_tier=hit-reconstructed and file_type=mc and run_type=fardet-vd and DUNE.campaign=fd_mc_2023a and DUNE.requestid=ritm1780305 and DUNE_MC.beam_polarity=rhc and DUNE_MC.gen_fcl_filename=prodgenie_anu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl   
+
+SAM {'file_count': 20959, 'total_file_size': 28852412694548, 'total_event_count': 2095702} 
+
+Files:        20962
+Total size:   28858268664058 (26.246 TB)
+---------------------------
+try to make a metacat dataset
+make a new dataset schellma:mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4
+query files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl ordered 
+made dataset schellma:mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4 
+
+--------------------
+make sam definition
+Try to make a sam definition: schellma_mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4
+no such definition exists, need to make it
+failed to make sam definition
+
+{
+    "namespace": "schellma",
+    "name": "mc.fardet-vd.fd_mc_2023a.v09_75_03d00.hit-reconstructed.prodgenie_anu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl.prod_v4",
+    "frozen": false,
+    "monotonic": false,
+    "metadata": {
+        "core.run_type": "fardet-vd",
+        "dune.campaign": "fd_mc_2023a",
+        "core.data_tier": "hit-reconstructed",
+        "core.file_type": "mc",
+        "dune.requestid": "ritm1780305",
+        "datasetpar.query": "files where core.application.version=v09_75_03d00 and core.data_tier='hit-reconstructed' and core.file_type=mc and core.run_type='fardet-vd' and dune.campaign=fd_mc_2023a and dune.requestid=ritm1780305 and dune_mc.beam_polarity=rhc and dune_mc.gen_fcl_filename=prodgenie_anu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl ordered ",
+        "datasetpar.deftag": "prod_v4",
+        "datasetpar.defname": "%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%dune_mc.gen_fcl_filename.%deftag",
+        "dune_mc.beam_polarity": "rhc",
+        "datasetpar.defnamespace": "schellma",
+        "core.application.version": "v09_75_03d00",
+        "dune_mc.gen_fcl_filename": "prodgenie_anu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl"
+    },
+    "creator": "schellma",
+    "created_timestamp": 1693086148.759083,
+    "file_meta_requirements": {},
+    "description": "mc files from fd_mc_2023a",
+    "file_count": 20962
+}
