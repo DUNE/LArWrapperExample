@@ -5,9 +5,9 @@ API
     :toctree: generated
     :recursive:
 
-	    CollectionCreator
-
         CollectionCreatorClass
+
+        fd_mc_2023a_create
 	
         samtest
 
