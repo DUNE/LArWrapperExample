@@ -1,10 +1,18 @@
 What this package does
 ======================
 
-  * a :doc:`generated/CollectionCreatorClass` script that takes a dataset configuration file and produces both a samweb definition and a meta dataset.
+CollectionCreator utilities
+^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-  this is independent of the other packages
+  a :doc:`generated/CollectionCreatorClass` module that takes a dataset configuration file and produces both a samweb definition and a meta dataset.
 
+  a :doc:`generated/fd_mc_2023a_create` script that uses the CollectinCreatorClass to create datasets for the fd_mc_2023a far detector campaign.
+  
+  
+
+
+LArWrapper Scripts to log data transfers
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
   and a suite of scripts :doc:`generated/Loginator`,  :doc:`generated/LArWrapper` :doc:`generated/DDInterface` that wrap LArSoft and log outputs. 
 

@@ -5,13 +5,22 @@ samweb = samweb_client.SAMWebClient(experiment='dune')
 from metacat.webapi import MetaCatClient 
 mc_client = MetaCatClient(os.getenv("METACAT_SERVER_URL"))
 
+from argparse import ArgumentParser as ap
+
 ## script that loops over detectors and fcl files for fd_mc_2023a and creates datasets
 
-if __name__ == "__main__":
+def execute(test=True,verbose=False):
+    ''' code which uses CollectionCreatorClass to make datasets for a specific production
 
-    # setup
-    
-    creator = CollectionCreatorClass()
+        :param test: just make a trial name and queries but don't make the dataset
+        :type test: bool
+        
+        :param verbose: more printout
+        :type verbose: bool
+    '''
+
+
+    #creator = CollectionCreatorClass(verbose)
     experiments = ["fardet-hd","fardet-vd"]
 
     # make a template
@@ -27,7 +36,7 @@ if __name__ == "__main__":
         "dune.requestid": "ritm1780305",
         "dune_mc.beam_polarity": "fhc",
         "dune_mc.gen_fcl_filename": "prodgenie_nutau_dune10kt_1x2x6.fcl",
-        "deftag": "test11"
+        "deftag": "testme"
     }
 
     # list the fcl's by run_type
@@ -54,10 +63,8 @@ if __name__ == "__main__":
 
 # the version #, fcl file and polarity need to be set for each
 
-    # this only actually makes datasets if there is a command line argument run
-    test =  True
-    if len(sys.argv) > 1 and sys.argv[1] == "run":
-        test = False
+    # this only actually makes datasets if there is a command line argument make
+    
     
     for det in experiments:
         for fcl in fcls[det]:
@@ -70,7 +77,7 @@ if __name__ == "__main__":
                 md["dune_mc.beam_polarity"] = "rhc"
             else:
                 md["dune_mc.beam_polarity"] = "fhc"
-            creator = CollectionCreatorClass()
+            creator = CollectionCreatorClass(verbose=verbose)
             creator.load(md,test=test)
             #print ("name", creator.name)
 
@@ -84,13 +91,37 @@ if __name__ == "__main__":
             creator.printSummary(query_files)
             #(json.dumps(md,indent=4))
             fname = creator.name+".json"
-            f = open(fname,'w')
-            json.dump(md, f,indent=4)
-            f.close()
+            #f = open(fname,'w')
+            #json.dump(md, f,indent=4)
+            #f.close()
+            
             if not test:                
                 creator.run(md,test=test)
-                print (json.dumps(creator.info,indent=4))
+                if verbose: print (json.dumps(creator.info,indent=4))
                 
             
     if test:
-        print ("If you don't want to test, run with arg 'run'")
+        print ("If you don't want to test, run with arg 'make'")
+
+if __name__ == "__main__":
+    parser = ap()
+    
+    
+    
+    parser.add_argument('--test',type=bool,default=False,const=True,nargs="?",help='do in test mode')
+    parser.add_argument('--verbose',type=bool,default=False,const=True,nargs="?",help='print out a lot')
+    parser.add_argument('--make',type=bool,default=False,const=True,nargs="?",help='make the datasets')
+    
+    
+
+    args = parser.parse_args()
+    # setup
+    test = args.test
+    make = args.make
+    verbose = args.verbose
+    if test and make or (not test and not make):
+        print ("you need to choose either --test or --make")
+        print ("test will just print things out while make will actually make the dataset")
+        sys.exit(1)
+    if test: make = False
+    execute(test=test,verbose=verbose)

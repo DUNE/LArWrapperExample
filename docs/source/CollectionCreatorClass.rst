@@ -156,7 +156,6 @@ Using the python API
 `fd_mc_2023a_create.py` in the `scripts` directory is an example of using the `CollectionCreatorClass` python api instead of the command line. 
    
 
-
 Inspecting and finding datasets using the dataset metadata you created
 ----------------------------------------------------------------------
 

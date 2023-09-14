@@ -5,8 +5,11 @@ CollectionCreatorClass
 **********************
 
 .. autoclass:: CollectionCreatorClass::CollectionCreatorClass
-    :members: 
-    :undoc-members:
+
+fd_mc_2023a_create
+******************
+
+.. autofunction::fd_mc_2023a_create::execute
  
 samtest
 *******
