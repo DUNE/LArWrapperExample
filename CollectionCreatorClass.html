@@ -162,9 +162,17 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="using-the-python-api">
-<h2>Using the python API<a class="headerlink" href="#using-the-python-api" title="Permalink to this heading">¶</a></h2>
+<div class="section" id="example-of-using-the-python-api">
+<h2>Example of using the python API<a class="headerlink" href="#example-of-using-the-python-api" title="Permalink to this heading">¶</a></h2>
 <p><cite>fd_mc_2023a_create.py</cite> in the <cite>scripts</cite> directory is an example of using the <cite>CollectionCreatorClass</cite> python api instead of the command line.</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">fd_mc_2023a_create</span> <span class="o">--</span><span class="n">make</span> <span class="o">--</span><span class="n">verbose</span>
+</pre></div>
+</div>
+<p>will create (or update) several datasets based on a template.  This was made specifically for the fd_mc_2023a production.</p>
+<p>You can find the datasets created by that script by typing</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">metacat</span> <span class="n">query</span> <span class="n">datasets</span> <span class="n">matching</span> <span class="n">schellma</span><span class="p">:</span><span class="o">*</span> <span class="n">having</span> <span class="n">datasetpar</span><span class="o">.</span><span class="n">deftag</span><span class="o">=</span><span class="n">prod_v4</span>
+</pre></div>
+</div>
 </div>
 <div class="section" id="inspecting-and-finding-datasets-using-the-dataset-metadata-you-created">
 <h2>Inspecting and finding datasets using the dataset metadata you created<a class="headerlink" href="#inspecting-and-finding-datasets-using-the-dataset-metadata-you-created" title="Permalink to this heading">¶</a></h2>
@@ -232,7 +240,7 @@
 </li>
 <li><a class="reference internal" href="#making-datasets">Making datasets</a></li>
 <li><a class="reference internal" href="#adding-to-datasets">Adding to datasets</a></li>
-<li><a class="reference internal" href="#using-the-python-api">Using the python API</a></li>
+<li><a class="reference internal" href="#example-of-using-the-python-api">Example of using the python API</a></li>
 <li><a class="reference internal" href="#inspecting-and-finding-datasets-using-the-dataset-metadata-you-created">Inspecting and finding datasets using the dataset metadata you created</a><ul>
 <li><a class="reference internal" href="#finding">Finding</a></li>
 <li><a class="reference internal" href="#inspecting">Inspecting</a></li>
