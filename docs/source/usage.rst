@@ -4,19 +4,19 @@ Usage
 Installation
 ------------
 
-To use LArWrapper, first install this package from github, and `metacat <https://metacat.readthedocs.io/en/latest/>`_ and `data dispatcher <https://data-dispatcher.readthedocs.io/en/latest/>`_ from github (or ups).
+To use these scripts, first install this package from github, and `metacat <https://metacat.readthedocs.io/en/latest/>`_ and `data dispatcher <https://data-dispatcher.readthedocs.io/en/latest/>`_ from github (or ups).
 
 
-Then run `setup_hms` after modifying for your own user.
+Then run `setup_gpvm.sh` after modifying for your own user.
 
-.. literalinclude:: ../../setup_hms.sh
+.. literalinclude:: ../../setup_gpvm.sh
    :linenos:
    :language: bash
 
 
 
-Choose your delivery method
----------------------------
+Data Delivery: Choose your delivery method
+==========================================
 
 :doc:`generated/LArWrapper` and  :doc:`generated/DDInterface` set up data delivery projects using different interfaces and run over multiple files
 
