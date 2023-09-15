@@ -30,7 +30,7 @@ class CollectionCreatorClass:
 
     ## initiatization - does very little
 
-    def __init__(self):
+    def __init__(self,verbose=False):
         self.namespace = None
         self.name = None # actual name
         self.did = None # (namespace+defname)
@@ -39,6 +39,7 @@ class CollectionCreatorClass:
         self.samquery = None # translation of metaquery into sam language
         self.user = os.getenv("USER") # default is person running the script
         self.info = None
+        self.verbose = verbose
 
     
     ## set up from another script by using a dictionary or a did name  -- parallels the command line
@@ -58,7 +59,7 @@ class CollectionCreatorClass:
                 print ("did", self.did, "has invalid format")
                 sys.exit(1)
             if self.namespace == None:
-                print ("getting namespace from --did", stuff[0])
+                if(self.verbose): print ("getting namespace from --did", stuff[0])
                 self.namespace = stuff[0]
             self.name = stuff[1]
             try:
@@ -110,8 +111,8 @@ class CollectionCreatorClass:
             self.name = names[1]
             self.namespace = names[0]
             return
-        print ("----------------------------")
-        print ("make a name for this dataset")
+        if self.verbose: print ("----------------------------")
+        if self.verbose: print ("make a name for this dataset")
         ignore = ["description","defname","namespace","ordered"]
 
         if "defname" in self.meta.keys():
@@ -130,9 +131,10 @@ class CollectionCreatorClass:
                         template = template.replace(extend,self.meta[x])
                     continue
                 else:
-                    print ("keyword ",x,"not in defname, are you sure?")
+                    if self.verbose: print ("keyword ",x,"not in defname, are you sure?")
             if "%" in template:
                 print ("unrecognized tag in defname",template)
+                sys.exit(1)
             
             # for x in namekeys:
             #     if DEBUG: print (x)
@@ -176,13 +178,13 @@ class CollectionCreatorClass:
                     name += new
                     name += "__"
             name = name[:-2]
-            print ("name will be",name)
+            if self.verbose: print ("name will be",name)
             self.name = name
 
     ## make a metacat query from the AND of the json inputs
 
     def make_query(self):
-        print ("---------------------")
+        if self.verbose: print ("---------------------")
         print ("make or find a metacat query")
         # skip if already set (generally by did)
         if self.metaquery != None:
@@ -247,7 +249,7 @@ class CollectionCreatorClass:
             if max != None: timequery += " and %s <= '%s'"%(var,max)
             query += timequery
         else:
-            print ("No time range set, use all files")
+            if self.verbose: print ("No time range set, use all files")
 
         query += " ordered "
 
@@ -258,7 +260,7 @@ class CollectionCreatorClass:
     ## convert a metacat query into a sam query
 
     def make_sam_query(self):
-        print ("-------------------------")
+        if self.verbose: print ("-------------------------")
         print ("make a samweb query")
         if self.metaquery == None:
             print (" no metacat query to make sam query from")
@@ -281,7 +283,7 @@ class CollectionCreatorClass:
         r = " availability:anylocation and " + r
         # if ("skip" in r): print ("skip doesn't work yet in sam")
         # print ("samweb list-files --summary \"", r, "\"")
-        print (r,"\n")
+        print ("samquery", r,"\n")
         self.samquery = r
 
     ## parse sys.argv and either get existing query or read json and make a new query/dataset
@@ -294,6 +296,7 @@ class CollectionCreatorClass:
             parser.add_argument('--json',type=str,default=None, help='filename for a json list of parameters to and')
             parser.add_argument('--did',type=str,default=None,help="<namespace>:<name> for existing dataset to append to")
             parser.add_argument('--test',type=bool,default=False,const=True,nargs="?",help='do in test mode')
+            parser.add_argument('--verbose',type=bool,default=False,const=True,nargs="?",help='print out a lot')
            
             XtraTags = []
 
@@ -303,6 +306,7 @@ class CollectionCreatorClass:
             if args.user == None and os.environ["USER"] != None:  args.user = os.environ["USER"]
 
             self.user = args.user
+            self.verbose = args.verbose
 
             self.namespace = args.namespace
 
@@ -393,7 +397,7 @@ class CollectionCreatorClass:
         for f in results:
             nfiles += 1
             total_size += f.get("size", 0)
-        print("Files:       ", nfiles)
+        if DEBUG: print("Files:       ", nfiles)
         if total_size >= 1024*1024*1024*1024:
             unit = "TB"
             n = total_size / (1024*1024*1024*1024)
@@ -409,13 +413,13 @@ class CollectionCreatorClass:
         else:
             unit = "B"
             n = total_size
-        print("Total size:  ", "%d (%.3f %s)" % (total_size, n, unit))
+        print("Matacat files: %d"%nfiles, "Total size:  ", "%d (%.3f %s)" % (total_size, n, unit))
     
     ## use the query from make_query to make a metacat dataset
 
     def makeDataset(self):
-        print ("---------------------------")
-        print ("try to make a metacat dataset")
+        if self.verbose: print ("---------------------------")
+        if self.verbose: print ("try to make a metacat dataset")
         if self.metaquery == None:
              print ("ERROR: need to run make_query or supply an input dataset first")
              sys.exit(1)
@@ -466,14 +470,14 @@ class CollectionCreatorClass:
         try:
             already = mc_client.get_dataset(did)
         except:
-            print ("no dataset of this name yet")
+            print ("no dataset of this name yet, make one")
             already = None
 
         
 
         if already == None:
-                print ("make a new dataset",did)
-                print ("query",self.metaquery)
+                if self.verbose: print ("make a new dataset",did)
+                if self.verbose: print ("query",self.metaquery)
             #try:
                 mc_client.create_dataset(did,files_query=self.metaquery,description=self.meta["description"],metadata=cleanmeta)
                 self.did = did
@@ -486,8 +490,8 @@ class CollectionCreatorClass:
                
                 if DEBUG: print ("info",already)
 
-                print ("add files to existing dataset",did)
-                print ("query was",self.metaquery)
+                if self.verbose: print ("add files to existing dataset",did)
+                if self.verbose: print ("query was",self.metaquery)
                 #try:
                 mc_client.add_files(did,query=self.metaquery)
                 self.info = mc_client.get_dataset(did)
@@ -501,25 +505,25 @@ class CollectionCreatorClass:
 
     def makeSamDataset(self):
         # do some sam stuff
-        print ("--------------------")
-        print ("make sam definition")
+        if self.verbose: print ("--------------------")
+        if self.verbose: print ("make sam definition")
         defname=os.getenv("USER")+"_"+self.name
-        print ("Try to make a sam definition:",defname)
+        if self.verbose: print ("Try to make a sam definition:",defname)
 
         try:
             r = samweb.listFilesSummary("defname:"+defname)
             print ("samweb status",r)
             if r !=  None:
-                print ("definition already exists")
+                print ("samweb definition already exists")
                 return
             else:
-                print ("no such definition exists, need to make it")
+                if self.verbose: print ("no such definition exists, need to make it")
         except:
-            print ("no such definition exists, need to make it")
+            print ("no such samweb definition exists, need to make it")
         if self.samquery != None :
             try:
                 samweb.createDefinition(defname,dims=self.samquery,description=self.samquery)
-                print ("made definition",self.defname,"\n")
+                print ("made samweb definition",self.defname,"\n")
             except:
                 print ("failed to make sam definition\n")
         
@@ -534,29 +538,29 @@ if __name__ == "__main__":
     # read in command line args
     creator.setup()
     
-    
+    verbose = creator.verbose
     # dump out information 
 
-    print ("\n------------------------")
-    print ("\n samweb query")
+    if(verbose): print ("\n------------------------")
+    if(verbose): print ("\n samweb query")
 
-    print("samweb list-files --summary \"",creator.samquery,"\"\n")
+    if(verbose): print("samweb list-files --summary \"",creator.samquery,"\"\n")
     try:
         r = samweb.listFilesSummary(creator.samquery)
     except:
         print ("SAM got here")
-    print("SAM FILES",r)
-    print ("\n------------------------")
-    print ("\n metacat query")
-    print("metacat query \"",creator.metaquery,"\"\n")
+    if verbose: print("SAM FILES",r)
+    if(verbose): print ("\n------------------------")
+    if(verbose): print ("\n metacat query")
+    if(verbose): print("metacat query \"",creator.metaquery,"\"\n")
     query_files = list(mc_client.query(creator.metaquery))
-    creator.printSummary(query_files)
-    print ("\n ------------------------")
-    print ("\n dataset metadata")
-    if creator.meta: print(json.dumps({"dataset.meta":creator.meta},indent=4))
-    elif creator.did: 
+    if(verbose): creator.printSummary(query_files)
+    if(verbose): print ("\n ------------------------")
+    if(verbose): print ("\n dataset metadata")
+    if creator.meta and verbose: print(json.dumps({"dataset.meta":creator.meta},indent=4))
+    elif creator.did and verbose: 
         print(json.dumps(creator.info,indent=4))
 
-    print ("\n ------------------------")
+    if verbose: print ("\n ------------------------")
     
  
