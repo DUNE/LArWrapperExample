@@ -1,0 +1,37 @@
+﻿CollectionCreator
+=================
+
+.. automodule:: CollectionCreator
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Functions
+
+   .. autosummary::
+   
+      jsonwrite
+      makeDataset
+      makeSamDataset
+      make_name
+      make_sam_query
+      makequery
+      printSummary
+      setup
+      writequery
+   
+   
+
+   
+   
+   
+
+   
+   
+   
+
+
+
