@@ -9,7 +9,7 @@ CollectionCreatorClass
 fd_mc_2023a_create
 ******************
 
-.. autofunction::fd_mc_2023a_create::execute
+.. autofunction:: fd_mc_2023a_create::execute
  
 samtest
 *******

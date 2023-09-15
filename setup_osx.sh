@@ -3,7 +3,7 @@ export DDTEST=dunegpvm11.fnal.gov:/pnfs/dune/scratch/users/$USER/ddtest
 export HERE=$HOME/Dropbox/LArWrapperExample
 export PATH=${HOME}/.local/bin:$PATH
 export SQL_QUERY_PATH=${HERE}/sql
-export PYTHONPATH=$HERE/python:${PYTHONPATH}
+export PYTHONPATH=$HERE/python:$HERE/scripts:${PYTHONPATH}
 
 export DATA_DISPATCHER_URL=https://metacat.fnal.gov:9443/dune/dd/data
 export DATA_DISPATCHER_AUTH_URL=https://metacat.fnal.gov:8143/auth/dune
