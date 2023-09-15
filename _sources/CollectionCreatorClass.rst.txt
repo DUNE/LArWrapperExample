@@ -150,6 +150,9 @@ Adding to datasets
     
     python -m CollectionCreatorClass --did=schellma:detector.protodune-sp.PDSPProd4.full-reconstructed.physics.2021-01-03.2022-10-03.testme7
 
+
+.. _fd_mc_2023a_create:
+
 Example of using the python API
 -------------------------------
 
