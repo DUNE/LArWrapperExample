@@ -74,6 +74,94 @@
 </pre></div>
 </div>
 </div>
+<div class="section" id="collectioncreatorclass-api">
+<h2>CollectionCreatorClass API<a class="headerlink" href="#collectioncreatorclass-api" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="CollectionCreatorClass.CollectionCreatorClass">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">CollectionCreatorClass.</span></span><span class="sig-name descname"><span class="pre">CollectionCreatorClass</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/CollectionCreatorClass.html#CollectionCreatorClass"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CollectionCreatorClass.CollectionCreatorClass" title="Permalink to this definition">¶</a></dt>
+<dd><p>Class to create data collections</p>
+<p>__init__ initialization, does very little</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>verbose</strong> – print out a lot of things</p>
+</dd>
+</dl>
+<dl class="py method">
+<dt class="sig sig-object py" id="CollectionCreatorClass.CollectionCreatorClass.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">thedict</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">did</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/CollectionCreatorClass.html#CollectionCreatorClass.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CollectionCreatorClass.CollectionCreatorClass.load" title="Permalink to this definition">¶</a></dt>
+<dd><p>load the information from the json dict into the class
+does not change the db</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>thedict</strong> – contents of input json description of collection</p></li>
+<li><p><strong>did</strong> – id of a preexisting dataset to refill with new files</p></li>
+</ul>
+</dd>
+</dl>
+<p>calls make_name, make_query and make_sam_query</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CollectionCreatorClass.CollectionCreatorClass.makeDataset">
+<span class="sig-name descname"><span class="pre">makeDataset</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CollectionCreatorClass.html#CollectionCreatorClass.makeDataset"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CollectionCreatorClass.CollectionCreatorClass.makeDataset" title="Permalink to this definition">¶</a></dt>
+<dd><p>actualy make the metacat dataset from information loaded into the class
+does modify the db</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CollectionCreatorClass.CollectionCreatorClass.makeSamDefinition">
+<span class="sig-name descname"><span class="pre">makeSamDefinition</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CollectionCreatorClass.html#CollectionCreatorClass.makeSamDefinition"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CollectionCreatorClass.CollectionCreatorClass.makeSamDefinition" title="Permalink to this definition">¶</a></dt>
+<dd><p>make a samweb definition from information loaded into the class and tranformed by make_sam_query
+does modify the sam db unless the definition already exists</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CollectionCreatorClass.CollectionCreatorClass.make_name">
+<span class="sig-name descname"><span class="pre">make_name</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CollectionCreatorClass.html#CollectionCreatorClass.make_name"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CollectionCreatorClass.CollectionCreatorClass.make_name" title="Permalink to this definition">¶</a></dt>
+<dd><p>create a name from template in json file. If none exists use a list of fields.
+does not modify the db</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CollectionCreatorClass.CollectionCreatorClass.make_query">
+<span class="sig-name descname"><span class="pre">make_query</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CollectionCreatorClass.html#CollectionCreatorClass.make_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CollectionCreatorClass.CollectionCreatorClass.make_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>build a metacat query if none exists already
+does not modify the db</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CollectionCreatorClass.CollectionCreatorClass.make_sam_query">
+<span class="sig-name descname"><span class="pre">make_sam_query</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CollectionCreatorClass.html#CollectionCreatorClass.make_sam_query"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CollectionCreatorClass.CollectionCreatorClass.make_sam_query" title="Permalink to this definition">¶</a></dt>
+<dd><p>use the existing metacat query to make a sam query
+does not modify the db</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CollectionCreatorClass.CollectionCreatorClass.printSummary">
+<span class="sig-name descname"><span class="pre">printSummary</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">results</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/CollectionCreatorClass.html#CollectionCreatorClass.printSummary"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CollectionCreatorClass.CollectionCreatorClass.printSummary" title="Permalink to this definition">¶</a></dt>
+<dd><p>print a summary of metacat info in a nicer format
+does not modify the db</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CollectionCreatorClass.CollectionCreatorClass.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CollectionCreatorClass.html#CollectionCreatorClass.run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CollectionCreatorClass.CollectionCreatorClass.run" title="Permalink to this definition">¶</a></dt>
+<dd><p>contact the db and actually generate the collection based on the data stored in the load phase
+calls MakeDataSet and MakeSamDefinition
+modifies the metacat db</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="CollectionCreatorClass.CollectionCreatorClass.setup">
+<span class="sig-name descname"><span class="pre">setup</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/CollectionCreatorClass.html#CollectionCreatorClass.setup"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#CollectionCreatorClass.CollectionCreatorClass.setup" title="Permalink to this definition">¶</a></dt>
+<dd><p>parse the arguments for the command line
+does not modify the db</p>
+</dd></dl>
+
+</dd></dl>
+
+</div>
 <div class="section" id="example-configuration-files">
 <h2>Example configuration files<a class="headerlink" href="#example-configuration-files" title="Permalink to this heading">¶</a></h2>
 <p>Example dataset configuration json files are in directory <cite>datasets</cite> and look like:</p>
@@ -162,8 +250,8 @@
 </pre></div>
 </div>
 </div>
-<div class="section" id="example-of-using-the-python-api">
-<span id="fd-mc-2023a-create"></span><h2>Example of using the python API<a class="headerlink" href="#example-of-using-the-python-api" title="Permalink to this heading">¶</a></h2>
+<div class="section" id="example-of-using-the-python-api-from-a-python-script">
+<span id="fd-mc-2023a-create"></span><h2>Example of using the python API from a python script<a class="headerlink" href="#example-of-using-the-python-api-from-a-python-script" title="Permalink to this heading">¶</a></h2>
 <p><cite>fd_mc_2023a_create.py</cite> in the <cite>scripts</cite> directory is an example of using the <cite>CollectionCreatorClass</cite> python api instead of the command line.</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">python</span> <span class="o">-</span><span class="n">m</span> <span class="n">fd_mc_2023a_create</span> <span class="o">--</span><span class="n">make</span> <span class="o">--</span><span class="n">verbose</span>
 </pre></div>
@@ -172,6 +260,23 @@
 <p>You can find the datasets created by that script by typing</p>
 <div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">metacat</span> <span class="n">query</span> <span class="n">datasets</span> <span class="n">matching</span> <span class="n">schellma</span><span class="p">:</span><span class="o">*</span> <span class="n">having</span> <span class="n">datasetpar</span><span class="o">.</span><span class="n">deftag</span><span class="o">=</span><span class="n">prod_v4</span>
 </pre></div>
+</div>
+<div class="section" id="fd-mc-2023a-create-script-example">
+<h3>fd_mc_2023a_create script example<a class="headerlink" href="#fd-mc-2023a-create-script-example" title="Permalink to this heading">¶</a></h3>
+<dl class="py function">
+<dt class="sig sig-object py" id="fd_mc_2023a_create.execute">
+<span class="sig-prename descclassname"><span class="pre">fd_mc_2023a_create.</span></span><span class="sig-name descname"><span class="pre">execute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">test</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/fd_mc_2023a_create.html#execute"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#fd_mc_2023a_create.execute" title="Permalink to this definition">¶</a></dt>
+<dd><p>code which uses CollectionCreatorClass to make datasets for a specific production</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>test</strong> (<em>bool</em>) – just make a trial name and queries but don’t make the dataset</p></li>
+<li><p><strong>verbose</strong> (<em>bool</em>) – more printout</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 </div>
 <div class="section" id="inspecting-and-finding-datasets-using-the-dataset-metadata-you-created">
@@ -232,6 +337,21 @@
 <li><a class="reference internal" href="#">CollectionCreatorClass</a><ul>
 <li><a class="reference internal" href="#description">Description</a></li>
 <li><a class="reference internal" href="#collectioncreatorclass-arguments">CollectionCreatorClass arguments</a></li>
+<li><a class="reference internal" href="#collectioncreatorclass-api">CollectionCreatorClass API</a><ul>
+<li><a class="reference internal" href="#CollectionCreatorClass.CollectionCreatorClass"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass</span></code></a><ul>
+<li><a class="reference internal" href="#CollectionCreatorClass.CollectionCreatorClass.load"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.load()</span></code></a></li>
+<li><a class="reference internal" href="#CollectionCreatorClass.CollectionCreatorClass.makeDataset"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.makeDataset()</span></code></a></li>
+<li><a class="reference internal" href="#CollectionCreatorClass.CollectionCreatorClass.makeSamDefinition"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.makeSamDefinition()</span></code></a></li>
+<li><a class="reference internal" href="#CollectionCreatorClass.CollectionCreatorClass.make_name"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.make_name()</span></code></a></li>
+<li><a class="reference internal" href="#CollectionCreatorClass.CollectionCreatorClass.make_query"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.make_query()</span></code></a></li>
+<li><a class="reference internal" href="#CollectionCreatorClass.CollectionCreatorClass.make_sam_query"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.make_sam_query()</span></code></a></li>
+<li><a class="reference internal" href="#CollectionCreatorClass.CollectionCreatorClass.printSummary"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.printSummary()</span></code></a></li>
+<li><a class="reference internal" href="#CollectionCreatorClass.CollectionCreatorClass.run"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.run()</span></code></a></li>
+<li><a class="reference internal" href="#CollectionCreatorClass.CollectionCreatorClass.setup"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.setup()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#example-configuration-files">Example configuration files</a><ul>
 <li><a class="reference internal" href="#for-simulation">For simulation</a></li>
 <li><a class="reference internal" href="#for-data">For data:</a></li>
@@ -240,7 +360,13 @@
 </li>
 <li><a class="reference internal" href="#making-datasets">Making datasets</a></li>
 <li><a class="reference internal" href="#adding-to-datasets">Adding to datasets</a></li>
-<li><a class="reference internal" href="#example-of-using-the-python-api">Example of using the python API</a></li>
+<li><a class="reference internal" href="#example-of-using-the-python-api-from-a-python-script">Example of using the python API from a python script</a><ul>
+<li><a class="reference internal" href="#fd-mc-2023a-create-script-example">fd_mc_2023a_create script example</a><ul>
+<li><a class="reference internal" href="#fd_mc_2023a_create.execute"><code class="docutils literal notranslate"><span class="pre">execute()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li><a class="reference internal" href="#inspecting-and-finding-datasets-using-the-dataset-metadata-you-created">Inspecting and finding datasets using the dataset metadata you created</a><ul>
 <li><a class="reference internal" href="#finding">Finding</a></li>
 <li><a class="reference internal" href="#inspecting">Inspecting</a></li>

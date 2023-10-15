@@ -1,0 +1,627 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CollectionCreatorClass &#8212; LArWrapperExample 0.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">CollectionCreatorClass</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for CollectionCreatorClass</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;metacat CollectionCreatorClass&quot;&quot;&quot;</span>
+<span class="c1">##</span>
+<span class="c1"># @mainpage CollectionCreatorClass</span>
+<span class="c1">#</span>
+<span class="c1"># @section description_main</span>
+<span class="c1">#</span>
+<span class="c1">#  You can invoke this with python CollectionCreatorClass --json=&lt;json with list of required field values&gt;</span>
+<span class="c1"># optional arguments are --min_time (earliest date)  --max_time (latest date)</span>
+<span class="c1">##</span>
+<span class="c1"># @file CollectionCreatorClass.py</span>
+
+<span class="c1"># pylint: disable=C0303</span>
+<span class="c1"># pylint: disable=C0321 </span>
+<span class="c1"># pylint: disable=C0301  </span>
+<span class="c1"># pylint: disable=C0209</span>
+<span class="c1"># pylint: disable=C0103 </span>
+<span class="c1"># pylint: disable=C0325 </span>
+<span class="c1"># pylint: disable=C0123</span>
+
+
+
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span> <span class="k">as</span> <span class="n">ap</span>
+
+<span class="kn">import</span> <span class="nn">sys</span>
+<span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">json</span>
+
+<span class="kn">import</span> <span class="nn">samweb_client</span>
+
+<span class="kn">from</span> <span class="nn">metacat.webapi</span> <span class="kn">import</span> <span class="n">MetaCatClient</span>
+<span class="n">samweb</span> <span class="o">=</span> <span class="n">samweb_client</span><span class="o">.</span><span class="n">SAMWebClient</span><span class="p">(</span><span class="n">experiment</span><span class="o">=</span><span class="s1">&#39;dune&#39;</span><span class="p">)</span>
+
+<span class="n">DEBUG</span> <span class="o">=</span> <span class="kc">False</span>
+
+<span class="n">mc_client</span> <span class="o">=</span> <span class="n">MetaCatClient</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;METACAT_SERVER_URL&quot;</span><span class="p">))</span>
+
+
+<div class="viewcode-block" id="CollectionCreatorClass"><a class="viewcode-back" href="../CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass">[docs]</a><span class="k">class</span> <span class="nc">CollectionCreatorClass</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; Class to create data collections&#39;&#39;&#39;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        __init__ initialization, does very little</span>
+
+<span class="sd">        :param verbose: print out a lot of things</span>
+
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># actual name</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">did</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># (namespace+defname)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># (list of tags)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># metacat query</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">samquery</span> <span class="o">=</span> <span class="kc">None</span> <span class="c1"># translation of metaquery into sam language</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;USER&quot;</span><span class="p">)</span> <span class="c1"># default is person running the script</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">verbose</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="kc">False</span>
+
+    <span class="c1">## set up from another script by using a dictionary or a did name  -- parallels the command line</span>
+
+<div class="viewcode-block" id="CollectionCreatorClass.load"><a class="viewcode-back" href="../CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.load">[docs]</a>    <span class="k">def</span> <span class="nf">load</span> <span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">thedict</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">did</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">test</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        load the information from the json dict into the class</span>
+<span class="sd">        does not change the db</span>
+<span class="sd">        </span>
+<span class="sd">        :param thedict: contents of input json description of collection</span>
+<span class="sd">        </span>
+<span class="sd">        :param did: id of a preexisting dataset to refill with new files</span>
+
+<span class="sd">        calls make_name, make_query and make_sam_query</span>
+
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="n">thedict</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">did</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;no dictionary or dataset name provided - perhaps you want to use the --json or --did argument to specify on command line&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">test</span> <span class="o">=</span> <span class="n">test</span>
+
+        <span class="c1"># this inputs a did</span>
+        <span class="k">if</span> <span class="n">did</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">did</span> <span class="o">=</span> <span class="n">did</span>
+            <span class="n">stuff</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">did</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">stuff</span><span class="p">)</span><span class="o">!=</span><span class="mi">2</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;did&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">did</span><span class="p">,</span> <span class="s2">&quot;has invalid format&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">):</span>
+                    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;getting namespace from --did&quot;</span><span class="p">,</span> <span class="n">stuff</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">stuff</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">stuff</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">info</span> <span class="o">=</span> <span class="n">mc_client</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">did</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;failure finding information for &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">did</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            
+            <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">info</span>
+
+            <span class="k">if</span> <span class="s2">&quot;datasetpar.query&quot;</span> <span class="ow">in</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span> <span class="o">=</span> <span class="n">info</span><span class="p">[</span><span class="s2">&quot;metadata&quot;</span><span class="p">][</span><span class="s2">&quot;datasetpar.query&quot;</span><span class="p">]</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;could not find a query in the dataset metadata for &quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">did</span><span class="p">,</span> <span class="n">info</span><span class="p">)</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;this only works for datasets made with CollectionCreatorClass&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        
+        <span class="k">if</span> <span class="n">thedict</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="o">=</span> <span class="n">thedict</span>
+        
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_name</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_query</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">make_sam_query</span><span class="p">()</span></div>
+
+<div class="viewcode-block" id="CollectionCreatorClass.run"><a class="viewcode-back" href="../CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.run">[docs]</a>    <span class="k">def</span> <span class="nf">run</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; </span>
+
+<span class="sd">        contact the db and actually generate the collection based on the data stored in the load phase</span>
+<span class="sd">        calls MakeDataSet and MakeSamDefinition</span>
+<span class="sd">        modifies the metacat db</span>
+<span class="sd">        </span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">user</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">did</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;need to run load first to get name or did&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">test</span><span class="p">:</span>          
+            <span class="bp">self</span><span class="o">.</span><span class="n">makeDataset</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">makeSamDefinition</span><span class="p">()</span></div>
+        
+
+
+    <span class="c1">## create a collection name from template in json file. If none exists use a list of fields. </span>
+<div class="viewcode-block" id="CollectionCreatorClass.make_name"><a class="viewcode-back" href="../CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.make_name">[docs]</a>    <span class="k">def</span> <span class="nf">make_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; create a name from template in json file. If none exists use a list of fields. </span>
+<span class="sd">         does not modify the db &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">did</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">names</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">did</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">names</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">names</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+            <span class="k">return</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;----------------------------&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;make a name for this dataset&quot;</span><span class="p">)</span>
+        <span class="n">ignore</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">,</span><span class="s2">&quot;defname&quot;</span><span class="p">,</span><span class="s2">&quot;namespace&quot;</span><span class="p">,</span><span class="s2">&quot;ordered&quot;</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="s2">&quot;defname&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;defname&quot;</span><span class="p">]</span>
+            <span class="n">namekeys</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;%&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="n">namekeys</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">)</span>
+            <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">ignore</span><span class="p">:</span> <span class="k">continue</span>
+                <span class="n">extend</span> <span class="o">=</span> <span class="s2">&quot;%&quot;</span><span class="o">+</span><span class="n">x</span>
+                <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;extend&quot;</span><span class="p">,</span><span class="n">extend</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">extend</span> <span class="ow">in</span> <span class="n">template</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                        <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="s2">&quot;none&quot;</span><span class="p">)</span>
+                    <span class="k">else</span><span class="p">:</span>
+                        <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">extend</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+                    <span class="k">continue</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;keyword &quot;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="s2">&quot;not in defname, are you sure?&quot;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="s2">&quot;%&quot;</span> <span class="ow">in</span> <span class="n">template</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;unrecognized tag in defname&quot;</span><span class="p">,</span><span class="n">template</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+         
+            <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;%&quot;</span><span class="p">,</span><span class="s2">&quot;.&quot;</span><span class="p">)</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="s2">&quot;-&quot;</span><span class="p">)</span> <span class="c1"># protect against &quot;:&quot; for ranges</span>
+            <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;,&quot;</span><span class="p">,</span><span class="s2">&quot;_&quot;</span><span class="p">)</span> <span class="c1"># protect against &quot;,&quot; in lists</span>
+            <span class="k">if</span> <span class="n">template</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;.&quot;</span><span class="p">:</span> <span class="n">template</span> <span class="o">=</span> <span class="n">template</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span>
+            
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;dataset name will be: &quot;</span><span class="p">,</span><span class="n">template</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">template</span>
+        
+            
+            
+
+
+        
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">order</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;core.run_type&quot;</span><span class="p">,</span><span class="s2">&quot;dune.campaign&quot;</span><span class="p">,</span><span class="s2">&quot;core.file_type&quot;</span><span class="p">,</span><span class="s2">&quot;core.data_tier&quot;</span><span class="p">,</span><span class="s2">&quot;core.data_stream&quot;</span><span class="p">,</span><span class="s2">&quot;dune_mc.gen_fcl_filename&quot;</span><span class="p">,</span><span class="s2">&quot;core.application.version&quot;</span><span class="p">,</span><span class="s2">&quot;min_time&quot;</span><span class="p">,</span><span class="s2">&quot;max_time&quot;</span><span class="p">,</span><span class="s2">&quot;deftag&quot;</span><span class="p">]</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">order</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">i</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">i</span><span class="p">]</span><span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">new</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;.fcl&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+            
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;max_time&quot;</span><span class="p">:</span>
+                        <span class="n">new</span> <span class="o">=</span><span class="s2">&quot;le&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;min_time&quot;</span><span class="p">:</span>
+                        <span class="n">new</span> <span class="o">=</span><span class="s2">&quot;ge&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="s2">&quot;deftag&quot;</span><span class="p">:</span>
+                        <span class="n">new</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+                    <span class="n">name</span> <span class="o">+=</span> <span class="n">new</span>
+                    <span class="n">name</span> <span class="o">+=</span> <span class="s2">&quot;__&quot;</span>
+            <span class="n">name</span> <span class="o">=</span> <span class="n">name</span><span class="p">[:</span><span class="o">-</span><span class="mi">2</span><span class="p">]</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;name will be&quot;</span><span class="p">,</span><span class="n">name</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span></div>
+
+    <span class="c1">## make a metacat query from the AND of the json inputs</span>
+
+<div class="viewcode-block" id="CollectionCreatorClass.make_query"><a class="viewcode-back" href="../CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.make_query">[docs]</a>    <span class="k">def</span> <span class="nf">make_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; build a metacat query if none exists already</span>
+<span class="sd">        does not modify the db&#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;---------------------&quot;</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;make or find a metacat query&quot;</span><span class="p">)</span>
+        <span class="c1"># skip if already set (generally by did)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;found a query&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span><span class="p">)</span>
+            <span class="k">return</span>
+        
+        <span class="n">query</span> <span class="o">=</span> <span class="s2">&quot;files where&quot;</span>
+        
+        
+        <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">item</span> <span class="o">==</span> <span class="s2">&quot;Comment&quot;</span><span class="p">:</span> <span class="k">continue</span>
+            <span class="k">if</span> <span class="p">(</span><span class="n">DEBUG</span><span class="p">):</span> <span class="nb">print</span> <span class="p">(</span><span class="n">item</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">item</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="k">if</span> <span class="s2">&quot;.&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">item</span><span class="p">:</span>
+                <span class="k">continue</span>
+            <span class="n">val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">item</span><span class="p">]</span>
+            <span class="c1"># put quotes around values that have &quot;-&quot; in them because metacat doesn&#39;t interpret &quot;-&quot; well</span>
+            <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span> <span class="ow">and</span> <span class="s2">&quot;-&quot;</span> <span class="ow">in</span> <span class="n">val</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span> 
+                <span class="n">val</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">val</span>
+
+            <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">+</span><span class="n">item</span><span class="o">+</span><span class="s2">&quot;=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+            <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; and&quot;</span>
+            
+        <span class="c1"># strip off the last &quot;and&quot;</span>
+        <span class="n">query</span> <span class="o">=</span> <span class="n">query</span><span class="p">[:</span><span class="o">-</span><span class="mi">4</span><span class="p">]</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">DEBUG</span><span class="p">):</span> 
+            <span class="nb">print</span> <span class="p">(</span><span class="n">query</span><span class="p">)</span>
+    
+        <span class="k">if</span> <span class="s2">&quot;runs&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
+            <span class="n">runs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;runs&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
+                <span class="n">runs</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="o">%</span><span class="n">runs</span>
+            <span class="n">rquery</span> <span class="o">=</span> <span class="s2">&quot; and core.runs[any] in </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">runs</span>   
+            <span class="n">query</span> <span class="o">+=</span> <span class="n">rquery</span>
+
+        <span class="c1"># do time range - takes some work as there are two possibilities</span>
+
+        <span class="n">mint</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+        <span class="n">maxt</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="s2">&quot;min_time&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;min_time&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="n">mint</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="s2">&quot;max_time&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;max_time&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span> 
+            <span class="n">maxt</span> <span class="o">=</span> <span class="kc">None</span>
+
+        <span class="k">if</span> <span class="n">maxt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">mint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="n">mint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">mint</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;min_time&quot;</span><span class="p">]</span>
+                    
+            <span class="k">if</span> <span class="n">maxt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="n">maxt</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;max_time&quot;</span><span class="p">]</span>
+                
+            
+            <span class="n">var</span> <span class="o">=</span> <span class="s2">&quot;created_timestamp&quot;</span>
+            
+            <span class="n">timequery</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span> 
+            
+            
+            <span class="k">if</span> <span class="n">mint</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
+                <span class="n">timequery</span> <span class="o">+=</span> <span class="s2">&quot; and </span><span class="si">%s</span><span class="s2"> &gt;= &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="n">mint</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="n">maxt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span> 
+                <span class="n">timequery</span> <span class="o">+=</span> <span class="s2">&quot; and </span><span class="si">%s</span><span class="s2"> &lt;= &#39;</span><span class="si">%s</span><span class="s2">&#39;&quot;</span><span class="o">%</span><span class="p">(</span><span class="n">var</span><span class="p">,</span><span class="n">maxt</span><span class="p">)</span>
+            <span class="n">query</span> <span class="o">+=</span> <span class="n">timequery</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;No time range set, use all files&quot;</span><span class="p">)</span>
+
+        <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; ordered &quot;</span>
+
+        <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span> <span class="o">=</span> <span class="n">query</span></div>
+        
+
+<div class="viewcode-block" id="CollectionCreatorClass.make_sam_query"><a class="viewcode-back" href="../CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.make_sam_query">[docs]</a>    <span class="k">def</span> <span class="nf">make_sam_query</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        use the existing metacat query to make a sam query</span>
+<span class="sd">        does not modify the db</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;-------------------------&quot;</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;make a samweb query&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot; no metacat query to make sam query from&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s2">&quot;where&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">s</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">2</span><span class="p">:</span>
+            <span class="k">return</span> <span class="kc">None</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">s</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="c1"># convert some fields</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;core.&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;dune_mc.&quot;</span><span class="p">,</span><span class="s2">&quot;DUNE_MC.&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;dune.&quot;</span><span class="p">,</span><span class="s2">&quot;DUNE.&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;application.&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;runs[any] in&quot;</span><span class="p">,</span><span class="s2">&quot;run_number&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;:&quot;</span><span class="p">,</span><span class="s2">&quot;-&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;&#39;&quot;</span><span class="p">,</span><span class="s2">&quot;&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;ordered&quot;</span><span class="p">,</span> <span class="s2">&quot;&quot;</span> <span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;created_timestamp&quot;</span><span class="p">,</span><span class="s2">&quot;create_date&quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="n">r</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s2">&quot;limit &quot;</span><span class="p">,</span><span class="s2">&quot; with limit &quot;</span><span class="p">)</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="s2">&quot; availability:anylocation and &quot;</span> <span class="o">+</span> <span class="n">r</span>
+        <span class="c1"># if (&quot;skip&quot; in r): print (&quot;skip doesn&#39;t work yet in sam&quot;)</span>
+        <span class="c1"># print (&quot;samweb list-files --summary \&quot;&quot;, r, &quot;\&quot;&quot;)</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;samquery&quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">samquery</span> <span class="o">=</span> <span class="n">r</span></div>
+
+    <span class="c1">## parse sys.argv and either get existing query or read json and make a new query/dataset</span>
+<div class="viewcode-block" id="CollectionCreatorClass.setup"><a class="viewcode-back" href="../CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.setup">[docs]</a>    <span class="k">def</span> <span class="nf">setup</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        parse the arguments for the command line</span>
+<span class="sd">        does not modify the db</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">parser</span> <span class="o">=</span> <span class="n">ap</span><span class="p">()</span>
+        
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--namespace&#39;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;USER&quot;</span><span class="p">),</span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;metacat namespace for dataset&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--user&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;user name&#39;</span><span class="p">)</span>
+
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--json&#39;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">help</span><span class="o">=</span><span class="s1">&#39;filename for a json list of parameters to and&#39;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--did&#39;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="s2">&quot;&lt;namespace&gt;:&lt;name&gt; for existing dataset to append to&quot;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--test&#39;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="s1">&#39;do in test mode&#39;</span><span class="p">)</span>
+        <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--verbose&#39;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="s1">&#39;print out a lot&#39;</span><span class="p">)</span>
+
+        <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="n">args</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">user</span> <span class="ow">is</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;USER&quot;</span><span class="p">]</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>  <span class="n">args</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s2">&quot;USER&quot;</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">user</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">user</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">namespace</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">namespace</span>
+
+        <span class="c1"># check if using prexisting did - if so reuse existing query</span>
+
+        <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">json</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">did</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;no json or did file, in future you will be able to append to a dataset directly&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>  <span class="c1"># yes this is pre-existing dataset</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">did</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">did</span><span class="p">,</span><span class="n">test</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">test</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="c1"># read the data description tags from json file</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">exists</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">json</span><span class="p">):</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;json file&quot;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">json</span><span class="p">,</span><span class="s2">&quot; does not exist, quitting&quot;</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+            <span class="n">f</span> <span class="o">=</span> <span class="nb">open</span><span class="p">(</span><span class="n">args</span><span class="o">.</span><span class="n">json</span><span class="p">,</span><span class="s1">&#39;r&#39;</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">f</span><span class="p">:</span>
+                <span class="n">Tags</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">thedict</span><span class="o">=</span><span class="n">Tags</span><span class="p">,</span><span class="n">test</span><span class="o">=</span><span class="n">args</span><span class="o">.</span><span class="n">test</span><span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">run</span><span class="p">()</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;could not open&quot;</span><span class="p">,</span><span class="n">args</span><span class="o">.</span><span class="n">json</span><span class="p">)</span>
+                <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>   </div>
+
+<div class="viewcode-block" id="CollectionCreatorClass.printSummary"><a class="viewcode-back" href="../CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.printSummary">[docs]</a>    <span class="k">def</span> <span class="nf">printSummary</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span><span class="n">results</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        print a summary of metacat info in a nicer format</span>
+<span class="sd">        does not modify the db</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="n">nfiles</span> <span class="o">=</span> <span class="n">total_size</span> <span class="o">=</span> <span class="mi">0</span>
+        <span class="k">for</span> <span class="n">f</span> <span class="ow">in</span> <span class="n">results</span><span class="p">:</span>
+            <span class="n">nfiles</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="n">total_size</span> <span class="o">+=</span> <span class="n">f</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;size&quot;</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Files:       &quot;</span><span class="p">,</span> <span class="n">nfiles</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">total_size</span> <span class="o">&gt;=</span> <span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">:</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;TB&quot;</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">total_size</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">total_size</span> <span class="o">&gt;=</span> <span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">:</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;GB&quot;</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">total_size</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">total_size</span> <span class="o">&gt;=</span> <span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">:</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;MB&quot;</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">total_size</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1024</span><span class="o">*</span><span class="mi">1024</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">total_size</span> <span class="o">&gt;=</span> <span class="mi">1024</span><span class="p">:</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;KB&quot;</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">total_size</span> <span class="o">/</span> <span class="mi">1024</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">unit</span> <span class="o">=</span> <span class="s2">&quot;B&quot;</span>
+            <span class="n">n</span> <span class="o">=</span> <span class="n">total_size</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Matacat files: </span><span class="si">%d</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">nfiles</span><span class="p">,</span> <span class="s2">&quot;Total size:  &quot;</span><span class="p">,</span> <span class="s2">&quot;</span><span class="si">%d</span><span class="s2"> (</span><span class="si">%.3f</span><span class="s2"> </span><span class="si">%s</span><span class="s2">)&quot;</span> <span class="o">%</span> <span class="p">(</span><span class="n">total_size</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">unit</span><span class="p">))</span></div>
+    
+    <span class="c1">## use the query from make_query to make a metacat dataset</span>
+
+<div class="viewcode-block" id="CollectionCreatorClass.makeDataset"><a class="viewcode-back" href="../CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.makeDataset">[docs]</a>    <span class="k">def</span> <span class="nf">makeDataset</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        actualy make the metacat dataset from information loaded into the class</span>
+<span class="sd">        does modify the db</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;---------------------------&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;try to make a metacat dataset&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;ERROR: need to run make_query or supply an input dataset first&quot;</span><span class="p">)</span>
+            <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+     
+        <span class="c1"># already have a dataset - just want to update it</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">did</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">test</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;add files to existing dataset&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">did</span><span class="p">)</span>
+                <span class="n">mc_client</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">did</span><span class="p">,</span><span class="n">query</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;this was just a test with an existing dataset&quot;</span><span class="p">)</span>
+            <span class="k">return</span>
+        
+        <span class="c1"># need to make dataset metadata from json input in self.meta</span>
+
+        <span class="n">cleanmeta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="c1"># move dataset creation flags into dataset....</span>
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="s2">&quot;.&quot;</span> <span class="ow">in</span> <span class="n">x</span><span class="p">:</span> <span class="c1"># we have some extra parameters - need to store properly</span>
+                <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;rename search params that are not . type&quot;</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="o">==</span> <span class="s2">&quot;description&quot;</span><span class="p">:</span>  <span class="c1"># this goes in the real description field so skip</span>
+                    <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cleanmeta</span><span class="p">:</span><span class="n">cleanmeta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+                    <span class="k">continue</span>
+                <span class="n">cleanmeta</span><span class="p">[</span><span class="s2">&quot;datasetpar.&quot;</span><span class="o">+</span><span class="n">x</span><span class="p">]</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cleanmeta</span><span class="p">:</span><span class="n">cleanmeta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            
+        <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">if</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">cleanmeta</span><span class="p">:</span> <span class="k">continue</span>
+            
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;remove null key&quot;</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">x</span><span class="p">])</span>
+                <span class="k">if</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">cleanmeta</span><span class="p">:</span> <span class="n">cleanmeta</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">cleanmeta</span><span class="p">[</span><span class="n">x</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="n">x</span><span class="p">]</span>
+            
+        <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="n">cleanmeta</span><span class="p">)</span>
+
+        <span class="c1"># store the query used to make this dataset for future reuse</span>
+        <span class="n">cleanmeta</span><span class="p">[</span><span class="s2">&quot;datasetpar.query&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span>
+
+        <span class="n">did</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="si">%s</span><span class="s2">:</span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">namespace</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">)</span>
+
+        
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">already</span> <span class="o">=</span> <span class="n">mc_client</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">did</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;no dataset of this name yet, make one&quot;</span><span class="p">)</span>
+            <span class="n">already</span> <span class="o">=</span> <span class="kc">None</span>
+
+        
+
+        <span class="k">if</span> <span class="n">already</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;make a new dataset&quot;</span><span class="p">,</span><span class="n">did</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;query&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span><span class="p">)</span>
+        
+            <span class="n">mc_client</span><span class="o">.</span><span class="n">create_dataset</span><span class="p">(</span><span class="n">did</span><span class="p">,</span><span class="n">files_query</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span><span class="p">,</span><span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;description&quot;</span><span class="p">],</span><span class="n">metadata</span><span class="o">=</span><span class="n">cleanmeta</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">did</span> <span class="o">=</span> <span class="n">did</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">mc_client</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">did</span><span class="p">)</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;made dataset&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">did</span><span class="p">,</span> <span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+<span class="c1">#     </span>
+        <span class="k">else</span><span class="p">:</span> <span class="c1"># already there</span>
+               
+            <span class="k">if</span> <span class="n">DEBUG</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;info&quot;</span><span class="p">,</span><span class="n">already</span><span class="p">)</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;add files to existing dataset&quot;</span><span class="p">,</span><span class="n">did</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;query was&quot;</span><span class="p">,</span><span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span><span class="p">)</span>
+            
+            <span class="n">mc_client</span><span class="o">.</span><span class="n">add_files</span><span class="p">(</span><span class="n">did</span><span class="p">,</span><span class="n">query</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">metaquery</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">info</span> <span class="o">=</span> <span class="n">mc_client</span><span class="o">.</span><span class="n">get_dataset</span><span class="p">(</span><span class="n">did</span><span class="p">)</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">did</span> <span class="o">=</span> <span class="n">did</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;extended dataset&quot;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">did</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div>
+        
+
+<div class="viewcode-block" id="CollectionCreatorClass.makeSamDefinition"><a class="viewcode-back" href="../CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.makeSamDefinition">[docs]</a>    <span class="k">def</span> <span class="nf">makeSamDefinition</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&#39;&#39;&#39; </span>
+<span class="sd">        make a samweb definition from information loaded into the class and tranformed by make_sam_query</span>
+<span class="sd">        does modify the sam db unless the definition already exists</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+        <span class="c1"># do some sam stuff</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;--------------------&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;make sam definition&quot;</span><span class="p">)</span>
+        <span class="n">defname</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;USER&quot;</span><span class="p">)</span><span class="o">+</span><span class="s2">&quot;_&quot;</span><span class="o">+</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Try to make a sam definition:&quot;</span><span class="p">,</span><span class="n">defname</span><span class="p">)</span>
+
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">result</span> <span class="o">=</span> <span class="n">samweb</span><span class="o">.</span><span class="n">listFilesSummary</span><span class="p">(</span><span class="s2">&quot;defname:&quot;</span><span class="o">+</span><span class="n">defname</span><span class="p">)</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;samweb status&quot;</span><span class="p">,</span><span class="n">result</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">result</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;samweb definition already exists&quot;</span><span class="p">)</span>
+                <span class="k">return</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;no such definition exists, need to make it&quot;</span><span class="p">)</span>
+        <span class="k">except</span><span class="p">:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;no such samweb definition exists, need to make it&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">samquery</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="p">:</span>
+            <span class="k">try</span><span class="p">:</span>
+                <span class="n">samweb</span><span class="o">.</span><span class="n">createDefinition</span><span class="p">(</span><span class="n">defname</span><span class="p">,</span><span class="n">dims</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">samquery</span><span class="p">,</span><span class="n">description</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">samquery</span><span class="p">)</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;made samweb definition&quot;</span><span class="p">,</span><span class="n">defname</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="k">except</span><span class="p">:</span>
+                <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;failed to make sam definition</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span></div></div>
+        
+    
+
+
+<span class="c1">## command line, explains the variables.</span>
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+   
+    <span class="n">creator</span> <span class="o">=</span> <span class="n">CollectionCreatorClass</span><span class="p">()</span>
+    
+    <span class="c1"># read in command line args</span>
+    <span class="n">creator</span><span class="o">.</span><span class="n">setup</span><span class="p">()</span>
+    
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">creator</span><span class="o">.</span><span class="n">verbose</span>
+    <span class="c1"># dump out information </span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">------------------------&quot;</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> samweb query&quot;</span><span class="p">)</span>
+
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;samweb list-files --summary </span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">creator</span><span class="o">.</span><span class="n">samquery</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\&quot;\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">result</span> <span class="o">=</span> <span class="n">samweb</span><span class="o">.</span><span class="n">listFilesSummary</span><span class="p">(</span><span class="n">creator</span><span class="o">.</span><span class="n">samquery</span><span class="p">)</span>
+    <span class="k">except</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;SAM got here&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;SAM FILES&quot;</span><span class="p">,</span><span class="n">result</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">------------------------&quot;</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> metacat query&quot;</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;metacat query </span><span class="se">\&quot;</span><span class="s2">&quot;</span><span class="p">,</span><span class="n">creator</span><span class="o">.</span><span class="n">metaquery</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\&quot;\n</span><span class="s2">&quot;</span><span class="p">)</span>
+    <span class="n">query_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mc_client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">creator</span><span class="o">.</span><span class="n">metaquery</span><span class="p">))</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span> <span class="n">creator</span><span class="o">.</span><span class="n">printSummary</span><span class="p">(</span><span class="n">query_files</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> ------------------------&quot;</span><span class="p">)</span>
+    <span class="k">if</span><span class="p">(</span><span class="n">verbose</span><span class="p">):</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> dataset metadata&quot;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">creator</span><span class="o">.</span><span class="n">meta</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">({</span><span class="s2">&quot;dataset.meta&quot;</span><span class="p">:</span><span class="n">creator</span><span class="o">.</span><span class="n">meta</span><span class="p">},</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+    <span class="k">elif</span> <span class="n">creator</span><span class="o">.</span><span class="n">did</span> <span class="ow">and</span> <span class="n">verbose</span><span class="p">:</span> 
+        <span class="nb">print</span><span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">creator</span><span class="o">.</span><span class="n">info</span><span class="p">,</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> ------------------------&quot;</span><span class="p">)</span>
+    
+ 
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">CollectionCreatorClass</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Fermi National Accelerator Laboratory.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

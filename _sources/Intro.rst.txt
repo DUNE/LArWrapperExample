@@ -11,7 +11,7 @@ CollectionCreator utilities
   
 
 
-LArWrapper Scripts to log data transfers
+LArWrapperExample Scripts to log data transfers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
   and a suite of scripts :doc:`generated/Loginator`,  :doc:`generated/LArWrapper` :doc:`generated/DDInterface` that wrap LArSoft and log outputs. 

@@ -1,0 +1,210 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>fd_mc_2023a_create &#8212; LArWrapperExample 0.2 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/jquery.js"></script>
+    <script src="../_static/underscore.js"></script>
+    <script src="../_static/_sphinx_javascript_frameworks_compat.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+  </head><body>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fd_mc_2023a_create</a></li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <h1>Source code for fd_mc_2023a_create</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">sys</span><span class="o">,</span><span class="nn">os</span><span class="o">,</span><span class="nn">string</span><span class="o">,</span><span class="nn">json</span>
+<span class="kn">from</span> <span class="nn">CollectionCreatorClass</span> <span class="kn">import</span> <span class="n">CollectionCreatorClass</span>
+<span class="kn">import</span> <span class="nn">samweb_client</span>
+<span class="n">samweb</span> <span class="o">=</span> <span class="n">samweb_client</span><span class="o">.</span><span class="n">SAMWebClient</span><span class="p">(</span><span class="n">experiment</span><span class="o">=</span><span class="s1">&#39;dune&#39;</span><span class="p">)</span>
+<span class="kn">from</span> <span class="nn">metacat.webapi</span> <span class="kn">import</span> <span class="n">MetaCatClient</span> 
+<span class="n">mc_client</span> <span class="o">=</span> <span class="n">MetaCatClient</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;METACAT_SERVER_URL&quot;</span><span class="p">))</span>
+
+<span class="kn">from</span> <span class="nn">argparse</span> <span class="kn">import</span> <span class="n">ArgumentParser</span> <span class="k">as</span> <span class="n">ap</span>
+
+<span class="c1">## script that loops over detectors and fcl files for fd_mc_2023a and creates datasets</span>
+
+<div class="viewcode-block" id="execute"><a class="viewcode-back" href="../CollectionCreatorClass.html#fd_mc_2023a_create.execute">[docs]</a><span class="k">def</span> <span class="nf">execute</span><span class="p">(</span><span class="n">test</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&#39;&#39;&#39; code which uses CollectionCreatorClass to make datasets for a specific production</span>
+
+<span class="sd">        :param test: just make a trial name and queries but don&#39;t make the dataset</span>
+<span class="sd">        :type test: bool</span>
+<span class="sd">        </span>
+<span class="sd">        :param verbose: more printout</span>
+<span class="sd">        :type verbose: bool</span>
+<span class="sd">    &#39;&#39;&#39;</span>
+
+
+    <span class="c1">#creator = CollectionCreatorClass(verbose)</span>
+    <span class="n">experiments</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;fardet-hd&quot;</span><span class="p">,</span><span class="s2">&quot;fardet-vd&quot;</span><span class="p">]</span>
+
+    <span class="c1"># make a template</span>
+    <span class="n">template</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s2">&quot;description&quot;</span><span class="p">:</span><span class="s2">&quot;mc files from fd_mc_2023a&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;defnamespace&quot;</span><span class="p">:</span><span class="s2">&quot;schellma&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;defname&quot;</span><span class="p">:</span><span class="s2">&quot;</span><span class="si">%c</span><span class="s2">ore.file_type.</span><span class="si">%c</span><span class="s2">ore.run_type.</span><span class="si">%d</span><span class="s2">une.campaign.</span><span class="si">%c</span><span class="s2">ore.application.version.</span><span class="si">%c</span><span class="s2">ore.data_tier.</span><span class="si">%d</span><span class="s2">une_mc.gen_fcl_filename.</span><span class="si">%d</span><span class="s2">eftag&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;core.application.version&quot;</span><span class="p">:</span> <span class="s2">&quot;v09_75_03d00&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;core.data_tier&quot;</span><span class="p">:</span> <span class="s2">&quot;hit-reconstructed&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;core.file_type&quot;</span><span class="p">:</span> <span class="s2">&quot;mc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;core.run_type&quot;</span><span class="p">:</span> <span class="s2">&quot;fardet-hd&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dune.campaign&quot;</span><span class="p">:</span> <span class="s2">&quot;fd_mc_2023a&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dune.requestid&quot;</span><span class="p">:</span> <span class="s2">&quot;ritm1780305&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dune_mc.beam_polarity&quot;</span><span class="p">:</span> <span class="s2">&quot;fhc&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;dune_mc.gen_fcl_filename&quot;</span><span class="p">:</span> <span class="s2">&quot;prodgenie_nutau_dune10kt_1x2x6.fcl&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;deftag&quot;</span><span class="p">:</span> <span class="s2">&quot;testme&quot;</span>
+    <span class="p">}</span>
+
+    <span class="c1"># list the fcl&#39;s by run_type</span>
+
+    <span class="c1"># from https://wiki.dunescience.org/wiki/Production 8/25/23</span>
+    <span class="n">fcls</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">fcls</span><span class="p">[</span><span class="s2">&quot;fardet-hd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;prodgenie_nu_dune10kt_1x2x6.fcl&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;prodgenie_nutau_dune10kt_1x2x6.fcl&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;prodgenie_nue_dune10kt_1x2x6.fcl&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;prodgenie_anu_dune10kt_1x2x6.fcl&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;prodgenie_anutau_dune10kt_1x2x6.fcl&quot;</span><span class="p">,</span>
+                        <span class="s2">&quot;prodgenie_anue_dune10kt_1x2x6.fcl&quot;</span><span class="p">]</span>
+
+    <span class="n">fcls</span><span class="p">[</span><span class="s2">&quot;fardet-vd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="s2">&quot;prodgenie_nu_dunevd10kt_1x8x6_3view_30deg.fcl&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prodgenie_nu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prodgenie_nu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prodgenie_anu_dunevd10kt_1x8x6_3view_30deg.fcl&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prodgenie_anu_numu2nue_nue2nutau_dunevd10kt_1x8x6_3view_30deg.fcl&quot;</span><span class="p">,</span>
+        <span class="s2">&quot;prodgenie_anu_numu2nutau_nue2numu_dunevd10kt_1x8x6_3view_30deg.fcl&quot;</span><span class="p">]</span>
+    <span class="c1"># get the code versions right</span>
+    <span class="n">versions</span><span class="o">=</span><span class="p">{}</span>
+    <span class="n">versions</span><span class="p">[</span><span class="s2">&quot;fardet-hd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;v09_78_01d01&quot;</span>
+    <span class="n">versions</span><span class="p">[</span><span class="s2">&quot;fardet-vd&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;v09_75_03d00&quot;</span>
+
+<span class="c1"># the version #, fcl file and polarity need to be set for each</span>
+
+    <span class="c1"># this only actually makes datasets if there is a command line argument make</span>
+    
+    
+    <span class="k">for</span> <span class="n">det</span> <span class="ow">in</span> <span class="n">experiments</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">fcl</span> <span class="ow">in</span> <span class="n">fcls</span><span class="p">[</span><span class="n">det</span><span class="p">]:</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">------------------------------------------------------------------------</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="n">md</span> <span class="o">=</span> <span class="n">template</span>
+            <span class="n">md</span><span class="p">[</span><span class="s2">&quot;core.run_type&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">det</span>
+            <span class="n">md</span><span class="p">[</span><span class="s2">&quot;core.application.version&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">versions</span><span class="p">[</span><span class="n">det</span><span class="p">]</span>
+            <span class="n">md</span><span class="p">[</span><span class="s2">&quot;dune_mc.gen_fcl_filename&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">fcl</span>
+            <span class="k">if</span> <span class="s2">&quot;anu&quot;</span> <span class="ow">in</span> <span class="n">fcl</span><span class="p">:</span>
+                <span class="n">md</span><span class="p">[</span><span class="s2">&quot;dune_mc.beam_polarity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;rhc&quot;</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">md</span><span class="p">[</span><span class="s2">&quot;dune_mc.beam_polarity&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="s2">&quot;fhc&quot;</span>
+            <span class="n">creator</span> <span class="o">=</span> <span class="n">CollectionCreatorClass</span><span class="p">(</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+            <span class="n">creator</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">md</span><span class="p">,</span><span class="n">test</span><span class="o">=</span><span class="n">test</span><span class="p">)</span>
+            <span class="c1">#print (&quot;name&quot;, creator.name)</span>
+
+            <span class="c1">#print (&quot;\nMETA&quot;, creator.metaquery)</span>
+            <span class="c1">#print (&quot;\nSAM&quot;,creator.samquery)</span>
+            <span class="n">r</span> <span class="o">=</span> <span class="n">samweb</span><span class="o">.</span><span class="n">listFilesSummary</span><span class="p">(</span><span class="n">creator</span><span class="o">.</span><span class="n">samquery</span><span class="p">)</span>
+            <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;SAM&quot;</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2">&quot;</span><span class="p">)</span>
+            <span class="c1">#print(&quot;----------------------\n make metacat query \&quot;&quot;,creator.metaquery,&quot;\&quot;\n&quot;)</span>
+            
+            <span class="n">query_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mc_client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">creator</span><span class="o">.</span><span class="n">metaquery</span><span class="p">))</span>
+            <span class="n">creator</span><span class="o">.</span><span class="n">printSummary</span><span class="p">(</span><span class="n">query_files</span><span class="p">)</span>
+            <span class="c1">#(json.dumps(md,indent=4))</span>
+            <span class="n">fname</span> <span class="o">=</span> <span class="n">creator</span><span class="o">.</span><span class="n">name</span><span class="o">+</span><span class="s2">&quot;.json&quot;</span>
+            <span class="c1">#f = open(fname,&#39;w&#39;)</span>
+            <span class="c1">#json.dump(md, f,indent=4)</span>
+            <span class="c1">#f.close()</span>
+            
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">test</span><span class="p">:</span>                
+                <span class="n">creator</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">md</span><span class="p">,</span><span class="n">test</span><span class="o">=</span><span class="n">test</span><span class="p">)</span>
+                <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span> <span class="nb">print</span> <span class="p">(</span><span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">creator</span><span class="o">.</span><span class="n">info</span><span class="p">,</span><span class="n">indent</span><span class="o">=</span><span class="mi">4</span><span class="p">))</span>
+                
+            
+    <span class="k">if</span> <span class="n">test</span><span class="p">:</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;If you don&#39;t want to test, run with arg &#39;make&#39;&quot;</span><span class="p">)</span></div>
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s2">&quot;__main__&quot;</span><span class="p">:</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">ap</span><span class="p">()</span>
+    
+    
+    
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--test&#39;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="s1">&#39;do in test mode&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--verbose&#39;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="s1">&#39;print out a lot&#39;</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--make&#39;</span><span class="p">,</span><span class="nb">type</span><span class="o">=</span><span class="nb">bool</span><span class="p">,</span><span class="n">default</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span><span class="n">const</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span><span class="n">nargs</span><span class="o">=</span><span class="s2">&quot;?&quot;</span><span class="p">,</span><span class="n">help</span><span class="o">=</span><span class="s1">&#39;make the datasets&#39;</span><span class="p">)</span>
+    
+    
+
+    <span class="n">args</span> <span class="o">=</span> <span class="n">parser</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
+    <span class="c1"># setup</span>
+    <span class="n">test</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">test</span>
+    <span class="n">make</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">make</span>
+    <span class="n">verbose</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">verbose</span>
+    <span class="k">if</span> <span class="n">test</span> <span class="ow">and</span> <span class="n">make</span> <span class="ow">or</span> <span class="p">(</span><span class="ow">not</span> <span class="n">test</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">make</span><span class="p">):</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;you need to choose either --test or --make&quot;</span><span class="p">)</span>
+        <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;test will just print things out while make will actually make the dataset&quot;</span><span class="p">)</span>
+        <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">test</span><span class="p">:</span> <span class="n">make</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">execute</span><span class="p">(</span><span class="n">test</span><span class="o">=</span><span class="n">test</span><span class="p">,</span><span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+</pre></div>
+
+            <div class="clearer"></div>
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="../genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="../py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
+          <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li>
+        <li class="nav-item nav-item-this"><a href="">fd_mc_2023a_create</a></li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2023, Fermi National Accelerator Laboratory.
+      Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 5.3.0.
+    </div>
+  </body>
+</html>

@@ -59,12 +59,27 @@
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="Intro.html">What this package does</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="Intro.html#collectioncreator-utilities">CollectionCreator utilities</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Intro.html#larwrapper-scripts-to-log-data-transfers">LArWrapper Scripts to log data transfers</a></li>
+<li class="toctree-l2"><a class="reference internal" href="Intro.html#larwrapperexample-scripts-to-log-data-transfers">LArWrapperExample Scripts to log data transfers</a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="CollectionCreatorClass.html">CollectionCreatorClass</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="CollectionCreatorClass.html#description">Description</a></li>
 <li class="toctree-l2"><a class="reference internal" href="CollectionCreatorClass.html#collectioncreatorclass-arguments">CollectionCreatorClass arguments</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CollectionCreatorClass.html#collectioncreatorclass-api">CollectionCreatorClass API</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.load"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.makeDataset"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.makeDataset()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.makeSamDefinition"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.makeSamDefinition()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.make_name"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.make_name()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.make_query"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.make_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.make_sam_query"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.make_sam_query()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.printSummary"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.printSummary()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.run"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.run()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="CollectionCreatorClass.html#CollectionCreatorClass.CollectionCreatorClass.setup"><code class="docutils literal notranslate"><span class="pre">CollectionCreatorClass.setup()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="CollectionCreatorClass.html#example-configuration-files">Example configuration files</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="CollectionCreatorClass.html#for-simulation">For simulation</a></li>
 <li class="toctree-l3"><a class="reference internal" href="CollectionCreatorClass.html#for-data">For data:</a></li>
@@ -73,7 +88,13 @@
 </li>
 <li class="toctree-l2"><a class="reference internal" href="CollectionCreatorClass.html#making-datasets">Making datasets</a></li>
 <li class="toctree-l2"><a class="reference internal" href="CollectionCreatorClass.html#adding-to-datasets">Adding to datasets</a></li>
-<li class="toctree-l2"><a class="reference internal" href="CollectionCreatorClass.html#example-of-using-the-python-api">Example of using the python API</a></li>
+<li class="toctree-l2"><a class="reference internal" href="CollectionCreatorClass.html#example-of-using-the-python-api-from-a-python-script">Example of using the python API from a python script</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="CollectionCreatorClass.html#fd-mc-2023a-create-script-example">fd_mc_2023a_create script example</a><ul>
+<li class="toctree-l4"><a class="reference internal" href="CollectionCreatorClass.html#fd_mc_2023a_create.execute"><code class="docutils literal notranslate"><span class="pre">execute()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
 <li class="toctree-l2"><a class="reference internal" href="CollectionCreatorClass.html#inspecting-and-finding-datasets-using-the-dataset-metadata-you-created">Inspecting and finding datasets using the dataset metadata you created</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="CollectionCreatorClass.html#finding">Finding</a></li>
 <li class="toctree-l3"><a class="reference internal" href="CollectionCreatorClass.html#inspecting">Inspecting</a></li>
@@ -99,8 +120,6 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="Modules.html">Python APIs</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="Modules.html#collectioncreatorclass">CollectionCreatorClass</a></li>
-<li class="toctree-l2"><a class="reference internal" href="Modules.html#fd-mc-2023a-create">fd_mc_2023a_create</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Modules.html#samtest">samtest</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Modules.html#ddinterface">DDInterface</a></li>
 <li class="toctree-l2"><a class="reference internal" href="Modules.html#larwrapper">LArWrapper</a></li>
@@ -113,6 +132,8 @@
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="api.html">API</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="generated/CollectionCreatorClass.html">CollectionCreatorClass</a></li>
+<li class="toctree-l2"><a class="reference internal" href="generated/fd_mc_2023a_create.html">fd_mc_2023a_create</a></li>
 <li class="toctree-l2"><a class="reference internal" href="generated/submit_dd_jobs.html">submit_dd_jobs</a></li>
 <li class="toctree-l2"><a class="reference internal" href="api.html#dependencies">Dependencies</a></li>
 </ul>

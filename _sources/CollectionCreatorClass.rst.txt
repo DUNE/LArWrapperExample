@@ -38,6 +38,13 @@ CollectionCreatorClass arguments
         --did DID             <namespace>:<name> for existing dataset to append to
         --test [TEST]         do in test mode
 
+CollectionCreatorClass API
+--------------------------
+
+.. autoclass:: CollectionCreatorClass::CollectionCreatorClass
+    :members:
+
+
 Example configuration files
 ---------------------------
 
@@ -153,8 +160,8 @@ Adding to datasets
 
 .. _fd_mc_2023a_create:
 
-Example of using the python API
--------------------------------
+Example of using the python API from a python script
+----------------------------------------------------
 
 `fd_mc_2023a_create.py` in the `scripts` directory is an example of using the `CollectionCreatorClass` python api instead of the command line. 
    
@@ -169,6 +176,11 @@ You can find the datasets created by that script by typing
 .. code-block::
 
     metacat query datasets matching schellma:* having datasetpar.deftag=prod_v4
+
+fd_mc_2023a_create script example
++++++++++++++++++++++++++++++++++
+
+.. autofunction:: fd_mc_2023a_create::execute
 
 Inspecting and finding datasets using the dataset metadata you created
 ----------------------------------------------------------------------

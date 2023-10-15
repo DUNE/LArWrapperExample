@@ -1,0 +1,29 @@
+﻿CollectionCreatorClass
+======================
+
+.. automodule:: CollectionCreatorClass
+
+   
+   
+   
+
+   
+   
+   
+
+   
+   
+   .. rubric:: Classes
+
+   .. autosummary::
+   
+      CollectionCreatorClass
+   
+   
+
+   
+   
+   
+
+
+

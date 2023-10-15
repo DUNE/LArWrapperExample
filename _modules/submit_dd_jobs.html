@@ -96,7 +96,14 @@
     <span class="n">sys</span><span class="o">.</span><span class="n">exit</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 
   <span class="c1">#make project in data dispatcher</span>
-  <span class="n">proj_dict</span> <span class="o">=</span> <span class="n">dd_client</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="n">query_files</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">thequery</span><span class="p">,</span> <span class="n">idle_timeout</span><span class="o">=</span><span class="mi">259201</span><span class="p">)</span>
+  <span class="k">try</span><span class="p">:</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;try to make a project&quot;</span><span class="p">)</span>
+    <span class="n">proj_dict</span> <span class="o">=</span> <span class="n">dd_client</span><span class="o">.</span><span class="n">create_project</span><span class="p">(</span><span class="n">files</span><span class="o">=</span><span class="n">query_files</span><span class="p">,</span> <span class="n">query</span><span class="o">=</span><span class="n">thequery</span><span class="p">,</span> <span class="n">idle_timeout</span><span class="o">=</span><span class="mi">259201</span><span class="p">)</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;project creation succeeded&quot;</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">query_files</span><span class="p">),</span><span class="n">thequery</span><span class="p">)</span>
+  <span class="k">except</span><span class="p">:</span>
+
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;project creation failed&quot;</span><span class="p">)</span>
+
   <span class="k">if</span> <span class="n">debug</span><span class="p">:</span> <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;project dictionary&quot;</span><span class="p">,</span><span class="n">proj_dict</span><span class="p">)</span>
   <span class="n">dd_proj_id</span> <span class="o">=</span> <span class="n">proj_dict</span><span class="p">[</span><span class="s1">&#39;project_id&#39;</span><span class="p">]</span>
   <span class="c1">#outdir = os.path.join(&quot;/pnfs/dune/scratch/users/&quot;,os.environ[&quot;USER&quot;],&quot;/%d&quot;%dd_proj_id)</span>
@@ -177,8 +184,12 @@
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">query_limit</span><span class="p">:</span> <span class="n">query</span> <span class="o">+=</span> <span class="s1">&#39; limit </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">args</span><span class="o">.</span><span class="n">query_limit</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
     <span class="c1">#query metacat</span>
-    <span class="n">query_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mc_client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query</span><span class="p">)]</span>
-    <span class="c1">#print(query_files)</span>
+    <span class="n">query_files</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="c1">#query_files = [i for i in mc_client.query(query)]</span>
+    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mc_client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
+       <span class="n">query_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+       <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;new file&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">query_files</span><span class="p">)</span>
 
     <span class="c1">#check size</span>
     <span class="n">nfiles_in_dataset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_files</span><span class="p">)</span>
