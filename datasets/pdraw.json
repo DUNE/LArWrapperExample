@@ -1,0 +1,11 @@
+{
+  "description":"Example protodune raw data",
+  "defname":"%core.file_type.%core.run_type.%core.data_tier.%core.data_stream.runs_%runs.%deftag",
+  "namespace":"schellma",
+  "core.run_type": "protodune-sp",
+  "core.file_type": "detector",
+  "core.data_tier": "raw",
+  "core.data_stream": "physics",
+  "runs":"5141,5143",
+  "deftag":"example_v2"
+}

@@ -10,6 +10,7 @@ metacat
 -------
 
   `metacat documentation <https://metacat.readthedocs.io/en/latest/>`_
+  `DUNE metacat gui <https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/query>`_
 
 Data Dispatcher (dd)
 --------------------

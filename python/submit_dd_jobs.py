@@ -55,7 +55,14 @@ def create_project(dataset=None, query=None, namespace = None, query_limit=None,
     sys.exit(1)
 
   #make project in data dispatcher
-  proj_dict = dd_client.create_project(files=query_files, query=thequery, idle_timeout=259201)
+  try:
+    print ("try to make a project")
+    proj_dict = dd_client.create_project(files=query_files, query=thequery, idle_timeout=259201)
+    print ("project creation succeeded",len(query_files),thequery)
+  except:
+
+    print ("project creation failed")
+
   if debug: print("project dictionary",proj_dict)
   dd_proj_id = proj_dict['project_id']
   #outdir = os.path.join("/pnfs/dune/scratch/users/",os.environ["USER"],"/%d"%dd_proj_id)
@@ -136,8 +143,12 @@ def main():
     if args.query_limit: query += ' limit %s'%args.query_limit
     print(query)
     #query metacat
-    query_files = [i for i in mc_client.query(query)]
-    #print(query_files)
+    query_files = []
+    #query_files = [i for i in mc_client.query(query)]
+    for i in mc_client.query(query):
+       query_files.append(i)
+       print ("new file", i)
+    print(query_files)
 
     #check size
     nfiles_in_dataset = len(query_files)
