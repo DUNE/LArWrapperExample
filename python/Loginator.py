@@ -12,7 +12,8 @@ H. Schellman - 2022
 ##
 # @file Loginator.py
 
-import string,time,datetime,json,os,sys
+import datetime,json,os,sys
+from datetime import date,timezone,datetime
 
 import dbparse
 
@@ -22,8 +23,7 @@ if "SAM_EXPERIMENT" in os.environ:
 
 
 from metacat.webapi import MetaCatClient
-import string,datetime
-from datetime import date,timezone,datetime
+
 
 
 
@@ -50,7 +50,7 @@ class Loginator:
             sys.exit(1)
         self.logname = logname
         self.debug = debug
-        print ("Loginator debug:",self.debug)
+        print ("Loginator debug:",self.debug,self.logname)
         self.logfile = open(logname,'r')
         if fcl != None: 
             self.fclname = os.path.basename(fcl).replace(".fcl","")
@@ -134,10 +134,10 @@ class Loginator:
         return None
 
 ## safe access for a dictionary element, returns None rather than failing
-    def getSafe(self,dict,envname):
-        if envname in dict:
+    def getSafe(self,mydict,envname):
+        if envname in mydict:
             if self.debug: print ("found ",envname)
-            return dict[envname]
+            return mydict[envname]
         else:
             return None
 
@@ -179,7 +179,8 @@ class Loginator:
         """ read in the log file and parse it
             lines with specific tags get processes while others are skipped
         """
-        object = {}
+        
+        theobject = {}
         memdata = None
         cpudata = None
         walldata = None
@@ -225,7 +226,6 @@ class Loginator:
                 filename = os.path.basename(filefull).strip()
                 filepath = os.path.dirname(filefull).strip()
 
-                dups = 0
 
                 # start - ask for file
                 if "Initiating" in tag:
@@ -237,7 +237,7 @@ class Loginator:
                     localobject["file_name"] = filename
                     localobject["url"] = filefull
                     if larstart == None:  # somehow we didn't start quite right
-                    	larstart = timestamp
+                        larstart = timestamp
                     if "BEGIN_TIME" in os.environ:
                         localobject["timestamp_for_job_start"]=os.getenv("BEGIN_TIME")
                     else:
@@ -258,7 +258,7 @@ class Loginator:
 
                     if self.debug: print ("filename was",filename,line)
                     localobject["timestamp_for_start"] = timestamp
-                    start = timestamp
+                    
                     localobject["path"]=filepath
                     localobject["file_name"] = filename
                     if self.debug: print ("filepath",filepath)
@@ -277,30 +277,32 @@ class Loginator:
                     localobject["duration"]=self.duration(localobject["timestamp_for_request"],timestamp)
                     localobject["final_state"] = "Closed"
 
-                object[filename] = localobject
+                if self.debug: print (filename, localobject)
+                theobject[filename] = localobject
                 continue
 
-
+        if self.debug: print ("outobject in readme",object)
         # add the job info to all file records if available
         localinfo = self.dbread()
-        for thing in object:
+        for thing in theobject:
             
-            if memdata != None: object[thing]["art_real_memory"]=memdata
-            if "memory" in localinfo: object[thing]["db_real_memory"]=localinfo["memory"]
-            if "n_events" in localinfo: object[thing]["db_total_events"]=localinfo["n_events"]
-            if walldata != None: object[thing]["art_wall_time"]=walldata
-            if "wall_time" in localinfo: object[thing]["db_wall_time"]=localinfo["wall_time"]
-            if cpudata != None: object[thing]["art_cpu_time"]=cpudata
+            if memdata != None: theobject[thing]["art_real_memory"]=memdata
+            if "memory" in localinfo: theobject[thing]["db_real_memory"]=localinfo["memory"]
+            if "n_events" in localinfo: theobject[thing]["db_total_events"]=localinfo["n_events"]
+            if walldata != None: theobject[thing]["art_wall_time"]=walldata
+            if "wall_time" in localinfo: theobject[thing]["db_wall_time"]=localinfo["wall_time"]
+            if cpudata != None: theobject[thing]["art_cpu_time"]=cpudata
             if totalevents != None:
-                object[thing]["art_total_events"]=totalevents
+                theobject[thing]["art_total_events"]=totalevents
                 if totalevents > 0:
-                    object[thing]["art_cpu_time_per_event"] = cpudata/totalevents
-                    object[thing]["art_wall_time_per_event"] = walldata/totalevents
+                    theobject[thing]["art_cpu_time_per_event"] = cpudata/totalevents
+                    theobject[thing]["art_wall_time_per_event"] = walldata/totalevents
             if walldata  != None and walldata > 0:
-                object[thing]["art_cpu_efficiency"] = cpudata/walldata
+                theobject[thing]["art_cpu_efficiency"] = cpudata/walldata
 
-            #print ("mem",object[thing]["real_memory"])
-        self.outobject=object
+            #print ("mem",theobject[thing]["real_memory"])
+        self.outobject=theobject
+       
 
     def addinfo(self,info):
         """  add information from a dictionary to the record"
@@ -383,9 +385,10 @@ class Loginator:
                 self.outobject[f]["file_campaign"]=meta["metadata"]["DUNE.campaign"]
             self.outobject[f]["fid"]=meta["fid"]
             self.outobject[f]["namespace"]=namespace
+        
 
 
-    def addreplicainfo(self,replicas=None,flist=[],test=False):
+    def addreplicainfo(self,replicas=None,flist=[]):
         """
         get some details from the data dispatcher on file locations
         :param replicas: dictionary with lists of replicas for each file from the dd
@@ -401,13 +404,13 @@ class Loginator:
         # do this if just a file list
         
         print ("outobject", self.outobject)
-        if replicas == None:
+        if replicas is None:
             # this is a file list
-            filelist = flist.split(" ")
+            filelist = flist
             print ("flist",filelist)
             fullpath=""
             for files in filelist:
-                r = os.path.basename(files)
+                r = os.path.basename(files.strip())
                 found = False
                 for f in self.outobject:
                     print ('outfile',f)

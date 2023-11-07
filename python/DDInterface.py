@@ -133,7 +133,7 @@ class DDInterface:
     self.max_wait_attempts = wait_limit
     self.hit_timeout = False
     self.lar_return = -1
-    self.lar_file_list = ''
+    self.lar_file_list = open('lar_file_list.txt','w')
     self.n_waited = 0
     self.next_failed = False
     self.next_replicas = []
@@ -427,14 +427,16 @@ class DDInterface:
             uri = replica['url']
             if 'https://eospublic.cern.ch/e' in uri: uri = uri.replace('https://eospublic.cern.ch/e', 'xroot://eospublic.cern.ch//e')
             print ("\n found uri",uri,"\n")
-            self.lar_file_list += uri
-            self.lar_file_list += ' '
+            #self.lar_file_list += uri
+            #self.lar_file_list += ' '
+            self.lar_file_list.write(uri)
       else:
         print('Empty replicas -- marking as failed')
 
         ##TODO -- pop entry
         self.dd_client.file_failed(self.proj_id, '%s:%s'%(j['namespace'], j['name']))
         print(datetime.datetime.now())
+    self.lar_file_list.close()
 
   def RunLAr(self, fcl=None, n=-1, nskip=0):
     print ("RunLAr",datetime.datetime.now())

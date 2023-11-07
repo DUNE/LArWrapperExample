@@ -1,0 +1,10 @@
+{
+  "description":"1GeV PDSP MC",
+  "defname":"%core.file_type.%core.run_type.%dune.campaign.%core.data_tier.%core.fcl.%deftag",
+  "core.run_type": "protodune-sp",
+  "core.file_type": "mc",
+  "core.data_tier": "full-reconstructed",
+    "dune.campaign": "PDSPProd4a",
+    "DUNE_MC.beam_energy":1.0,
+  "deftag":"test"
+}
