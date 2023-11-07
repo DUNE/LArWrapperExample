@@ -79,7 +79,7 @@ autodoc_mock_imports = ["metacat","samweb_client","data_dispatcher"]
 #
 html_theme = 'furo'
 html_theme = 'nature'
-html_theme = 'cloud'
+# not available on github html_theme = 'cloud'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
