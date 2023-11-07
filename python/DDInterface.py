@@ -133,7 +133,8 @@ class DDInterface:
     self.max_wait_attempts = wait_limit
     self.hit_timeout = False
     self.lar_return = -1
-    self.lar_file_list = open('lar_file_list.txt','w')
+    self.flist='lar_file_list.txt'
+    self.lar_file_list = open(self.flist,'w')
     self.n_waited = 0
     self.next_failed = False
     self.next_replicas = []
@@ -453,7 +454,7 @@ class DDInterface:
     print ("RunLAr called with ",fcl,n,nskip)
     unused_files = []
       # new interface that does not talk to dd
-    lar = LArWrapper.LArWrapper(debug=self.debug, fcl=fcl, o="temp.root", replicas=self.input_replicas, flist=self.lar_file_list, n=n, nskip=nskip, appFamily=self.appFamily, appName=self.appName, appVersion=self.appVersion, deliveryMethod="dd", workflowMethod=self.workflowMethod, projectID=self.proj_id, formatString="runLar_%s_%s_%%tc_%s_%s_%s.root")
+    lar = LArWrapper.LArWrapper(debug=self.debug, fcl=fcl, o="temp.root", replicas=self.input_replicas, flist=self.flist, n=n, nskip=nskip, appFamily=self.appFamily, appName=self.appName, appVersion=self.appVersion, deliveryMethod="dd", workflowMethod=self.workflowMethod, projectID=self.proj_id, formatString="runLar_%s_%s_%%tc_%s_%s_%s.root")
     returncode = lar.DoLAr(cluster, process)
     self.unused_files = lar.LArResults()
 

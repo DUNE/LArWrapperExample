@@ -145,7 +145,8 @@ class LArWrapper:
 
         # data dispatcher case
         if self.deliveryMethod == "dd":
-            cmd = 'lar -c %s -s %s -n %i --nskip %i --sam-data-tier %s --sam-stream-name %s'%(self.fcl, self.flist, self.n, self.nskip, self.dataTier, self.dataStream)
+            print ("self.flist",self.flist)
+            cmd = 'lar -c %s -S %s -n %i --nskip %i --sam-data-tier %s --sam-stream-name %s'%(self.fcl, self.flist, self.n, self.nskip, self.dataTier, self.dataStream)
             # print ("LArWrapper dd cmd = ",cmd)
             # proc = subprocess.run(cmd, shell=True, stdout=ofile,stderr=efile)
 
