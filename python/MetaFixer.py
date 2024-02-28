@@ -69,6 +69,9 @@ class MetaFixer:
         return self.query_files
     
     def explore(self):
+        " see what there is in a general query ""
+        if not os.path.exists("metadata"):
+            os.mkdir("metadata")
         " this explores and counts things"
         datatypes = ["core.data_tier","core.run_type","dune.campaign","dune_mc.gen_fcl_filename","core.application","dune.requestid"]
         typecount = {}
@@ -81,13 +84,6 @@ class MetaFixer:
             #if self.verbose:print (file)
             thedid = "%s:%s"%(file["namespace"],file["name"])
 
-            # count namespaces
-            value = file["namespace"]
-            if value in typecount["namespace"]:
-                typecount["namespace"][value] +=1
-            else:
-                typecount["namespace"][value]=1
-
             if count%10 == 0 and self.verbose:
                 print (count, thedid)
             try:
@@ -97,6 +93,19 @@ class MetaFixer:
                 break
             # if self.verbose:
             #     print(json.dumps(md,indent=4))
+            # count namespaces
+            value = file["namespace"]
+            if value in typecount["namespace"]:
+                typecount["namespace"][value] +=1
+            else:
+                typecount["namespace"][value]=1
+                f = open("metadata/namepace.json",'w')
+                data = json.dumps(md,indent=4)
+                f.write(data)
+                f.close()
+                
+                    
+            #
             metadata = md["metadata"]
             for datatype in datatypes:
                 if datatype in metadata.keys():
@@ -105,6 +114,11 @@ class MetaFixer:
                         typecount[datatype][value] = typecount[datatype][value]+1
                     else:
                         typecount[datatype][value] = 1
+        
+                        f = open("metadata/"+datatype+"__"+value+".json",'w')
+                        data = json.dumps(md,indent=4)
+                        f.write(data)
+                        f.close()
             
         print(json.dumps(typecount,indent=4))
 
