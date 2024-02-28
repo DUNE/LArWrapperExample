@@ -69,7 +69,7 @@ class MetaFixer:
         return self.query_files
     
     def explore(self):
-        " see what there is in a general query ""
+        " see what there is in a general query "
         if not os.path.exists("metadata"):
             os.mkdir("metadata")
         " this explores and counts things"
