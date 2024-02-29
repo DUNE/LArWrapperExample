@@ -163,12 +163,18 @@ class MetaFixer:
                                 print ("ERROR missing namespace for parent in  this file",did)
                             self.errfile.write("%s, missing namespace in parents\n"%did)
                             thisparent = {"did":"%s:%s"%(metadata["namespace"],p["filename"])}
-                    parentlist.append(thisparent)
+                        parentlist.append(thisparent)
                     
-                print (parentlist)
-                if FIX:
-                    mc_client.update_file(did,  parents=parentlist)
-                    print ("Tried to fix this file", did)
+                    print (parentlist)
+                    if FIX:
+                        print ("Tried to fix this file", did)
+                        try:
+                            mc_client.update_file(did,  parents=parentlist)
+                            print ("fix succeeded")
+                            self.errfile.write("%s, fixed it\n"%did)
+                        except:
+                            print ("fix failed")
+                            self.errfile.write("%s, failed to fix \n"%did)
 
                 else:
                     self.errfile.write("%s, no parents or core.parennts\n"%did)
@@ -190,7 +196,7 @@ def parentchecker(query):
                     
 if __name__ == '__main__':
 
-    data_tier = "full_reconstructed"
+    data_tier = "full-reconstructed"
     workflow = 1630
     
     if len(sys.argv) < 2:
@@ -206,7 +212,7 @@ if __name__ == '__main__':
     #p =  (parentchecker(testquery))
     summary = mc_client.query(query=testquery,summary="count")
     print ("summary of testquery", summary)
-    fixer=MetaFixer(verbose=False,errname="error_%d.txt"%(workflow))
+    fixer=MetaFixer(verbose=False,errname="error_%s_%d.txt"%(data_tier,workflow))
     thelimit=100
     theskip=0
     for i in range(0, 100000):
