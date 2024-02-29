@@ -14,6 +14,7 @@
 # pylint: disable=C0103 
 # pylint: disable=C0325 
 # pylint: disable=C0123
+# pyline: disable=W1514
 
 
 
@@ -23,10 +24,12 @@ import sys
 import os
 import json
 
-import samweb_client
+#import samweb_client
+
+FIX = True
 
 from metacat.webapi import MetaCatClient
-samweb = samweb_client.SAMWebClient(experiment='dune')
+# samweb = samweb_client.SAMWebClient(experiment='dune')
 
 DEBUG = False
 
@@ -61,7 +64,7 @@ class MetaFixer:
         self.limit = limit
         thequery = query + " skip %d limit %d "%(self.skip,self.limit)
 
-        if self.verbose: print ("thequery:",thequery)
+        print ("thequery:",thequery)
         try:
             self.query_files = list(mc_client.query(thequery))
             print ("getinput returned:",len(self.query_files), "files") 
@@ -145,49 +148,72 @@ class MetaFixer:
             else:
                 metadata = filemd["metadata"]
                 if "core.parents" in metadata:
+                    parentlist = []
                     if self.verbose:
                         print ("core.parents", metadata["core.parents"])
                     for p in metadata["core.parents"]:
                         if ":" in p["file_name"]:
                             if self.verbose:
-                                print ("ok)")
-                            self.errfile.write("%s, missing parents\n"%did)
+                               
+                                self.errfile.write("%s, missing parents\n"%did)
+                            thisparent = {"did":p["file_name"]}
+                            
                         else:
                             if self.verbose:
                                 print ("ERROR missing namespace for parent in  this file",did)
                             self.errfile.write("%s, missing namespace in parents\n"%did)
+                            thisparent = {"did":"%s:%s"%(metadata["namespace"],p["filename"])}
+                    parentlist.append(thisparent)
                     
+                print (parentlist)
+                if FIX:
+                    mc_client.update_file(did,  parents=parentlist)
+                    print ("Tried to fix this file", did)
+
                 else:
                     self.errfile.write("%s, no parents or core.parennts\n"%did)
+
+                
 
     def cleanup(self):
         self.errfile.close()
                             
-def jsondump(dict):
-        return json.dumps(dict,indent=4)                   
+def jsondump(adict):
+    return json.dumps(adict,indent=4)                   
 
 def parentchecker(query):
-        newquery = " %s - children ( parents ( %s ))"% (query,query)
-        return newquery
+    newquery = " %s - children ( parents ( %s ))"% (query,query)
+    return newquery
 
 
 
                     
-                
+if __name__ == '__main__':
 
-for workflow in [1633,1638]:     
+    data_tier = "full_reconstructed"
+    workflow = 1630
+    
+    if len(sys.argv) < 2:
+        print ("normally should add a data_tier, and workflow #, default to %s, %s"%(data_tier, workflow))
+    
+    else:
+        data_tier = sys.argv[1]          
+        workflow = int(sys.argv[2])      
 
-    testquery =  "files from dune:all where dune.workflow['workflow_id'] in (%d) "%(workflow)
 
-    p =  (parentchecker(testquery))
-
-
-
+    testquery =  "files from dune:all where core.data_tier='%s' and dune.workflow['workflow_id'] in (%d) limit 1"%(data_tier,workflow)
+    print ("top level query metacat query \" ",testquery, "\"")
+    #p =  (parentchecker(testquery))
+    summary = mc_client.query(query=testquery,summary="count")
+    print ("summary of testquery", summary)
     fixer=MetaFixer(verbose=False,errname="error_%d.txt"%(workflow))
     thelimit=100
     theskip=0
     for i in range(0, 100000):
         thelist = fixer.getInput(query=testquery,limit=thelimit,skip=theskip)
+        if len(thelist) == 0:
+            print ("got to the end of the list at ",theskip)
+            break
         fixer.explore()
         if len(thelist) <= 0:
             print ("readed end of list at",theskip)   
