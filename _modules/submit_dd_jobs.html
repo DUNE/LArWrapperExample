@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>submit_dd_jobs &#8212; LArWrapperExample 0.2 documentation</title>
+    <title>submit_dd_jobs &#8212; LArWrapperExample 0.3 documentation</title>
     <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="../_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="../_static/graphviz.css" />
@@ -27,7 +27,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">LArWrapperExample 0.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" accesskey="U">Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">submit_dd_jobs</a></li> 
       </ul>
@@ -51,12 +51,13 @@
   <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;METACAT_URL&quot;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;METACAT_SERVER_URL&quot;</span><span class="p">))</span>
   <span class="n">mc_client</span> <span class="o">=</span> <span class="n">MetaCatClient</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;METACAT_SERVER_URL&quot;</span><span class="p">))</span>
   
-  <span class="n">dd_client</span> <span class="o">=</span> <span class="n">DataDispatcherClient</span><span class="p">(</span>
-    <span class="n">server_url</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DATA_DISPATCHER_URL&quot;</span><span class="p">),</span>
-    <span class="n">auth_server_url</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DATA_DISPATCHER_AUTH_URL&quot;</span><span class="p">))</span>
+  <span class="c1">#dd_client = DataDispatcherClient(</span>
+  <span class="c1">#server_url=os.getenv(&quot;DATA_DISPATCHER_URL&quot;),</span>
+  <span class="c1">#auth_server_url=os.getenv(&quot;DATA_DISPATCHER_AUTH_URL&quot;))</span>
+  <span class="n">dd_client</span> <span class="o">=</span> <span class="n">DataDispatcherClient</span><span class="p">()</span>
   <span class="n">dd_client</span><span class="o">.</span><span class="n">login_x509</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;USER&#39;</span><span class="p">],</span>
                        <span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;X509_USER_PROXY&#39;</span><span class="p">])</span>
-
+  <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;env&quot;</span><span class="p">,</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DATA_DISPATCHER_URL&quot;</span><span class="p">),</span><span class="n">os</span><span class="o">.</span><span class="n">getenv</span><span class="p">(</span><span class="s2">&quot;DATA_DISPATCHER_AUTH_URL&quot;</span><span class="p">),</span><span class="n">os</span><span class="o">.</span><span class="n">environ</span><span class="p">[</span><span class="s1">&#39;X509_USER_PROXY&#39;</span><span class="p">])</span>
 
   <span class="k">if</span> <span class="p">(</span><span class="n">query</span> <span class="o">!=</span> <span class="kc">None</span> <span class="ow">and</span> <span class="n">dataset</span> <span class="o">!=</span> <span class="kc">None</span><span class="p">):</span>
       <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;Choose between query and dataset please&quot;</span><span class="p">)</span>
@@ -78,6 +79,8 @@
   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;------------------------createproject------------------------------&quot;</span><span class="p">)</span>
   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Start Project for :&quot;</span><span class="p">,</span><span class="n">thequery</span><span class="p">)</span>
   <span class="c1">#query metacat</span>
+  <span class="n">result</span> <span class="o">=</span> <span class="n">mc_client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">thequery</span><span class="p">)</span>
+  <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;check for mc_client&quot;</span><span class="p">,</span><span class="n">result</span><span class="p">)</span>
   <span class="n">query_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mc_client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">thequery</span><span class="p">))</span>
   <span class="n">count</span> <span class="o">=</span> <span class="mi">0</span>
   <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">query_files</span><span class="p">:</span>
@@ -184,13 +187,17 @@
     <span class="k">if</span> <span class="n">args</span><span class="o">.</span><span class="n">query_limit</span><span class="p">:</span> <span class="n">query</span> <span class="o">+=</span> <span class="s1">&#39; limit </span><span class="si">%s</span><span class="s1">&#39;</span><span class="o">%</span><span class="n">args</span><span class="o">.</span><span class="n">query_limit</span>
     <span class="nb">print</span><span class="p">(</span><span class="n">query</span><span class="p">)</span>
     <span class="c1">#query metacat</span>
-    <span class="n">query_files</span> <span class="o">=</span> <span class="p">[]</span>
-    <span class="c1">#query_files = [i for i in mc_client.query(query)]</span>
-    <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">mc_client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query</span><span class="p">):</span>
-       <span class="n">query_files</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
-       <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;new file&quot;</span><span class="p">,</span> <span class="n">i</span><span class="p">)</span>
-    <span class="nb">print</span><span class="p">(</span><span class="n">query_files</span><span class="p">)</span>
-
+    <span class="c1"># query_files = []</span>
+    <span class="c1"># print (&quot;metacat query&quot;,mc_client.query(query))</span>
+    <span class="c1"># #query_files = [i for i in mc_client.query(query)]</span>
+    <span class="c1"># for i in mc_client.query(query):</span>
+    <span class="c1">#    query_files.append(i)</span>
+    <span class="c1">#    print (&quot;new file&quot;, i)</span>
+    <span class="c1"># print(query_files)</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;about to do the query&quot;</span><span class="p">,</span><span class="n">query</span><span class="p">)</span>
+    <span class="c1">#print (&quot;files from &quot;,args.dataset,&quot; limit 5&quot;)</span>
+    <span class="nb">print</span> <span class="p">(</span><span class="s2">&quot;test query&quot;</span><span class="p">,</span> <span class="n">mc_client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
+    <span class="n">query_files</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">mc_client</span><span class="o">.</span><span class="n">query</span><span class="p">(</span><span class="n">query</span><span class="p">))</span>
     <span class="c1">#check size</span>
     <span class="n">nfiles_in_dataset</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">query_files</span><span class="p">)</span>
 
@@ -313,7 +320,7 @@
         <li class="right" >
           <a href="../py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
-        <li class="nav-item nav-item-0"><a href="../index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="../index.html">LArWrapperExample 0.3 documentation</a> &#187;</li>
           <li class="nav-item nav-item-1"><a href="index.html" >Module code</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">submit_dd_jobs</a></li> 
       </ul>

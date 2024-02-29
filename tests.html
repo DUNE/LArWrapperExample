@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Tests &#8212; LArWrapperExample 0.2 documentation</title>
+    <title>Tests &#8212; LArWrapperExample 0.3 documentation</title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css" />
     <link rel="stylesheet" type="text/css" href="_static/nature.css" />
     <link rel="stylesheet" type="text/css" href="_static/graphviz.css" />
@@ -35,7 +35,7 @@
         <li class="right" >
           <a href="usage.html" title="Usage"
              accesskey="P">previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">LArWrapperExample 0.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Tests</a></li> 
       </ul>
     </div>  
@@ -57,8 +57,8 @@
 <blockquote>
 <div><div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># run an interactive test HMS 12-2-2022</span>
 <span class="nb">export</span><span class="w"> </span><span class="nv">BEGIN_TIME</span><span class="o">=</span><span class="sb">`</span>date<span class="w"> </span>+<span class="s2">&quot;%d-%b-%Y %H:%M:%S %Z&quot;</span><span class="sb">`</span>
-python<span class="w"> </span>-m<span class="w"> </span>DDInterface<span class="w"> </span>--debug<span class="o">=</span>True<span class="w"> </span>--dataset<span class="w"> </span>schellma:rawPhysics_5141_5143<span class="w"> </span>--workflowMethod<span class="o">=</span>interactive<span class="w"> </span>--query_limit<span class="w"> </span><span class="m">10</span><span class="w"> </span>--load_limit<span class="w"> </span><span class="m">1</span><span class="w"> </span>-c<span class="w"> </span>fcl/test.fcl<span class="w"> </span>--user<span class="w"> </span><span class="nv">$USER</span><span class="w"> </span>--appFamily<span class="o">=</span>protoduneana<span class="w"> </span>--appName<span class="o">=</span><span class="nb">test</span><span class="w"> </span>--appVersion<span class="o">=</span><span class="nv">$PROTODUNEANA_VERSION</span><span class="w">  </span>-n<span class="w"> </span><span class="m">2</span>
-<span class="c1"># this does a minimal test reading n=20 events from load_limit=1 files</span>
+python<span class="w"> </span>-m<span class="w"> </span>DDInterface<span class="w"> </span>--debug<span class="o">=</span>True<span class="w"> </span>--dataset<span class="w"> </span>schellma:run5141Prod4Reco<span class="w"> </span>--workflowMethod<span class="o">=</span>interactive<span class="w"> </span>--query_limit<span class="w"> </span><span class="m">3</span><span class="w"> </span>--load_limit<span class="w"> </span><span class="m">1</span><span class="w"> </span>-c<span class="w"> </span>pduneana_Prod4_data_reco2_6GeV.fcl<span class="w"> </span>--user<span class="w"> </span><span class="nv">$USER</span><span class="w"> </span>--appFamily<span class="o">=</span>protoduneana<span class="w"> </span>--appName<span class="o">=</span>test--appVersion<span class="o">=</span><span class="nv">$PROTODUNEANA_VERSION</span><span class="w">  </span>-n<span class="w"> </span><span class="m">2</span>
+<span class="c1"># this does a minimal test reading n=2 events from load_limit=1 files</span>
 </pre></div>
 </div>
 </div></blockquote>
@@ -241,7 +241,7 @@ you can use the <code class="docutils literal notranslate"><span class="pre">sam
         <li class="right" >
           <a href="usage.html" title="Usage"
              >previous</a> |</li>
-        <li class="nav-item nav-item-0"><a href="index.html">LArWrapperExample 0.2 documentation</a> &#187;</li>
+        <li class="nav-item nav-item-0"><a href="index.html">LArWrapperExample 0.3 documentation</a> &#187;</li>
         <li class="nav-item nav-item-this"><a href="">Tests</a></li> 
       </ul>
     </div>

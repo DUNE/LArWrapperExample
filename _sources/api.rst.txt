@@ -22,6 +22,18 @@ API
 Dependencies
 ------------
 
+.. figure:: ../LArWrapper.jpg
+       :scale: 100 %
+       :alt: Dependencies
+
+       This is a dependency diagram for LArWrapper
+
+.. figure:: ../CollectionCreatorClass.jpg
+       :scale: 100 %
+       :alt: Dependencies
+
+       This is a dependency diagram for CollectionCreatorClass
+
 .. figure:: ../DDInterface.jpg
        :scale: 100 %
        :alt: Dependencies

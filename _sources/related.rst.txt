@@ -11,6 +11,7 @@ metacat
 
   `metacat documentation <https://metacat.readthedocs.io/en/latest/>`_
   `DUNE metacat gui <https://metacat.fnal.gov:9443/dune_meta_prod/app/gui/query>`_
+  `DUNE metacat server status <https://dbdata0vm.fnal.gov:8043/service_charts/dune-meta-prod?window=day>`_
 
 Data Dispatcher (dd)
 --------------------
