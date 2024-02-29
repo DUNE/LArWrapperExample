@@ -12,7 +12,8 @@ H. Schellman - 2022
 ##
 # @file Loginator.py
 
-import string,time,datetime,json,os,sys
+import datetime,json,os,sys
+from datetime import date,timezone,datetime
 
 import dbparse
 
@@ -22,8 +23,7 @@ if "SAM_EXPERIMENT" in os.environ:
 
 
 from metacat.webapi import MetaCatClient
-import string,datetime
-from datetime import date,timezone,datetime
+
 
 
 
@@ -37,7 +37,7 @@ class Loginator:
     """
 ## initialization, requires an Art logfile to parse and creates a template json file
 
-    def __init__(self,logname,debug=False):
+    def __init__(self,logname=None,fcl=None,debug=False):
         """
         :param logname: name of the art logfile to read
         :type logname: str
@@ -50,8 +50,12 @@ class Loginator:
             sys.exit(1)
         self.logname = logname
         self.debug = debug
-        print ("Loginator debug:",self.debug)
+        print ("Loginator debug:",self.debug,self.logname)
         self.logfile = open(logname,'r')
+        if fcl != None: 
+            self.fclname = os.path.basename(fcl).replace(".fcl","")
+        else: 
+            self.fclname = "nofcl"
         self.errfile = open(logname.replace('.out','.err'),'r')
         self.outobject ={}
         self.info = self.getsysinfo()
@@ -82,7 +86,8 @@ class Loginator:
             "timestamp_for_end":None,  #
             "application_family":None,  #
             "application_name":None,  #
-            "application_version":None,  #
+            "application_version":None, 
+            "fcl":self.fclname, #
             "final_state":None,  # (what happened?)
             "project_name":None, #(wkf request_id?)"
             "duration":None,  # (difference between end and start)
@@ -129,10 +134,10 @@ class Loginator:
         return None
 
 ## safe access for a dictionary element, returns None rather than failing
-    def getSafe(self,dict,envname):
-        if envname in dict:
+    def getSafe(self,mydict,envname):
+        if envname in mydict:
             if self.debug: print ("found ",envname)
-            return dict[envname]
+            return mydict[envname]
         else:
             return None
 
@@ -174,7 +179,8 @@ class Loginator:
         """ read in the log file and parse it
             lines with specific tags get processes while others are skipped
         """
-        object = {}
+        
+        theobject = {}
         memdata = None
         cpudata = None
         walldata = None
@@ -220,7 +226,6 @@ class Loginator:
                 filename = os.path.basename(filefull).strip()
                 filepath = os.path.dirname(filefull).strip()
 
-                dups = 0
 
                 # start - ask for file
                 if "Initiating" in tag:
@@ -232,7 +237,7 @@ class Loginator:
                     localobject["file_name"] = filename
                     localobject["url"] = filefull
                     if larstart == None:  # somehow we didn't start quite right
-                    	larstart = timestamp
+                        larstart = timestamp
                     if "BEGIN_TIME" in os.environ:
                         localobject["timestamp_for_job_start"]=os.getenv("BEGIN_TIME")
                     else:
@@ -253,7 +258,7 @@ class Loginator:
 
                     if self.debug: print ("filename was",filename,line)
                     localobject["timestamp_for_start"] = timestamp
-                    start = timestamp
+                    
                     localobject["path"]=filepath
                     localobject["file_name"] = filename
                     if self.debug: print ("filepath",filepath)
@@ -272,30 +277,32 @@ class Loginator:
                     localobject["duration"]=self.duration(localobject["timestamp_for_request"],timestamp)
                     localobject["final_state"] = "Closed"
 
-                object[filename] = localobject
+                if self.debug: print (filename, localobject)
+                theobject[filename] = localobject
                 continue
 
-
+        if self.debug: print ("outobject in readme",object)
         # add the job info to all file records if available
         localinfo = self.dbread()
-        for thing in object:
+        for thing in theobject:
             
-            if memdata != None: object[thing]["art_real_memory"]=memdata
-            if "memory" in localinfo: object[thing]["db_real_memory"]=localinfo["memory"]
-            if "n_events" in localinfo: object[thing]["db_total_events"]=localinfo["n_events"]
-            if walldata != None: object[thing]["art_wall_time"]=walldata
-            if "wall_time" in localinfo: object[thing]["db_wall_time"]=localinfo["wall_time"]
-            if cpudata != None: object[thing]["art_cpu_time"]=cpudata
+            if memdata != None: theobject[thing]["art_real_memory"]=memdata
+            if "memory" in localinfo: theobject[thing]["db_real_memory"]=localinfo["memory"]
+            if "n_events" in localinfo: theobject[thing]["db_total_events"]=localinfo["n_events"]
+            if walldata != None: theobject[thing]["art_wall_time"]=walldata
+            if "wall_time" in localinfo: theobject[thing]["db_wall_time"]=localinfo["wall_time"]
+            if cpudata != None: theobject[thing]["art_cpu_time"]=cpudata
             if totalevents != None:
-                object[thing]["art_total_events"]=totalevents
+                theobject[thing]["art_total_events"]=totalevents
                 if totalevents > 0:
-                    object[thing]["art_cpu_time_per_event"] = cpudata/totalevents
-                    object[thing]["art_wall_time_per_event"] = walldata/totalevents
+                    theobject[thing]["art_cpu_time_per_event"] = cpudata/totalevents
+                    theobject[thing]["art_wall_time_per_event"] = walldata/totalevents
             if walldata  != None and walldata > 0:
-                object[thing]["art_cpu_efficiency"] = cpudata/walldata
+                theobject[thing]["art_cpu_efficiency"] = cpudata/walldata
 
-            #print ("mem",object[thing]["real_memory"])
-        self.outobject=object
+            #print ("mem",theobject[thing]["real_memory"])
+        self.outobject=theobject
+       
 
     def addinfo(self,info):
         """  add information from a dictionary to the record"
@@ -343,6 +350,7 @@ class Loginator:
         if self.debug:print ("add metacat info")
         #os.environ["METACAT_SERVER_URL"]="https://metacat.fnal.gov:9443/dune_meta_demo/app"
         mc_client = MetaCatClient(os.getenv("METACAT_SERVER_URL"))
+        
         for f in self.outobject:
             if "namespace" in self.outobject[f] and self.outobject[f]["namespace"] != None:
                 namespace = self.outobject[f]["namespace"]
@@ -355,12 +363,13 @@ class Loginator:
             if self.debug: print ("get metadata for ", f,namespace)
             try:
                 meta = mc_client.get_file(name=f,namespace=namespace)
+                print ("got metadata",f, namespace, meta)
                 
             except:
                 print ("metacat access failure for file",f)
                 self.outobject[f]["metacat_status"]="failed"
                 meta = None
-            if self.debug: print ("metacat answer",f,namespace)
+            if self.debug: print ("metacat answer",f,namespace,meta)
             if meta == None:
                 print ("no metadata for",f)
                 continue
@@ -376,9 +385,10 @@ class Loginator:
                 self.outobject[f]["file_campaign"]=meta["metadata"]["DUNE.campaign"]
             self.outobject[f]["fid"]=meta["fid"]
             self.outobject[f]["namespace"]=namespace
+        
 
 
-    def addreplicainfo(self,replicas,test=False):
+    def addreplicainfo(self,replicas=None,flist=[]):
         """
         get some details from the data dispatcher on file locations
         :param replicas: dictionary with lists of replicas for each file from the dd
@@ -391,6 +401,41 @@ class Loginator:
         for f in self.outobject:
             self.outobject[f]["rse"] = None
 
+        # do this if just a file list
+        
+        print ("outobject", self.outobject)
+        if replicas is None:
+            # this is a file list
+            filelist = flist
+            print ("flist",filelist)
+            fullpath=""
+            for files in filelist:
+                r = os.path.basename(files.strip())
+                found = False
+                for f in self.outobject:
+                    print ('outfile',f)
+                    fpath = os.path.join(self.outobject[f]["path"],f)
+                    if self.debug: print ("RSECHECK1",fullpath,"\nRSECHECK2",fpath)
+                    if r in fpath:
+                        if self.debug: print ("replica match",r)
+                        if self.outobject[f]["final_state"] in ["Closed"]:
+                            found = True
+                        else:
+                            print ("File found but not closed, flag as failed",f)
+                        if "rse" in r:
+                            self.outobject[f]["rse"] = r["rse"]
+                        if "namespace" in r:
+                            self.outobject[f]["namespace"] = r["namespace"]
+                        if "preference" in r:
+                            self.outobject[f]["preference"] = r["preference"]
+                    if self.debug: print (self.outobject[f])
+                if not found:
+                    print (r,"appears in replicas but not in Lar Log, need to mark as unused")
+                    notfound.append(r)
+            return notfound
+
+
+        # do this for rucio replica list
         for r in replicas:
             found = False
             fullpath = r["url"]
@@ -421,7 +466,7 @@ class Loginator:
         result = []
         for thing in self.outobject:
             if self.debug: print ("writeme", thing,self.outobject[thing])
-            outname = "%s_%d_process.json" %(thing,self.outobject[thing]["project_id"])
+            outname = "%s_%s_%d_process.json" %(thing,self.fclname,self.outobject[thing]["project_id"])
             outfile = open(outname,'w')
             json.dump(self.outobject[thing],outfile,indent=4)
 
@@ -473,12 +518,13 @@ def test():
     if len(sys.argv)>2:
         namespace = sys.argv[2]
     else:
-        namespace = "pdsp_det_reco"
+        namespace = None
     #print ("looking at",sys.argv[1])
+    print ("namespace",namespace)
     parse.readme()
     parse.addsysinfo()
-    parse.addreplicainfo([])
-    if "SAM_EXPERIMENT" in os.environ:
+    parse.addreplicainfo(replicas=[])
+    if "SAM_EXPERIMENT" in os.environ and namespace==None:
         parse.addsaminfo()
     else:
         parse.addmetacatinfo(namespace)

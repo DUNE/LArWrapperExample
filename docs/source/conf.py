@@ -37,7 +37,7 @@ copyright = '2023, Fermi National Accelerator Laboratory'
 author = 'Heidi Schellman and Jacob Calcutt'
 
 # The full version, including alpha/beta/rc tags
-release = '0.2'
+release = '0.3'
 
 
 # -- General configuration ---------------------------------------------------
@@ -79,6 +79,7 @@ autodoc_mock_imports = ["metacat","samweb_client","data_dispatcher"]
 #
 html_theme = 'furo'
 html_theme = 'nature'
+# not available on github html_theme = 'cloud'
 
 # Add any paths that contain custom static files (such as style sheets) here,
 # relative to this directory. They are copied after the builtin static files,
