@@ -48,6 +48,8 @@ class MetaFixer:
         self.fix=None
         self.limit=1000000
         self.skip=0
+
+    
     
 
     def getInput(self,query=None,limit=10000000,skip=0):
@@ -91,6 +93,7 @@ class MetaFixer:
             except:
                 print ("failed at file",count,did)
                 break
+            self.checker(md,"parentage")
             # if self.verbose:
             #     print(json.dumps(md,indent=4))
             # count namespaces
@@ -101,6 +104,7 @@ class MetaFixer:
                 typecount["namespace"][value]=1
                 f = open("metadata/namepace.json",'w')
                 data = json.dumps(md,indent=4)
+                
                 f.write(data)
                 f.close()
                 
@@ -122,15 +126,51 @@ class MetaFixer:
             
         print(json.dumps(typecount,indent=4))
 
+    def checker(self, filemd=None,check="parentage"):
+        ' check various aspects of the file '
+        if check == "parentage":
+            if "parents" in filemd and len(filemd["parents"])> 0:
+                # has some parentage, look at it. 
+                parents = filemd["parents"]
+                if self.verbose:
+                    print ("parents",parents)
+                    for p in parents:
+                        parentmd = mc_client.get_file(fid=p["fid"])
+                        print(parentmd["namespace"],parentmd["name"],jsondump(p))
+            else:
+                metadata = filemd["metadata"]
+                if "core.parents" in metadata:
+                    print ("core.parents", metadata["core.parents"])
+                    for p in metadata["core.parents"]:
+                        if ":" in p["file_name"]:
+                            print ("ok)")
+                        else:
+                            print ("ERROR missing namespace for parent in  this file",filemd["namespace"],filemd["name"])
+                    
+                else:
+                    print ("neither parents or core.parents for ", filemd["namespace"],filemd["name"])
+                            
+def jsondump(dict):
+        return json.dumps(dict,indent=4)                   
+
+def parentchecker(query):
+        newquery = " %s - children ( parents ( %s ))"% (query,query)
+        return newquery
+
+
+
                     
                 
 
+for workflow in [1633,1638]:     
 
-    
+    testquery =  "files from dune:all where dune.workflow['workflow_id'] in (%d) "%(workflow)
 
-testquery =  "files from dune:all where created_timestamp > 2024-02-20 "
+    p =  (parentchecker(testquery))
 
 
-fixer=MetaFixer(verbose=True)
-thelist = fixer.getInput(query=testquery,limit=100,skip=350)
-fixer.explore()
+
+    fixer=MetaFixer(verbose=True)
+    thelist = fixer.getInput(query=testquery,limit=20,skip=0)
+
+    fixer.explore()
