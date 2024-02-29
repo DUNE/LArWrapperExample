@@ -36,7 +36,7 @@ mc_client = MetaCatClient(os.getenv("METACAT_SERVER_URL"))
 class MetaFixer:
     ''' Class to create data collections'''
 
-    def __init__(self,verbose=False):
+    def __init__(self,verbose=False,errname="error.txt"):
         ''' 
         __init__ initialization, does very little
 
@@ -48,6 +48,7 @@ class MetaFixer:
         self.fix=None
         self.limit=1000000
         self.skip=0
+        self.errfile=open(errname,'w')
 
     
     
@@ -72,6 +73,8 @@ class MetaFixer:
     
     def explore(self):
         " see what there is in a general query "
+
+        
         if not os.path.exists("metadata"):
             os.mkdir("metadata")
         " this explores and counts things"
@@ -91,9 +94,9 @@ class MetaFixer:
             try:
                 md = mc_client.get_file(did=thedid,with_metadata=True,with_provenance=True)
             except:
-                print ("failed at file",count,did)
+                print ("failed at file",count,thedid)
                 break
-            self.checker(md,"parentage")
+            self.checker(md,check="parentage")
             # if self.verbose:
             #     print(json.dumps(md,indent=4))
             # count namespaces
@@ -128,6 +131,7 @@ class MetaFixer:
 
     def checker(self, filemd=None,check="parentage"):
         ' check various aspects of the file '
+        did = "%s:%s"%(filemd["namespace"],filemd["name"])
         if check == "parentage":
             if "parents" in filemd and len(filemd["parents"])> 0:
                 # has some parentage, look at it. 
@@ -136,19 +140,28 @@ class MetaFixer:
                     print ("parents",parents)
                     for p in parents:
                         parentmd = mc_client.get_file(fid=p["fid"])
-                        print(parentmd["namespace"],parentmd["name"],jsondump(p))
+                        if self.verbose:
+                            print(parentmd["namespace"],parentmd["name"],jsondump(p))
             else:
                 metadata = filemd["metadata"]
                 if "core.parents" in metadata:
-                    print ("core.parents", metadata["core.parents"])
+                    if self.verbose:
+                        print ("core.parents", metadata["core.parents"])
                     for p in metadata["core.parents"]:
                         if ":" in p["file_name"]:
-                            print ("ok)")
+                            if self.verbose:
+                                print ("ok)")
+                            self.errfile.write("%s, missing parents\n"%did)
                         else:
-                            print ("ERROR missing namespace for parent in  this file",filemd["namespace"],filemd["name"])
+                            if self.verbose:
+                                print ("ERROR missing namespace for parent in  this file",did)
+                            self.errfile.write("%s, missing namespace in parents\n"%did)
                     
                 else:
-                    print ("neither parents or core.parents for ", filemd["namespace"],filemd["name"])
+                    self.errfile.write("%s, no parents or core.parennts\n"%did)
+
+    def cleanup(self):
+        self.errfile.close()
                             
 def jsondump(dict):
         return json.dumps(dict,indent=4)                   
@@ -170,7 +183,14 @@ for workflow in [1633,1638]:
 
 
 
-    fixer=MetaFixer(verbose=True)
-    thelist = fixer.getInput(query=testquery,limit=20,skip=0)
+    fixer=MetaFixer(verbose=False,errname="error_%d.txt"%(workflow))
+    thelimit=100
+    theskip=0
+    for i in range(0, 100000):
+        thelist = fixer.getInput(query=testquery,limit=thelimit,skip=theskip)
+        fixer.explore()
+        if len(thelist) <= 0:
+            print ("readed end of list at",theskip)   
+        theskip += thelimit
+    fixer.cleanup()
 
-    fixer.explore()
