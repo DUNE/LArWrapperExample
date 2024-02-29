@@ -149,6 +149,7 @@ class MetaFixer:
                         parentmd = mc_client.get_file(fid=p["fid"])
                         if self.verbose:
                             print(parentmd["namespace"],parentmd["name"],jsondump(p))
+                        self.errfile.write("%s, parentage ok\n"%did)
             else:
                 metadata = filemd["metadata"]
                 if "core.parents" in metadata:
@@ -157,9 +158,9 @@ class MetaFixer:
                         print ("core.parents", metadata["core.parents"])
                     for p in metadata["core.parents"]:
                         if ":" in p["file_name"]:
-                            if self.verbose:
+                            #if self.verbose:
                                
-                                self.errfile.write("%s, missing parents\n"%did)
+                            self.errfile.write("%s, missing parents\n"%did)
                             thisparent = {"did":p["file_name"]}
                             
                         else:
