@@ -10,12 +10,13 @@ def create_project(dataset=None, query=None, namespace = None, query_limit=None,
   print ("METACAT_URL",os.getenv("METACAT_SERVER_URL"))
   mc_client = MetaCatClient(os.getenv("METACAT_SERVER_URL"))
   
-  dd_client = DataDispatcherClient(
-    server_url=os.getenv("DATA_DISPATCHER_URL"),
-    auth_server_url=os.getenv("DATA_DISPATCHER_AUTH_URL"))
+  #dd_client = DataDispatcherClient(
+  #server_url=os.getenv("DATA_DISPATCHER_URL"),
+  #auth_server_url=os.getenv("DATA_DISPATCHER_AUTH_URL"))
+  dd_client = DataDispatcherClient()
   dd_client.login_x509(os.environ['USER'],
                        os.environ['X509_USER_PROXY'])
-
+  print ("env",os.getenv("DATA_DISPATCHER_URL"),os.getenv("DATA_DISPATCHER_AUTH_URL"),os.environ['X509_USER_PROXY'])
 
   if (query != None and dataset != None):
       print ("Choose between query and dataset please")
@@ -37,6 +38,8 @@ def create_project(dataset=None, query=None, namespace = None, query_limit=None,
   print("------------------------createproject------------------------------")
   print("Start Project for :",thequery)
   #query metacat
+  result = mc_client.query(thequery)
+  print ("check for mc_client",result)
   query_files = list(mc_client.query(thequery))
   count = 0
   for i in query_files:
@@ -143,13 +146,17 @@ def main():
     if args.query_limit: query += ' limit %s'%args.query_limit
     print(query)
     #query metacat
-    query_files = []
-    #query_files = [i for i in mc_client.query(query)]
-    for i in mc_client.query(query):
-       query_files.append(i)
-       print ("new file", i)
-    print(query_files)
-
+    # query_files = []
+    # print ("metacat query",mc_client.query(query))
+    # #query_files = [i for i in mc_client.query(query)]
+    # for i in mc_client.query(query):
+    #    query_files.append(i)
+    #    print ("new file", i)
+    # print(query_files)
+    print ("about to do the query",query)
+    #print ("files from ",args.dataset," limit 5")
+    print ("test query", mc_client.query(query))
+    query_files = list(mc_client.query(query))
     #check size
     nfiles_in_dataset = len(query_files)
 

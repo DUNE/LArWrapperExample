@@ -26,7 +26,7 @@ import json
 
 #import samweb_client
 
-FIX = True
+
 
 from metacat.webapi import MetaCatClient
 # samweb = samweb_client.SAMWebClient(experiment='dune')
@@ -39,7 +39,7 @@ mc_client = MetaCatClient(os.getenv("METACAT_SERVER_URL"))
 class MetaFixer:
     ''' Class to create data collections'''
 
-    def __init__(self,verbose=False,errname="error.txt"):
+    def __init__(self,verbose=False,errname="error.txt",fix=None):
         ''' 
         __init__ initialization, does very little
 
@@ -48,7 +48,7 @@ class MetaFixer:
         '''
         self.query_files=None
         self.verbose = verbose
-        self.fix=None
+        self.fix=fix
         self.limit=1000000
         self.skip=0
         self.errfile=open(errname,'w')
@@ -130,7 +130,8 @@ class MetaFixer:
                         f.write(data)
                         f.close()
             
-        print(json.dumps(typecount,indent=4))
+        if self.verbose:
+            print(json.dumps(typecount,indent=4))
 
     def checker(self, filemd=None,check="parentage"):
         ' check various aspects of the file '
@@ -162,11 +163,11 @@ class MetaFixer:
                             if self.verbose:
                                 print ("ERROR missing namespace for parent in  this file",did)
                             self.errfile.write("%s, missing namespace in parents\n"%did)
-                            thisparent = {"did":"%s:%s"%(metadata["namespace"],p["filename"])}
+                            thisparent = {"did":"%s:%s"%(filemd["namespace"],p["file_name"])}  # hack in namespace of child file
                         parentlist.append(thisparent)
                     
                     print (parentlist)
-                    if FIX:
+                    if self.fix:
                         print ("Tried to fix this file", did)
                         try:
                             mc_client.update_file(did,  parents=parentlist)
@@ -198,21 +199,26 @@ if __name__ == '__main__':
 
     data_tier = "full-reconstructed"
     workflow = 1630
+    FIX = False
     
     if len(sys.argv) < 2:
         print ("normally should add a data_tier, and workflow #, default to %s, %s"%(data_tier, workflow))
-    
+        print ("to actually run, the 3rd argument needs to be run '")
     else:
         data_tier = sys.argv[1]          
-        workflow = int(sys.argv[2])      
+        workflow = int(sys.argv[2])   
+    if len(sys.argv) > 3:
+        if sys.argv[3] == "run":
+            FIX = True  
 
 
-    testquery =  "files from dune:all where core.data_tier='%s' and dune.workflow['workflow_id'] in (%d) limit 1"%(data_tier,workflow)
+    testquery =  "files from dune:all where core.data_tier='%s' and dune.workflow['workflow_id'] in (%d) limit 10"%(data_tier,workflow)
     print ("top level query metacat query \" ",testquery, "\"")
     #p =  (parentchecker(testquery))
+    #print ("parent checker",p)
     summary = mc_client.query(query=testquery,summary="count")
     print ("summary of testquery", summary)
-    fixer=MetaFixer(verbose=False,errname="error_%s_%d.txt"%(data_tier,workflow))
+    fixer=MetaFixer(verbose=False,errname="error_%s_%d.txt"%(data_tier,workflow),fix=FIX)
     thelimit=100
     theskip=0
     for i in range(0, 100000):
