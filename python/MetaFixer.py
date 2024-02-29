@@ -23,6 +23,8 @@ from argparse import ArgumentParser as ap
 import sys
 import os
 import json
+import datetime
+
 
 #import samweb_client
 
@@ -52,6 +54,7 @@ class MetaFixer:
         self.limit=1000000
         self.skip=0
         self.errfile=open(errname,'w')
+        self.errfile.write(errname+"\n")
 
     
     
@@ -166,7 +169,7 @@ class MetaFixer:
                             thisparent = {"did":"%s:%s"%(filemd["namespace"],p["file_name"])}  # hack in namespace of child file
                         parentlist.append(thisparent)
                     
-                    print (parentlist)
+                    print ("parents to add",parentlist)
                     if self.fix:
                         print ("Tried to fix this file", did)
                         try:
@@ -178,7 +181,7 @@ class MetaFixer:
                             self.errfile.write("%s, failed to fix \n"%did)
 
                 else:
-                    self.errfile.write("%s, no parents or core.parennts\n"%did)
+                    self.errfile.write("%s, no parents or core.parents\n"%did)
 
                 
 
@@ -212,13 +215,15 @@ if __name__ == '__main__':
             FIX = True  
 
 
-    testquery =  "files from dune:all where core.data_tier='%s' and dune.workflow['workflow_id'] in (%d) limit 10"%(data_tier,workflow)
+    testquery =  "files from dune:all where core.data_tier='%s' and dune.workflow['workflow_id'] in (%d) limit 30"%(data_tier,workflow)
     print ("top level query metacat query \" ",testquery, "\"")
     #p =  (parentchecker(testquery))
     #print ("parent checker",p)
     summary = mc_client.query(query=testquery,summary="count")
     print ("summary of testquery", summary)
-    fixer=MetaFixer(verbose=False,errname="error_%s_%d.txt"%(data_tier,workflow),fix=FIX)
+    now = datetime.datetime.now().timestamp()
+
+    fixer=MetaFixer(verbose=False,errname="error_%s_%d_%s.txt"%(data_tier,workflow,now),fix=FIX)
     thelimit=100
     theskip=0
     for i in range(0, 100000):
