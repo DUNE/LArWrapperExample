@@ -215,7 +215,7 @@ if __name__ == '__main__':
             FIX = True  
 
 
-    testquery =  "files from dune:all where core.data_tier='%s' and dune.workflow['workflow_id'] in (%d) limit 30"%(data_tier,workflow)
+    testquery =  "files from dune:all where core.data_tier='%s' and dune.workflow['workflow_id'] in (%d) "%(data_tier,workflow)
     print ("top level query metacat query \" ",testquery, "\"")
     #p =  (parentchecker(testquery))
     #print ("parent checker",p)
