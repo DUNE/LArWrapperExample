@@ -193,7 +193,7 @@ def jsondump(adict):
     return json.dumps(adict,indent=4)                   
 
 def parentchecker(query):
-    newquery = " %s - children ( parents ( %s ))"% (query,query)
+    newquery = " %s - children(parents(%s))"%(query,query)
     return newquery
 
 
@@ -218,10 +218,15 @@ if __name__ == '__main__':
 
     testquery =  "files from dune:all where core.data_tier='%s' and dune.workflow['workflow_id'] in (%d) "%(data_tier,workflow)
     print ("top level query metacat query \" ",testquery, "\"")
-    #p =  (parentchecker(testquery))
-    #print ("parent checker",p)
+     
+    #parentquery = (parentchecker(testquery))
+    #print ("parent checker",parentquery)
     summary = mc_client.query(query=testquery,summary="count")
-    print ("summary of testquery", summary)
+    #checksummary = mc_client.query(query=parentquery,summary="count")
+    print ("summary of testquery", summary)#, checksummary)
+    # if 0 == checksummary["count"]:
+    #     print ("you seem to have parents for all files - quitting")
+    #     sys.exit(0)
     now = datetime.datetime.now().timestamp()
 
     fixer=MetaFixer(verbose=False,errname="error_%s_%d_%s.txt"%(data_tier,workflow,now),fix=FIX)
