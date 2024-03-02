@@ -215,31 +215,35 @@ if __name__ == '__main__':
         if sys.argv[3] == "run":
             FIX = True  
 
+    for workflow in [1631, 1632, 1633, 1596, 1597, 1598, 1599, 1600, 1601, 1602, 1604, 1606, 1608, 1609, 1581, 1582, 1584, 1594, 1586, 1587, 1588, 1595]:
+        if workflow in [1633, 1630, 1599, 1604, 1581, 1586 ]:
+            continue
 
-    testquery =  "files from dune:all where core.data_tier='%s' and dune.workflow['workflow_id'] in (%d) "%(data_tier,workflow)
-    print ("top level query metacat query \" ",testquery, "\"")
-     
-    #parentquery = (parentchecker(testquery))
-    #print ("parent checker",parentquery)
-    summary = mc_client.query(query=testquery,summary="count")
-    #checksummary = mc_client.query(query=parentquery,summary="count")
-    print ("summary of testquery", summary)#, checksummary)
-    # if 0 == checksummary["count"]:
-    #     print ("you seem to have parents for all files - quitting")
-    #     sys.exit(0)
-    now = datetime.datetime.now().timestamp()
 
-    fixer=MetaFixer(verbose=False,errname="error_%s_%d_%s.txt"%(data_tier,workflow,now),fix=FIX)
-    thelimit=100
-    theskip=0
-    for i in range(0, 100000):
-        thelist = fixer.getInput(query=testquery,limit=thelimit,skip=theskip)
-        if len(thelist) == 0:
-            print ("got to the end of the list at ",theskip)
-            break
-        fixer.explore()
-        if len(thelist) <= 0:
-            print ("readed end of list at",theskip)   
-        theskip += thelimit
-    fixer.cleanup()
+        testquery =  "files from dune:all where core.data_tier='%s' and dune.workflow['workflow_id'] in (%d) "%(data_tier,workflow)
+        print ("top level query metacat query \" ",testquery, "\"")
+        
+        #parentquery = (parentchecker(testquery))
+        #print ("parent checker",parentquery)
+        summary = mc_client.query(query=testquery,summary="count")
+        #checksummary = mc_client.query(query=parentquery,summary="count")
+        print ("summary of testquery", summary)#, checksummary)
+        # if 0 == checksummary["count"]:
+        #     print ("you seem to have parents for all files - quitting")
+        #     sys.exit(0)
+        now = datetime.datetime.now().timestamp()
+
+        fixer=MetaFixer(verbose=False,errname="error_%s_%d_%s.txt"%(data_tier,workflow,now),fix=FIX)
+        thelimit=100
+        theskip=0
+        for i in range(0, 100000):
+            thelist = fixer.getInput(query=testquery,limit=thelimit,skip=theskip)
+            if len(thelist) == 0:
+                print ("got to the end of the list at ",theskip)
+                break
+            fixer.explore()
+            if len(thelist) <= 0:
+                print ("readed end of list at",theskip)   
+            theskip += thelimit
+        fixer.cleanup()
 

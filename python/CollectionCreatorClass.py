@@ -228,6 +228,7 @@ class CollectionCreatorClass:
             if type(val) == str and "-" in val and not "'" in val: 
                 val = "\'%s\'"%val
 
+            
             query += " "+item+"="+str(val)
             query += " and"
             
@@ -241,6 +242,13 @@ class CollectionCreatorClass:
             if ":" not in runs:
                 runs = "(%s)"%runs
             rquery = " and core.runs[any] in %s"%runs   
+            query += rquery
+        
+        if "workflow_ids" in self.meta:
+            workflows = self.meta["workflow_ids"]
+            if ":" not in workflows:
+                workflows = "(%s)"%workflows
+            rquery = " and dune.workflow['workflow_id'] in %s"%workflows  
             query += rquery
 
         # do time range - takes some work as there are two possibilities

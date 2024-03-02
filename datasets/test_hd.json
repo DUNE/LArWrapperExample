@@ -1,0 +1,13 @@
+{
+        "description":"mc files from fd_mc_2023a",
+        "defnamespace":"schellma",
+        "defname":"%core.file_type.%core.run_type.%dune.campaign.%core.application.version.%core.data_tier.%workflow_ids.%deftag",
+        "core.application.version": "v09_81_00d02",
+        "core.data_tier": "full-reconstructed",
+        "core.file_type": "mc",
+        "core.run_type": "fardet-hd",
+        "dune.campaign": "fd_mc_2023a_reco2",
+        "dune.requestid": "ritm1780305",
+        "workflow_ids": "1630",
+        "deftag": "v2"
+}
