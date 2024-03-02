@@ -269,6 +269,7 @@
             <span class="k">if</span> <span class="nb">type</span><span class="p">(</span><span class="n">val</span><span class="p">)</span> <span class="o">==</span> <span class="nb">str</span> <span class="ow">and</span> <span class="s2">&quot;-&quot;</span> <span class="ow">in</span> <span class="n">val</span> <span class="ow">and</span> <span class="ow">not</span> <span class="s2">&quot;&#39;&quot;</span> <span class="ow">in</span> <span class="n">val</span><span class="p">:</span> 
                 <span class="n">val</span> <span class="o">=</span> <span class="s2">&quot;</span><span class="se">\&#39;</span><span class="si">%s</span><span class="se">\&#39;</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">val</span>
 
+            
             <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; &quot;</span><span class="o">+</span><span class="n">item</span><span class="o">+</span><span class="s2">&quot;=&quot;</span><span class="o">+</span><span class="nb">str</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
             <span class="n">query</span> <span class="o">+=</span> <span class="s2">&quot; and&quot;</span>
             
@@ -282,6 +283,13 @@
             <span class="k">if</span> <span class="s2">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">runs</span><span class="p">:</span>
                 <span class="n">runs</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="o">%</span><span class="n">runs</span>
             <span class="n">rquery</span> <span class="o">=</span> <span class="s2">&quot; and core.runs[any] in </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">runs</span>   
+            <span class="n">query</span> <span class="o">+=</span> <span class="n">rquery</span>
+        
+        <span class="k">if</span> <span class="s2">&quot;workflow_ids&quot;</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">:</span>
+            <span class="n">workflows</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">meta</span><span class="p">[</span><span class="s2">&quot;workflow_ids&quot;</span><span class="p">]</span>
+            <span class="k">if</span> <span class="s2">&quot;:&quot;</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">workflows</span><span class="p">:</span>
+                <span class="n">workflows</span> <span class="o">=</span> <span class="s2">&quot;(</span><span class="si">%s</span><span class="s2">)&quot;</span><span class="o">%</span><span class="n">workflows</span>
+            <span class="n">rquery</span> <span class="o">=</span> <span class="s2">&quot; and dune.workflow[&#39;workflow_id&#39;] in </span><span class="si">%s</span><span class="s2">&quot;</span><span class="o">%</span><span class="n">workflows</span>  
             <span class="n">query</span> <span class="o">+=</span> <span class="n">rquery</span>
 
         <span class="c1"># do time range - takes some work as there are two possibilities</span>
