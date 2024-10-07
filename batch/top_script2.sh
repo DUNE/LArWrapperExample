@@ -151,10 +151,15 @@ setup dunesw ${APPVERSION} -q e20:prof;
 
 
 
-python -m venv venv
-source venv/bin/activate
-pip install metacat
-pip install datadispatcher
+#python -m venv venv
+#source venv/bin/activate
+#pip install metacat
+#pip install datadispatcher
+setup metacat
+setup data_dispatcher
+
+metacat -v
+data_dispatcher -v
 
 #source ${INPUT_TAR_DIR_LOCAL}/${MC_TAR}/canned_client_setup.sh
 #source ${INPUT_TAR_DIR_LOCAL}/${DD_TAR}/canned_client_setup.sh
@@ -242,7 +247,11 @@ echo "ls /usr/lib64/gfal_plugins"
 ls /usr/lib64/gfal_plugins
 echo "---------"
 echo "then mkdir"
+
+echo " making ",${OUTDIR}
 ifdh mkdir ${OUTDIR}
+
+ls ${OUTDIR}
 
 #if [ $? -ne 0 &&- z "$IFDH_OPTION"]; then
 #    echo "Unable to read ${SCRATCH_DIR}/${USER}/ddtest make sure that you have created this directory and given it group write permission."

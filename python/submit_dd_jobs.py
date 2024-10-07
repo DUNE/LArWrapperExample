@@ -38,9 +38,9 @@ def create_project(dataset=None, query=None, namespace = None, query_limit=None,
   print("------------------------createproject------------------------------")
   print("Start Project for :",thequery)
   #query metacat
-  result = mc_client.query(thequery)
+  result = list(mc_client.query(thequery))
   print ("check for mc_client",result)
-  query_files = list(mc_client.query(thequery))
+  query_files = result
   count = 0
   for i in query_files:
       print (i)
@@ -127,7 +127,7 @@ def main():
   else:
       appFamily = args.appFamily
 
-  mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_demo/app')
+  mc_client = MetaCatClient('https://metacat.fnal.gov:9443/dune_meta_prod/app')
   dd_client = DataDispatcherClient(
     server_url='https://metacat.fnal.gov:9443/dune/dd/data',
     auth_server_url='https://metacat.fnal.gov:8143/auth/dune')
@@ -155,8 +155,9 @@ def main():
     # print(query_files)
     print ("about to do the query",query)
     #print ("files from ",args.dataset," limit 5")
-    print ("test query", mc_client.query(query))
+    print ("test query", mc_client.query(query,summary="count"))
     query_files = list(mc_client.query(query))
+    print (query_files)
     #check size
     nfiles_in_dataset = len(query_files)
 
@@ -198,7 +199,7 @@ def main():
   for nj in njobs:
     if False: # remove version that ran on old jobsub_client
 
-        cmd =  'fife_launch -c $TESTME/batch/ddconfig.cfg ' \
+        cmd =  'fife_launch -c $TESTME/batch/ddconfig2.cfg ' \
               f'-Oglobal.load_limit={args.load_limit} ' \
               f'-Oglobal.projectID={dd_proj_id} ' \
               f'-Oglobal.n={args.n} ' \
